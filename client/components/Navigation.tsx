@@ -5,7 +5,7 @@ import Link from "next/link";
 const { Header } = Layout;
 
 interface Props {
-  isAuth: boolean
+  isAuth: boolean;
 }
 
 export default class Navigation extends Component<Props> {
@@ -101,8 +101,8 @@ export default class Navigation extends Component<Props> {
             ghost
           />
         ) : (
-            <Avatar icon={<Icon type="user" />} />
-          )}
+          <Avatar icon={<Icon type="user" />} />
+        )}
       </div>
     );
   };
@@ -124,16 +124,17 @@ export default class Navigation extends Component<Props> {
         </Drawer>
         <Header style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ display: "flex" }}>
-            <div className="logo" style={{ margin: "0 10px" }}>
-              <a>Logo</a>
+            <div className="logo" style={{ margin: "0 10px", color: "white" }}>
+              <Icon type="coffee" />
+              <span>Dev&Coffee</span>
             </div>
 
             <Menu theme="dark" mode="horizontal" style={{ lineHeight: "64px" }}>
               {!isMobile
                 ? this.renderNavLinks()
                 : isAuth
-                  ? ""
-                  : this.renderNavLinks()}
+                ? ""
+                : this.renderNavLinks()}
             </Menu>
           </div>
           {isAuth && this.renderUserLinks()}

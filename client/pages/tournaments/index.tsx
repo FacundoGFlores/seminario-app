@@ -1,11 +1,7 @@
 import React from "react";
 import { List, Avatar, Icon } from "antd";
 import { useRouter } from "next/router";
-import {
-  tournamentsAdd,
-  tournamentsEdit,
-  tournamentsDelete
-} from "../../routes";
+import { tournamentsAdd, tournamentsEdit, tournamentsView } from "../../routes";
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -28,7 +24,7 @@ const IconText = ({ type, text, onClick }) => (
   </span>
 );
 
-type FormAction = "add" | "edit" | "delete";
+type FormAction = "add" | "edit" | "view";
 const Tournaments = () => {
   const router = useRouter();
 
@@ -41,8 +37,8 @@ const Tournaments = () => {
       router.push(tournamentsEdit(id));
     }
 
-    if (actionType === "delete") {
-      router.push(tournamentsDelete(id));
+    if (actionType === "view") {
+      router.push(tournamentsView(id));
     }
   };
   return (
@@ -78,9 +74,9 @@ const Tournaments = () => {
               key="list-vertical-star-o"
             />,
             <IconText
-              onClick={() => handleAction("delete", item.id)}
-              type="delete"
-              text="Delete"
+              onClick={() => handleAction("view", item.id)}
+              type="search"
+              text="View"
               key="list-vertical-like-o"
             />
           ]}

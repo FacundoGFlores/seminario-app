@@ -1,11 +1,7 @@
 import React from "react";
 import { List, Avatar, Icon } from "antd";
 import { useRouter } from "next/router";
-import {
-  tournamentsAdd,
-  tournamentsEdit,
-  tournamentsDelete
-} from "../../routes";
+import { teamsAdd, teamsEdit, teamsView } from "../../routes";
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -28,21 +24,21 @@ const IconText = ({ type, text, onClick }) => (
   </span>
 );
 
-type FormAction = "add" | "edit" | "delete";
-const Tournaments = () => {
+type FormAction = "add" | "edit" | "view";
+const Teams = () => {
   const router = useRouter();
 
   const handleAction = (actionType: FormAction, id?: string) => {
     if (actionType === "add") {
-      router.push(tournamentsAdd);
+      router.push(teamsAdd);
     }
 
     if (actionType === "edit") {
-      router.push(tournamentsEdit(id));
+      router.push(teamsEdit(id));
     }
 
-    if (actionType === "delete") {
-      router.push(tournamentsDelete(id));
+    if (actionType === "view") {
+      router.push(teamsView(id));
     }
   };
   return (
@@ -78,9 +74,9 @@ const Tournaments = () => {
               key="list-vertical-star-o"
             />,
             <IconText
-              onClick={() => handleAction("delete", item.id)}
-              type="delete"
-              text="Delete"
+              onClick={() => handleAction("view", item.id)}
+              type="search"
+              text="View"
               key="list-vertical-like-o"
             />
           ]}
@@ -104,4 +100,4 @@ const Tournaments = () => {
   );
 };
 
-export default Tournaments;
+export default Teams;

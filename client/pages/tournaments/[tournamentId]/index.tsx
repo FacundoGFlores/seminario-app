@@ -1,7 +1,7 @@
 import React from "react";
 
-const TournamentEdit = () => {
-  return <div>Tournament edit</div>;
+const TournamentView = () => {
+  return <div>Tournament view</div>;
 };
 
-export default TournamentEdit;
+export default TournamentView;

@@ -4,12 +4,14 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gq-gen": "graphql-codegen"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.9.2",
     "babel-plugin-import": "^1.9.1",
+    "graphql": "^14.6.0",
     "next": "latest",
     "null-loader": "2.0.0",
     "react": "^16.7.0",
@@ -17,6 +19,10 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/typescript": "^1.12.2",
+    "@graphql-codegen/typescript-operations": "^1.12.2",
+    "@graphql-codegen/typescript-react-apollo": "^1.12.2",
     "@types/node": "^12.12.17",
     "typescript": "^3.7.3"
   }

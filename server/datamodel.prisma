@@ -2,3 +2,13 @@ type User {
   id: ID! @id
   name: String!
 }
+
+type Tournament {
+  id: ID! @id
+  owner: User! @relation(link: INLINE)
+  name: String!
+  description: String
+  start: DateTime
+  end: DateTime
+}
+

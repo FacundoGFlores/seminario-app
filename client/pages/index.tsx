@@ -4,7 +4,7 @@ import LayoutDashboard from "../components/Layout";
 
 export default function Home(props) {
   return (
-    <LayoutDashboard title="Equinauts">
+    <LayoutDashboard title="ST-PROJECT">
       <h1>Hello world</h1>
     </LayoutDashboard>
   );

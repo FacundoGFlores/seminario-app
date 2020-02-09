@@ -6,7 +6,8 @@
       {
         "libraryName": "antd",
         "style": "css"
-      }
+      },
+      "graphql-tag"
     ]
   ]
 }

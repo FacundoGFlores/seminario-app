@@ -1,11 +1,12 @@
 type User {
   id: ID! @id
   name: String!
+  tournaments: [Tournament!]! @relation(name: "TournamentsByUser")
 }
 
 type Tournament {
   id: ID! @id
-  owner: User! @relation(link: INLINE)
+  owner: User! @relation(name: "TournamentsByUser")
   name: String!
   description: String
   start: DateTime

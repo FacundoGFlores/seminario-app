@@ -2,6 +2,8 @@ import React from "react";
 import { List, Avatar, Icon } from "antd";
 import { useRouter } from "next/router";
 import { tournamentsAdd, tournamentsEdit, tournamentsView } from "../../routes";
+import { withApollo } from "../../lib/apollo";
+import { useTournamentsQuery } from "../../generated/graphql";
 
 const listData = [];
 for (let i = 0; i < 23; i++) {
@@ -25,9 +27,12 @@ const IconText = ({ type, text, onClick }) => (
 );
 
 type FormAction = "add" | "edit" | "view";
+
 const Tournaments = () => {
   const router = useRouter();
+  const { data } = useTournamentsQuery();
 
+  console.log(data);
   const handleAction = (actionType: FormAction, id?: string) => {
     if (actionType === "add") {
       router.push(tournamentsAdd);
@@ -100,4 +105,4 @@ const Tournaments = () => {
   );
 };
 
-export default Tournaments;
+export default withApollo()(Tournaments);

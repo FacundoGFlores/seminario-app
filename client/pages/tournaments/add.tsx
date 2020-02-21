@@ -1,17 +1,50 @@
 import React from "react";
 import { message, Form, Input, Button, DatePicker } from "antd";
 import { FormComponentProps } from "antd/lib/form/Form";
-import { withRouter, SingletonRouter } from "next/router";
+import { useRouter } from "next/router";
 import { tournaments } from "../../routes";
+import {
+  useCreateTournamentMutation,
+  CreateTournamentMutationVariables
+} from "../../generated/graphql";
+import { withApollo } from "../../lib/apollo";
+import { TOURNAMENTS_QUERY } from "../../generated/queries/tournaments";
 
 const success = () => {
   message.success("Tournament created succesfully");
 };
 
-interface Props {
-  router: SingletonRouter;
-}
+const TournameFormContainer: React.FC = () => {
+  const router = useRouter();
+  const [
+    createTournamentMutation,
+    { loading, error }
+  ] = useCreateTournamentMutation({
+    onCompleted: data => {
+      router.replace(tournaments);
+      success();
+    },
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+  });
 
+  function handleSubmit(values) {
+    const variables: CreateTournamentMutationVariables = {
+      name: values.name,
+      description: values.description,
+      start: values.dates[0].toISOString(),
+      end: values.dates[1].toISOString(),
+      owner: { connect: { id: "ck6fm26ui002n0789hjcp9kt8" } }
+    };
+
+    createTournamentMutation({ variables });
+  }
+
+  return <WrappedTournamentForm handleSubmit={handleSubmit} />;
+};
+
+interface Props {
+  handleSubmit: (values: any) => void;
+}
 class TournamentForm extends React.Component<FormComponentProps & Props> {
   state = {
     confirmDirty: false,
@@ -22,10 +55,13 @@ class TournamentForm extends React.Component<FormComponentProps & Props> {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        success();
-        this.props.router.replace(tournaments);
+        this.props.handleSubmit(values);
       }
     });
+  };
+
+  rangeConfig = {
+    rules: [{ type: "array", required: true, message: "Please select dates!" }]
   };
 
   render() {
@@ -50,26 +86,11 @@ class TournamentForm extends React.Component<FormComponentProps & Props> {
         <Form.Item label="Description">
           {getFieldDecorator("description")(<Input />)}
         </Form.Item>
-        <Form.Item label="Dates" style={{ marginBottom: 0 }}>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(50% - 12px)" }}
-          >
-            <DatePicker />
-          </Form.Item>
-          <span
-            style={{
-              display: "inline-block",
-              width: "24px",
-              textAlign: "center"
-            }}
-          >
-            -
-          </span>
-          <Form.Item
-            style={{ display: "inline-block", width: "calc(50% - 12px)" }}
-          >
-            <DatePicker />
-          </Form.Item>
+        <Form.Item label="Dates">
+          {getFieldDecorator(
+            "dates",
+            this.rangeConfig
+          )(<DatePicker.RangePicker />)}
         </Form.Item>
         <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
           <Button type="primary" htmlType="submit">
@@ -81,10 +102,8 @@ class TournamentForm extends React.Component<FormComponentProps & Props> {
   }
 }
 
-const TournamentFormWithRouter = withRouter(TournamentForm);
+const WrappedTournamentForm = Form.create<Props & FormComponentProps>({
+  name: "tournamentForm"
+})(TournamentForm);
 
-const WrappedTournamentForm = Form.create({ name: "tournamentForm" })(
-  TournamentFormWithRouter
-);
-
-export default WrappedTournamentForm;
+export default withApollo()(TournameFormContainer);

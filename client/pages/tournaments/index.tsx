@@ -34,11 +34,7 @@ const errorMessage = () => {
 
 const Tournaments = () => {
   const router = useRouter();
-  const {
-    data: { tournaments },
-    loading,
-    error
-  } = useTournamentsQuery();
+  const { data, loading, error } = useTournamentsQuery();
 
   const handleAction = (actionType: FormAction, id?: string) => {
     if (actionType === "add") {
@@ -67,7 +63,7 @@ const Tournaments = () => {
         },
         pageSize: 3
       }}
-      dataSource={tournaments}
+      dataSource={data.tournaments}
       footer={
         <div>
           <b>Tournaments List</b>

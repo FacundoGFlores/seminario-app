@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
-import * as React from 'react';
 import * as ApolloReactCommon from '@apollo/react-common';
+import * as React from 'react';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
@@ -642,6 +642,23 @@ export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>,
 };
 
+export type CreateTournamentMutationVariables = {
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['DateTime']>,
+  end?: Maybe<Scalars['DateTime']>,
+  owner: UserCreateOneWithoutTournamentsInput
+};
+
+
+export type CreateTournamentMutation = (
+  { __typename?: 'Mutation' }
+  & { createTournament: (
+    { __typename?: 'Tournament' }
+    & Pick<Tournament, 'id'>
+  ) }
+);
+
 export type TournamentsQueryVariables = {};
 
 
@@ -654,6 +671,48 @@ export type TournamentsQuery = (
 );
 
 
+export const CreateTournamentDocument = gql`
+    mutation CreateTournament($name: String!, $description: String, $start: DateTime, $end: DateTime, $owner: UserCreateOneWithoutTournamentsInput!) {
+  createTournament(data: {name: $name, description: $description, start: $start, end: $end, owner: $owner}) {
+    id
+  }
+}
+    `;
+export type CreateTournamentMutationFn = ApolloReactCommon.MutationFunction<CreateTournamentMutation, CreateTournamentMutationVariables>;
+export type CreateTournamentComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreateTournamentMutation, CreateTournamentMutationVariables>, 'mutation'>;
+
+    export const CreateTournamentComponent = (props: CreateTournamentComponentProps) => (
+      <ApolloReactComponents.Mutation<CreateTournamentMutation, CreateTournamentMutationVariables> mutation={CreateTournamentDocument} {...props} />
+    );
+    
+
+/**
+ * __useCreateTournamentMutation__
+ *
+ * To run a mutation, you first call `useCreateTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTournamentMutation, { data, loading, error }] = useCreateTournamentMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      start: // value for 'start'
+ *      end: // value for 'end'
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function useCreateTournamentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateTournamentMutation, CreateTournamentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateTournamentMutation, CreateTournamentMutationVariables>(CreateTournamentDocument, baseOptions);
+      }
+export type CreateTournamentMutationHookResult = ReturnType<typeof useCreateTournamentMutation>;
+export type CreateTournamentMutationResult = ApolloReactCommon.MutationResult<CreateTournamentMutation>;
+export type CreateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentMutation, CreateTournamentMutationVariables>;
 export const TournamentsDocument = gql`
     query Tournaments {
   tournaments {

@@ -3,6 +3,7 @@ schema: http://localhost:4466/
 documents:
   - ./generated/fragments/**/*.ts
   - ./generated/queries/**/*.ts
+  - ./generated/mutations/**/*.ts
 generates:
   generated/graphql.tsx:
     plugins:

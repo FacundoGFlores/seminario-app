@@ -1,5 +1,5 @@
 import React from "react";
-import { List, Avatar, Icon } from "antd";
+import { List, Avatar, Icon, Progress, message } from "antd";
 import { useRouter } from "next/router";
 import { tournamentsAdd, tournamentsEdit, tournamentsView } from "../../routes";
 import { withApollo } from "../../lib/apollo";
@@ -28,11 +28,18 @@ const IconText = ({ type, text, onClick }) => (
 
 type FormAction = "add" | "edit" | "view";
 
+const errorMessage = () => {
+  message.error("Error loading tournaments");
+};
+
 const Tournaments = () => {
   const router = useRouter();
-  const { data } = useTournamentsQuery();
+  const {
+    data: { tournaments },
+    loading,
+    error
+  } = useTournamentsQuery();
 
-  console.log(data);
   const handleAction = (actionType: FormAction, id?: string) => {
     if (actionType === "add") {
       router.push(tournamentsAdd);
@@ -46,6 +53,10 @@ const Tournaments = () => {
       router.push(tournamentsView(id));
     }
   };
+
+  if (loading) return <Progress percent={100} />;
+  if (error) return errorMessage();
+
   return (
     <List
       itemLayout="vertical"
@@ -56,15 +67,15 @@ const Tournaments = () => {
         },
         pageSize: 3
       }}
-      dataSource={listData}
+      dataSource={tournaments}
       footer={
         <div>
-          <b>ant design</b> footer part
+          <b>Tournaments List</b>
         </div>
       }
       renderItem={item => (
         <List.Item
-          key={item.title}
+          key={item.name}
           actions={[
             <IconText
               onClick={() => handleAction("add")}
@@ -94,11 +105,9 @@ const Tournaments = () => {
           }
         >
           <List.Item.Meta
-            avatar={<Avatar src={item.avatar} />}
-            title={<div>{item.title}</div>}
+            title={<div>{item.name}</div>}
             description={item.description}
           />
-          {item.content}
         </List.Item>
       )}
     />

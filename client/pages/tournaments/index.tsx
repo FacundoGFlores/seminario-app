@@ -1,112 +1,283 @@
 import React from "react";
-import { List, Avatar, Icon, Progress, message } from "antd";
-import { useRouter } from "next/router";
-import { tournamentsAdd, tournamentsEdit, tournamentsView } from "../../routes";
-import { withApollo } from "../../lib/apollo";
-import { useTournamentsQuery } from "../../generated/graphql";
+import formatISO from "date-fns/formatISO";
 
-const listData = [];
-for (let i = 0; i < 23; i++) {
-  listData.push({
-    id: i.toString(),
-    href: "http://ant.design",
-    title: `Team ${i}`,
-    avatar: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-    description:
-      "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-  });
+import { withApollo } from "../../lib/apollo";
+import {
+  useTournamentsQuery,
+  useCreateTournamentMutation,
+  CreateTournamentMutationVariables,
+  useTournamentLazyQuery,
+  useUpdateTournamentMutation,
+  useDeleteTournamentMutation,
+  UpdateTournamentMutationVariables,
+  DeleteTournamentMutationVariables
+} from "../../generated/graphql";
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Container,
+  Typography,
+  Button,
+  Modal,
+  FormControl,
+  InputLabel,
+  Input,
+  Grid,
+  TextField
+} from "@material-ui/core";
+import { TOURNAMENTS_QUERY } from "../../generated/queries/tournaments";
+
+function getModalStyle() {
+  const top = 40;
+  const left = 40;
+
+  return {
+    position: "absolute" as "absolute",
+    top: `${top}%`,
+    left: `${left}%`,
+    width: "400px",
+    minHeight: "400px"
+  };
 }
 
-const IconText = ({ type, text, onClick }) => (
-  <span onClick={onClick}>
-    <Icon type={type} style={{ marginRight: 8 }} />
-    {text}
-  </span>
-);
-
-type FormAction = "add" | "edit" | "view";
-
-const errorMessage = () => {
-  message.error("Error loading tournaments");
-};
+const customDateFormat = (date: string): string =>
+  formatISO(new Date(2019, 8, 18, 19, 0, 52), { representation: "date" });
 
 const Tournaments = () => {
-  const router = useRouter();
-  const { data, loading, error } = useTournamentsQuery();
+  // Form Values
+  const [selectedStartDate, setSelectedStartDate] = React.useState<string>();
+  const [selectedEndDate, setSelectedEndDate] = React.useState<string>();
+  const [name, setName] = React.useState<string>();
+  const [description, setDescription] = React.useState<string>();
+  const [tournamentId, setTournamentId] = React.useState<string>();
 
-  const handleAction = (actionType: FormAction, id?: string) => {
-    if (actionType === "add") {
-      router.push(tournamentsAdd);
-    }
+  // Modal states
+  const [modalStyle] = React.useState(getModalStyle);
+  const [modalOpen, setModalOpen] = React.useState(false);
 
-    if (actionType === "edit") {
-      router.push(tournamentsEdit(id));
+  const [getTournament] = useTournamentLazyQuery({
+    onCompleted: data => {
+      setSelectedStartDate(customDateFormat(data.tournament.start));
+      setSelectedEndDate(customDateFormat(data.tournament.end));
+      setName(data.tournament.name);
+      setDescription(data.tournament.description);
+      setTournamentId(data.tournament.id);
+      setModalOpen(true);
     }
+  });
 
-    if (actionType === "view") {
-      router.push(tournamentsView(id));
-    }
+  const [updateTournament] = useUpdateTournamentMutation({
+    onCompleted: data => {
+      alert("Torneo actualizado");
+      setModalOpen(false);
+    },
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+  });
+
+  const [deleteTournament] = useDeleteTournamentMutation({
+    onCompleted: data => {
+      alert("Torneo borrado");
+      setModalOpen(false);
+    },
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+  });
+
+  const {
+    data: allTournaments,
+    loading: allTournamentsLoading,
+    error: allTournamentsError
+  } = useTournamentsQuery();
+  const [createTournament] = useCreateTournamentMutation({
+    onCompleted: data => {
+      alert("Torneo creado");
+      setModalOpen(false);
+    },
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+  });
+
+  const handleClose = () => {
+    setModalOpen(false);
   };
 
-  if (loading) return <Progress percent={100} />;
-  if (error) return errorMessage();
+  const handleTournamentSelection = (id: string) => {
+    getTournament({ variables: { id } });
+  };
+
+  const handleTournamentAdd = () => {
+    setSelectedStartDate("");
+    setSelectedEndDate("");
+    setName("");
+    setDescription("");
+    setTournamentId("");
+    setModalOpen(true);
+  };
+
+  const handleTournamentDeletion = () => {
+    const variables: DeleteTournamentMutationVariables = {
+      id: tournamentId
+    };
+
+    deleteTournament({ variables });
+  };
+  const handleTournamentUpdate = () => {
+    const variables: UpdateTournamentMutationVariables = {
+      name: name,
+      description: description,
+      start: selectedStartDate,
+      end: selectedEndDate,
+      owner: {
+        connect: { id: "ck6fm26ui002n0789hjcp9kt8" }
+      },
+      id: tournamentId
+    };
+
+    updateTournament({ variables });
+  };
+
+  const handleTournamentCreation = () => {
+    const variables: CreateTournamentMutationVariables = {
+      name: name,
+      description: description,
+      start: selectedStartDate,
+      end: selectedEndDate,
+      owner: {
+        connect: { id: "ck6fm26ui002n0789hjcp9kt8" }
+      }
+    };
+
+    createTournament({ variables });
+  };
+
+  const add = (
+    <Paper style={modalStyle}>
+      <form noValidate autoComplete="off">
+        <Grid container justify="center" spacing={4}>
+          <Grid item>
+            <FormControl style={{ marginRight: "10px" }}>
+              <InputLabel htmlFor="name">Nombre</InputLabel>
+              <Input
+                id="name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item>
+            <FormControl style={{ marginRight: "10px" }}>
+              <InputLabel htmlFor="description">Descripcion</InputLabel>
+              <Input
+                id="description"
+                type="textarea"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <FormControl style={{ marginRight: "10px" }}>
+              <TextField
+                id="startdate"
+                type="date"
+                label="Fecha Inicio"
+                value={selectedStartDate}
+                onChange={e => setSelectedStartDate(e.target.value)}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <FormControl style={{ marginRight: "10px" }}>
+              <TextField
+                id="enddate"
+                type="date"
+                label="Fecha Fin"
+                value={selectedEndDate}
+                onChange={e => setSelectedEndDate(e.target.value)}
+                InputLabelProps={{
+                  shrink: true
+                }}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item>
+            {tournamentId ? (
+              <Button variant="contained" onClick={handleTournamentUpdate}>
+                Actualizar Torneo
+              </Button>
+            ) : (
+              <Button variant="contained" onClick={handleTournamentCreation}>
+                Crear Torneo
+              </Button>
+            )}
+          </Grid>
+          {tournamentId && (
+            <Grid item>
+              <Button variant="contained" onClick={handleTournamentDeletion}>
+                Borrar torneo
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+      </form>
+    </Paper>
+  );
+
+  if (allTournamentsLoading) return <div>Loading</div>;
+  if (allTournamentsError) return <div>Error</div>;
 
   return (
-    <List
-      itemLayout="vertical"
-      size="large"
-      pagination={{
-        onChange: page => {
-          console.log(page);
-        },
-        pageSize: 3
-      }}
-      dataSource={data.tournaments}
-      footer={
-        <div>
-          <b>Tournaments List</b>
-        </div>
-      }
-      renderItem={item => (
-        <List.Item
-          key={item.name}
-          actions={[
-            <IconText
-              onClick={() => handleAction("add")}
-              type="plus"
-              text="Add"
-              key="list-vertical-star-o"
-            />,
-            <IconText
-              onClick={() => handleAction("edit", item.id)}
-              type="edit"
-              text="Edit"
-              key="list-vertical-star-o"
-            />,
-            <IconText
-              onClick={() => handleAction("view", item.id)}
-              type="search"
-              text="View"
-              key="list-vertical-like-o"
-            />
-          ]}
-          extra={
-            <img
-              width={272}
-              alt="logo"
-              src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-            />
-          }
-        >
-          <List.Item.Meta
-            title={<div>{item.name}</div>}
-            description={item.description}
-          />
-        </List.Item>
-      )}
-    />
+    <Container maxWidth="xl">
+      <Typography variant="h3">Lista de Torneos</Typography>
+      <Button variant="contained" onClick={handleTournamentAdd}>
+        Agregar Torneo
+      </Button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>id</TableCell>
+              <TableCell>nombre</TableCell>
+              <TableCell>descripcion</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allTournaments.tournaments.map(tournament => (
+              <TableRow key={tournament.id}>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  onClick={() => handleTournamentSelection(tournament.id)}
+                >
+                  {tournament.id}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {tournament.name}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {tournament.description}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Modal
+        open={modalOpen}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {add}
+      </Modal>
+    </Container>
   );
 };
 

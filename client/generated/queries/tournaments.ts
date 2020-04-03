@@ -9,3 +9,15 @@ export const TOURNAMENTS_QUERY = gql`
     }
   }
 `;
+
+export const TOURNAMENT_QUERY = gql`
+  query Tournament($id: ID!) {
+    tournament(where: { id: $id }) {
+      id
+      name
+      description
+      start
+      end
+    }
+  }
+`;

@@ -1,79 +1,59 @@
 import React from "react";
-import { withRouter, SingletonRouter } from "next/router";
-import { Form, Icon, Input, Button, Card } from "antd";
-import { FormComponentProps } from "antd/lib/form/Form";
+import Container from "@material-ui/core/Container";
+import {
+  Box,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment
+} from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Visibility from "@material-ui/icons/Visibility";
+import { useRouter } from "next/router";
+import { tournaments } from "../routes";
 
-import "./login.css";
+export default function LoginForm() {
+  const { push } = useRouter();
 
-interface Props {
-  router: SingletonRouter;
+  return (
+    <Container maxWidth="sm">
+      <Box my={4}>
+        <form noValidate autoComplete="off">
+          <FormControl style={{ marginRight: "10px" }}>
+            <InputLabel htmlFor="input-with-icon-adornment">Usuario</InputLabel>
+            <Input
+              id="input-with-icon-adornment"
+              endAdornment={
+                <InputAdornment position="end">
+                  <AccountCircle />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl style={{ marginRight: "10px" }}>
+            <InputLabel htmlFor="input-with-icon-adornment">
+              Contrasena
+            </InputLabel>
+            <Input
+              id="input-with-icon-adornment"
+              endAdornment={
+                <InputAdornment position="end">
+                  <Visibility />
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+          <Button
+            style={{ marginTop: "10px" }}
+            variant="contained"
+            onClick={() => push(tournaments)}
+          >
+            Sign In
+          </Button>
+        </form>
+      </Box>
+    </Container>
+  );
 }
-
-class NormalLoginForm extends React.Component<FormComponentProps & Props> {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields(err => {
-      if (!err) {
-        this.props.router.replace("/");
-      }
-    });
-  };
-
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <div className="login-container">
-        <Card className="login-card" title={"Login"}>
-          <Form onSubmit={this.handleSubmit} className="login-form">
-            <Form.Item>
-              {getFieldDecorator("username", {
-                rules: [
-                  { required: true, message: "Please input your username!" }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  placeholder="Username"
-                />
-              )}
-            </Form.Item>
-            <Form.Item>
-              {getFieldDecorator("password", {
-                rules: [
-                  { required: true, message: "Please input your Password!" }
-                ]
-              })(
-                <Input
-                  prefix={
-                    <Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
-                  }
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login-form-button"
-              >
-                Log in
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </div>
-    );
-  }
-}
-
-const LoginFormWithRouter = withRouter(NormalLoginForm);
-
-const WrappedNormalLoginForm = Form.create({ name: "normal_login" })(
-  LoginFormWithRouter
-);
-
-export default WrappedNormalLoginForm;

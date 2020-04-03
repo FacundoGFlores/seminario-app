@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { Layout } from "antd";
 import Navigation from "./Navigation";
 
 const { Footer, Content } = Layout;

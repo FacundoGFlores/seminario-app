@@ -659,6 +659,37 @@ export type CreateTournamentMutation = (
   ) }
 );
 
+export type DeleteTournamentMutationVariables = {
+  id: Scalars['ID']
+};
+
+
+export type DeleteTournamentMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteTournament: Maybe<(
+    { __typename?: 'Tournament' }
+    & Pick<Tournament, 'id'>
+  )> }
+);
+
+export type UpdateTournamentMutationVariables = {
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['DateTime']>,
+  end?: Maybe<Scalars['DateTime']>,
+  id: Scalars['ID'],
+  owner: UserUpdateOneRequiredWithoutTournamentsInput
+};
+
+
+export type UpdateTournamentMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTournament: Maybe<(
+    { __typename?: 'Tournament' }
+    & Pick<Tournament, 'id'>
+  )> }
+);
+
 export type TournamentsQueryVariables = {};
 
 
@@ -668,6 +699,19 @@ export type TournamentsQuery = (
     { __typename?: 'Tournament' }
     & Pick<Tournament, 'id' | 'name' | 'description'>
   )>> }
+);
+
+export type TournamentQueryVariables = {
+  id: Scalars['ID']
+};
+
+
+export type TournamentQuery = (
+  { __typename?: 'Query' }
+  & { tournament: Maybe<(
+    { __typename?: 'Tournament' }
+    & Pick<Tournament, 'id' | 'name' | 'description' | 'start' | 'end'>
+  )> }
 );
 
 
@@ -713,6 +757,87 @@ export function useCreateTournamentMutation(baseOptions?: ApolloReactHooks.Mutat
 export type CreateTournamentMutationHookResult = ReturnType<typeof useCreateTournamentMutation>;
 export type CreateTournamentMutationResult = ApolloReactCommon.MutationResult<CreateTournamentMutation>;
 export type CreateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentMutation, CreateTournamentMutationVariables>;
+export const DeleteTournamentDocument = gql`
+    mutation DeleteTournament($id: ID!) {
+  deleteTournament(where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type DeleteTournamentMutationFn = ApolloReactCommon.MutationFunction<DeleteTournamentMutation, DeleteTournamentMutationVariables>;
+export type DeleteTournamentComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<DeleteTournamentMutation, DeleteTournamentMutationVariables>, 'mutation'>;
+
+    export const DeleteTournamentComponent = (props: DeleteTournamentComponentProps) => (
+      <ApolloReactComponents.Mutation<DeleteTournamentMutation, DeleteTournamentMutationVariables> mutation={DeleteTournamentDocument} {...props} />
+    );
+    
+
+/**
+ * __useDeleteTournamentMutation__
+ *
+ * To run a mutation, you first call `useDeleteTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTournamentMutation, { data, loading, error }] = useDeleteTournamentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteTournamentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteTournamentMutation, DeleteTournamentMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteTournamentMutation, DeleteTournamentMutationVariables>(DeleteTournamentDocument, baseOptions);
+      }
+export type DeleteTournamentMutationHookResult = ReturnType<typeof useDeleteTournamentMutation>;
+export type DeleteTournamentMutationResult = ApolloReactCommon.MutationResult<DeleteTournamentMutation>;
+export type DeleteTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteTournamentMutation, DeleteTournamentMutationVariables>;
+export const UpdateTournamentDocument = gql`
+    mutation UpdateTournament($name: String!, $description: String, $start: DateTime, $end: DateTime, $id: ID!, $owner: UserUpdateOneRequiredWithoutTournamentsInput!) {
+  updateTournament(data: {name: $name, description: $description, start: $start, end: $end, owner: $owner}, where: {id: $id}) {
+    id
+  }
+}
+    `;
+export type UpdateTournamentMutationFn = ApolloReactCommon.MutationFunction<UpdateTournamentMutation, UpdateTournamentMutationVariables>;
+export type UpdateTournamentComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>, 'mutation'>;
+
+    export const UpdateTournamentComponent = (props: UpdateTournamentComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateTournamentMutation, UpdateTournamentMutationVariables> mutation={UpdateTournamentDocument} {...props} />
+    );
+    
+
+/**
+ * __useUpdateTournamentMutation__
+ *
+ * To run a mutation, you first call `useUpdateTournamentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTournamentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTournamentMutation, { data, loading, error }] = useUpdateTournamentMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      description: // value for 'description'
+ *      start: // value for 'start'
+ *      end: // value for 'end'
+ *      id: // value for 'id'
+ *      owner: // value for 'owner'
+ *   },
+ * });
+ */
+export function useUpdateTournamentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateTournamentMutation, UpdateTournamentMutationVariables>(UpdateTournamentDocument, baseOptions);
+      }
+export type UpdateTournamentMutationHookResult = ReturnType<typeof useUpdateTournamentMutation>;
+export type UpdateTournamentMutationResult = ApolloReactCommon.MutationResult<UpdateTournamentMutation>;
+export type UpdateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>;
 export const TournamentsDocument = gql`
     query Tournaments {
   tournaments {
@@ -753,3 +878,46 @@ export function useTournamentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type TournamentsQueryHookResult = ReturnType<typeof useTournamentsQuery>;
 export type TournamentsLazyQueryHookResult = ReturnType<typeof useTournamentsLazyQuery>;
 export type TournamentsQueryResult = ApolloReactCommon.QueryResult<TournamentsQuery, TournamentsQueryVariables>;
+export const TournamentDocument = gql`
+    query Tournament($id: ID!) {
+  tournament(where: {id: $id}) {
+    id
+    name
+    description
+    start
+    end
+  }
+}
+    `;
+export type TournamentComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<TournamentQuery, TournamentQueryVariables>, 'query'> & ({ variables: TournamentQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const TournamentComponent = (props: TournamentComponentProps) => (
+      <ApolloReactComponents.Query<TournamentQuery, TournamentQueryVariables> query={TournamentDocument} {...props} />
+    );
+    
+
+/**
+ * __useTournamentQuery__
+ *
+ * To run a query within a React component, call `useTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTournamentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useTournamentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TournamentQuery, TournamentQueryVariables>) {
+        return ApolloReactHooks.useQuery<TournamentQuery, TournamentQueryVariables>(TournamentDocument, baseOptions);
+      }
+export function useTournamentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TournamentQuery, TournamentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TournamentQuery, TournamentQueryVariables>(TournamentDocument, baseOptions);
+        }
+export type TournamentQueryHookResult = ReturnType<typeof useTournamentQuery>;
+export type TournamentLazyQueryHookResult = ReturnType<typeof useTournamentLazyQuery>;
+export type TournamentQueryResult = ApolloReactCommon.QueryResult<TournamentQuery, TournamentQueryVariables>;

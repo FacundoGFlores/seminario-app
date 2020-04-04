@@ -6,6 +6,10 @@ export const TOURNAMENTS_QUERY = gql`
       id
       name
       description
+      teams {
+        id
+        name
+      }
     }
   }
 `;
@@ -18,6 +22,10 @@ export const TOURNAMENT_QUERY = gql`
       description
       start
       end
+      teams {
+        id
+        name
+      }
     }
   }
 `;

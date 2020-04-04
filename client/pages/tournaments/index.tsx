@@ -2,6 +2,8 @@ import React from "react";
 import formatISO from "date-fns/formatISO";
 
 import { withApollo } from "../../lib/apollo";
+
+import PeopleIcon from "@material-ui/icons/People";
 import {
   useTournamentsQuery,
   useCreateTournamentMutation,
@@ -10,7 +12,7 @@ import {
   useUpdateTournamentMutation,
   useDeleteTournamentMutation,
   UpdateTournamentMutationVariables,
-  DeleteTournamentMutationVariables
+  DeleteTournamentMutationVariables,
 } from "../../generated/graphql";
 import {
   TableContainer,
@@ -28,9 +30,12 @@ import {
   InputLabel,
   Input,
   Grid,
-  TextField
+  TextField,
+  IconButton,
 } from "@material-ui/core";
 import { TOURNAMENTS_QUERY } from "../../generated/queries/tournaments";
+import { useRouter } from "next/router";
+import { teams } from "../../routes";
 
 function getModalStyle() {
   const top = 40;
@@ -41,14 +46,16 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     width: "400px",
-    minHeight: "400px"
+    minHeight: "400px",
   };
 }
 
 const customDateFormat = (date: string): string =>
-  formatISO(new Date(2019, 8, 18, 19, 0, 52), { representation: "date" });
+  formatISO(new Date(date), { representation: "date" });
 
 const Tournaments = () => {
+  const { push } = useRouter();
+
   // Form Values
   const [selectedStartDate, setSelectedStartDate] = React.useState<string>();
   const [selectedEndDate, setSelectedEndDate] = React.useState<string>();
@@ -61,43 +68,42 @@ const Tournaments = () => {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const [getTournament] = useTournamentLazyQuery({
-    onCompleted: data => {
+    onCompleted: (data) => {
       setSelectedStartDate(customDateFormat(data.tournament.start));
       setSelectedEndDate(customDateFormat(data.tournament.end));
       setName(data.tournament.name);
       setDescription(data.tournament.description);
       setTournamentId(data.tournament.id);
-      setModalOpen(true);
-    }
+    },
   });
 
   const [updateTournament] = useUpdateTournamentMutation({
-    onCompleted: data => {
+    onCompleted: (data) => {
       alert("Torneo actualizado");
       setModalOpen(false);
     },
-    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }],
   });
 
   const [deleteTournament] = useDeleteTournamentMutation({
-    onCompleted: data => {
+    onCompleted: (data) => {
       alert("Torneo borrado");
       setModalOpen(false);
     },
-    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }],
   });
 
   const {
     data: allTournaments,
     loading: allTournamentsLoading,
-    error: allTournamentsError
+    error: allTournamentsError,
   } = useTournamentsQuery();
   const [createTournament] = useCreateTournamentMutation({
-    onCompleted: data => {
+    onCompleted: (data) => {
       alert("Torneo creado");
       setModalOpen(false);
     },
-    refetchQueries: [{ query: TOURNAMENTS_QUERY }]
+    refetchQueries: [{ query: TOURNAMENTS_QUERY }],
   });
 
   const handleClose = () => {
@@ -106,6 +112,8 @@ const Tournaments = () => {
 
   const handleTournamentSelection = (id: string) => {
     getTournament({ variables: { id } });
+    setModalOpen(true);
+    setTournamentId(id);
   };
 
   const handleTournamentAdd = () => {
@@ -119,11 +127,12 @@ const Tournaments = () => {
 
   const handleTournamentDeletion = () => {
     const variables: DeleteTournamentMutationVariables = {
-      id: tournamentId
+      id: tournamentId,
     };
 
     deleteTournament({ variables });
   };
+
   const handleTournamentUpdate = () => {
     const variables: UpdateTournamentMutationVariables = {
       name: name,
@@ -131,9 +140,9 @@ const Tournaments = () => {
       start: selectedStartDate,
       end: selectedEndDate,
       owner: {
-        connect: { id: "ck6fm26ui002n0789hjcp9kt8" }
+        connect: { id: "ck6fm26ui002n0789hjcp9kt8" },
       },
-      id: tournamentId
+      id: tournamentId,
     };
 
     updateTournament({ variables });
@@ -146,14 +155,18 @@ const Tournaments = () => {
       start: selectedStartDate,
       end: selectedEndDate,
       owner: {
-        connect: { id: "ck6fm26ui002n0789hjcp9kt8" }
-      }
+        connect: { id: "ck6fm26ui002n0789hjcp9kt8" },
+      },
     };
 
     createTournament({ variables });
   };
 
-  const add = (
+  const handleAddTeam = (tournamentId: string) => {
+    push(teams(tournamentId));
+  };
+
+  const modalBody = (
     <Paper style={modalStyle}>
       <form noValidate autoComplete="off">
         <Grid container justify="center" spacing={4}>
@@ -163,7 +176,7 @@ const Tournaments = () => {
               <Input
                 id="name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
               />
             </FormControl>
           </Grid>
@@ -175,7 +188,7 @@ const Tournaments = () => {
                 id="description"
                 type="textarea"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </FormControl>
           </Grid>
@@ -186,9 +199,9 @@ const Tournaments = () => {
                 type="date"
                 label="Fecha Inicio"
                 value={selectedStartDate}
-                onChange={e => setSelectedStartDate(e.target.value)}
+                onChange={(e) => setSelectedStartDate(e.target.value)}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </FormControl>
@@ -200,9 +213,9 @@ const Tournaments = () => {
                 type="date"
                 label="Fecha Fin"
                 value={selectedEndDate}
-                onChange={e => setSelectedEndDate(e.target.value)}
+                onChange={(e) => setSelectedEndDate(e.target.value)}
                 InputLabelProps={{
-                  shrink: true
+                  shrink: true,
                 }}
               />
             </FormControl>
@@ -246,10 +259,11 @@ const Tournaments = () => {
               <TableCell>id</TableCell>
               <TableCell>nombre</TableCell>
               <TableCell>descripcion</TableCell>
+              <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTournaments.tournaments.map(tournament => (
+            {allTournaments.tournaments.map((tournament) => (
               <TableRow key={tournament.id}>
                 <TableCell
                   component="th"
@@ -264,6 +278,12 @@ const Tournaments = () => {
                 <TableCell component="th" scope="row">
                   {tournament.description}
                 </TableCell>
+                <IconButton
+                  onClick={() => handleAddTeam(tournament.id)}
+                  size="small"
+                >
+                  <PeopleIcon />
+                </IconButton>
               </TableRow>
             ))}
           </TableBody>
@@ -275,7 +295,7 @@ const Tournaments = () => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        {add}
+        {modalBody}
       </Modal>
     </Container>
   );

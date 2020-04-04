@@ -11,5 +11,18 @@ type Tournament {
   description: String
   start: DateTime
   end: DateTime
+  teams: [Team!]! @relation(name: "TeamsByTournament")
 }
 
+type Team {
+  id: ID! @id
+  name: String!
+  tournament: Tournament! @relation(name: "TeamsByTournament")
+  players: [Player!] @relation(name: "PlayersByTeam")
+}
+
+type Player {
+  id: ID! @id
+  name: String!
+  team: Team! @relation(name: "PlayersByTeam")
+}

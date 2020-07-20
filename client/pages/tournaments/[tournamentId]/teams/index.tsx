@@ -17,6 +17,7 @@ import {
   Player,
   PlayerCreateWithoutTeamInput,
   useDeletePlayerMutation,
+  useDeleteTeamMutation
 } from "../../../../generated/graphql";
 import {
   TableContainer,
@@ -34,7 +35,7 @@ import {
   InputLabel,
   Input,
   Grid,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import { TEAMS_QUERY } from "../../../../generated/queries/teams";
 
@@ -47,7 +48,7 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     width: "400px",
-    minHeight: "400px",
+    minHeight: "400px"
   };
 }
 
@@ -64,7 +65,7 @@ const playersArePlayersCreateWithoutTeamInput = (
 
 const Team: React.FC = () => {
   const {
-    query: { tournamentId },
+    query: { tournamentId }
   } = useRouter();
 
   // Form Values
@@ -72,7 +73,7 @@ const Team: React.FC = () => {
   const [teamId, setTeamId] = React.useState<string>();
   const [currentPlayer, setCurrentPlayer] = React.useState<string>("");
   const [players, setPlayers] = React.useState<Array<Partial<Player>>>([
-    { name: "" },
+    { name: "" }
   ]);
 
   // Modal states
@@ -80,41 +81,41 @@ const Team: React.FC = () => {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const [getTeam] = useTeamLazyQuery({
-    onCompleted: (data) => {
+    onCompleted: data => {
       setTeamId(data.team.id);
       setName(data.team.name);
       setPlayers([{ name: "" }, ...data.team.players]);
-    },
+    }
   });
 
   const [updateTeam] = useUpdateTeamMutation({
-    onCompleted: (data) => {
+    onCompleted: data => {
       alert("Equipo actualizado");
       setModalOpen(false);
     },
     refetchQueries: [
       {
         query: TEAMS_QUERY,
-        variables: { tournamentId: tournamentId as string },
-      },
-    ],
+        variables: { tournamentId: tournamentId as string }
+      }
+    ]
   });
 
-  const [deleteTeam] = useDeleteTournamentMutation({
-    onCompleted: (data) => {
+  const [deleteTeam] = useDeleteTeamMutation({
+    onCompleted: data => {
       alert("Equipo borrado");
       setModalOpen(false);
     },
     refetchQueries: [
       {
         query: TEAMS_QUERY,
-        variables: { tournamentId: tournamentId as string },
-      },
-    ],
+        variables: { tournamentId: tournamentId as string }
+      }
+    ]
   });
 
   const [createTeam] = useCreateTeamMutation({
-    onCompleted: (data) => {
+    onCompleted: data => {
       alert("Equipo creado");
       setCurrentPlayer("");
       setModalOpen(false);
@@ -122,24 +123,24 @@ const Team: React.FC = () => {
     refetchQueries: [
       {
         query: TEAMS_QUERY,
-        variables: { tournamentId: tournamentId as string },
-      },
-    ],
+        variables: { tournamentId: tournamentId as string }
+      }
+    ]
   });
 
   const [deletePlayer] = useDeletePlayerMutation({
     refetchQueries: [
       {
         query: TEAMS_QUERY,
-        variables: { tournamentId: tournamentId as string },
-      },
-    ],
+        variables: { tournamentId: tournamentId as string }
+      }
+    ]
   });
 
   const {
     data: allTeams,
     loading: allTeamsLoading,
-    error: allTeamsError,
+    error: allTeamsError
   } = useTeamsQuery({ variables: { tournamentId: tournamentId as string } });
 
   const handleClose = () => {
@@ -161,7 +162,7 @@ const Team: React.FC = () => {
 
   const handleTeamDeletion = () => {
     const variables: DeleteTeamMutationVariables = {
-      id: teamId,
+      id: teamId
     };
 
     deleteTeam({ variables });
@@ -172,32 +173,32 @@ const Team: React.FC = () => {
       const variables: UpdateTeamMutationVariables = {
         name: name,
         tournament: {
-          connect: { id: tournamentId as string },
+          connect: { id: tournamentId as string }
         },
-        id: teamId,
+        id: teamId
       };
       updateTeam({ variables });
     }
 
-    const oldPlayers = players.filter((player) => !!player.id);
-    const newPlayers = players.filter((player) => !player.id);
+    const oldPlayers = players.filter(player => !!player.id);
+    const newPlayers = players.filter(player => !player.id);
 
     if (playersArePlayersCreateWithoutTeamInput(newPlayers)) {
       const variables: UpdateTeamMutationVariables = {
         id: teamId,
         name: name,
         tournament: {
-          connect: { id: tournamentId as string },
+          connect: { id: tournamentId as string }
         },
         players: {
           create: [
             { name: currentPlayer ? currentPlayer : undefined },
-            ...newPlayers.slice(1),
+            ...newPlayers.slice(1)
           ],
-          set: oldPlayers.map<{ id: string }>((oldPlayer) => {
+          set: oldPlayers.map<{ id: string }>(oldPlayer => {
             return { id: oldPlayer.id || "" };
-          }),
-        },
+          })
+        }
       };
       return updateTeam({ variables });
     }
@@ -208,8 +209,8 @@ const Team: React.FC = () => {
       const variables: CreateTeamMutationVariables = {
         name: name,
         tournament: {
-          connect: { id: tournamentId as string },
-        },
+          connect: { id: tournamentId as string }
+        }
       };
       return createTeam({ variables });
     }
@@ -218,14 +219,14 @@ const Team: React.FC = () => {
       const variables: CreateTeamMutationVariables = {
         name: name,
         tournament: {
-          connect: { id: tournamentId as string },
+          connect: { id: tournamentId as string }
         },
         players: {
           create: [
             { name: currentPlayer ? currentPlayer : undefined },
-            ...players.slice(1),
-          ],
-        },
+            ...players.slice(1)
+          ]
+        }
       };
       return createTeam({ variables });
     }
@@ -242,7 +243,7 @@ const Team: React.FC = () => {
                 <Input
                   id="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={e => setName(e.target.value)}
                 />
               </FormControl>
             </Grid>
@@ -253,14 +254,14 @@ const Team: React.FC = () => {
                 <Input
                   id="name"
                   value={player.name ? player.name : currentPlayer}
-                  onChange={(e) => setCurrentPlayer(e.target.value)}
+                  onChange={e => setCurrentPlayer(e.target.value)}
                 />
                 {id > 0 ? (
                   <IconButton
                     onClick={() => {
                       setPlayers([
                         ...players.slice(0, id),
-                        ...players.slice(id + 1),
+                        ...players.slice(id + 1)
                       ]);
                       setCurrentPlayer("");
                       deletePlayer({ variables: { id: player.id } });
@@ -326,7 +327,7 @@ const Team: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTeams.teams.map((team) => (
+            {allTeams.teams.map(team => (
               <TableRow key={team.id}>
                 <TableCell
                   component="th"

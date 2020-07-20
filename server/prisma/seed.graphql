@@ -1,0 +1,12 @@
+
+createUser
+mutation {
+  user1: createUser(
+    data: {
+      id: "ck6fm26ui002n0789hjcp9kt8"
+      name: "Admin"
+    }
+  ) {
+    id
+  }
+}

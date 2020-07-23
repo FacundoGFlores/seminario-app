@@ -12,6 +12,7 @@ type Tournament {
   start: DateTime
   end: DateTime
   teams: [Team!]! @relation(name: "TeamsByTournament")
+  seasons: [Season!]! @relation(name: "SeasonsByTournament")
 }
 
 type Team {
@@ -26,3 +27,25 @@ type Player {
   name: String!
   team: Team! @relation(name: "PlayersByTeam")
 }
+
+type Season {
+  id: ID! @id
+  name: String!
+  schedules: [Schedule!]! @relation(name: "SchedulesBySeason")
+  tournament: Tournament! @relation(name: "SeasonsByTournament")
+}
+
+type Schedule {
+  id: ID! @id
+  week: Int
+  matches: [Match!]! @relation (name: "MatchesBySchedule")
+  season: Season! @relation(name: "SchedulesBySeason")
+}
+
+type Match {
+  id: ID! @id
+  teamA: Team! @relation (name: "TeamAByMatch")
+  teamB: Team! @relation (name: "TeamBByMatch")
+  schedule: Schedule! @relation (name: "MatchesBySchedule")
+}
+

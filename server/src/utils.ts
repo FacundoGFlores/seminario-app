@@ -1,5 +1,13 @@
-import { Prisma } from './generated/prisma-client'
+import {
+  Prisma,
+  TournamentWhereInput,
+  TournamentPromise
+} from "./generated/prisma-client";
 
+interface App {
+  generateSchedules: (where: TournamentWhereInput) => TournamentPromise;
+}
 export interface Context {
-  prisma: Prisma
+  prisma: Prisma;
+  app: App;
 }

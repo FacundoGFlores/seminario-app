@@ -1,9 +1,38 @@
 import { GraphQLServer } from "graphql-yoga";
-import { prisma } from "./generated/prisma-client";
+import {
+  prisma,
+  ScheduleCreateWithoutSeasonInput
+} from "./generated/prisma-client";
 import { Context } from "./utils";
+
+const AUX = "DUMMY";
+
+function robin(ls: string[]) {
+  let n = ls.length;
+  if (n < 1) return [];
+  const lss = ls.slice();
+  const rs = [];
+  if (n % 2 === 1) {
+    lss.push(AUX);
+    n += 1;
+  }
+  for (let j = 0; j < n - 1; j += 1) {
+    rs[j] = [];
+    for (let i = 0; i < n / 2; i += 1) {
+      if (lss[i] !== AUX && lss[n - 1 - i] !== AUX) {
+        rs[j].push([lss[i], lss[n - 1 - i]]);
+      }
+    }
+    lss.splice(1, 0, lss.pop());
+  }
+  return rs;
+}
 
 const resolvers = {
   Query: {
+    users(parent, args, context: Context) {
+      return context.prisma.users();
+    },
     players(parent, args, context: Context) {
       return context.prisma.players();
     },
@@ -21,11 +50,26 @@ const resolvers = {
     },
     tournament(parent, { where }, context: Context) {
       return context.prisma.tournament(where);
+    },
+    schedules(parent, args, context: Context) {
+      return context.prisma.schedules();
+    },
+    schedule(parent, { where }, context: Context) {
+      return context.prisma.schedule(where);
+    },
+    matches(parent, args, context: Context) {
+      return context.prisma.matches();
+    },
+    match(parent, { where }, context: Context) {
+      return context.prisma.match(where);
     }
   },
   Tournament: {
     teams(parent) {
       return prisma.tournament({ id: parent.id }).teams();
+    },
+    seasons(parent) {
+      return prisma.tournament({ id: parent.id }).seasons();
     }
   },
   Team: {
@@ -41,7 +85,69 @@ const resolvers = {
       return prisma.player({ id: parent.id }).team();
     }
   },
+  Season: {
+    tournament(parent) {
+      return prisma.season({ id: parent.id }).tournament();
+    },
+    schedules(parent) {
+      return prisma.season({ id: parent.id }).schedules();
+    }
+  },
+  Schedule: {
+    season(parent) {
+      return prisma.schedule({ id: parent.id }).season();
+    },
+    matches(parent) {
+      return prisma.schedule({ id: parent.id }).matches();
+    }
+  },
+  Match: {
+    schedule(parent) {
+      return prisma.match({ id: parent.id }).schedule();
+    },
+    teamA(parent) {
+      return prisma.match({ id: parent.id }).teamA();
+    },
+    teamB(parent) {
+      return prisma.match({ id: parent.id }).teamB();
+    }
+  },
   Mutation: {
+    async createSeason(parent, { data }, context: Context) {
+      try {
+        const teams = await context.prisma.teams({
+          where: { tournament: { id: data.tournament.connect.id } }
+        });
+        const teamsIds = teams.map(team => team.id);
+        const schedules = robin(teamsIds);
+
+        const createSchedules: ScheduleCreateWithoutSeasonInput[] = schedules.map(
+          (schedule, index) => {
+            const matches = schedule
+              .map(match => {
+                if (match.length !== 2) return;
+                return {
+                  teamA: { connect: { id: match[0] } },
+                  teamB: { connect: { id: match[1] } }
+                };
+              })
+              .filter(match => match !== undefined);
+            const scheduleInput: ScheduleCreateWithoutSeasonInput = {
+              week: index,
+              matches: { create: matches }
+            };
+            return scheduleInput;
+          }
+        );
+        return context.prisma.createSeason({
+          name: data.name,
+          schedules: { create: createSchedules },
+          tournament: data.tournament
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
     createUser(parent, { data }, context: Context) {
       return context.prisma.createUser(data);
     },
@@ -51,7 +157,6 @@ const resolvers = {
     createTeam(parent, { data }, context: Context) {
       return context.prisma.createTeam(data);
     },
-
     updateTeam(parent, { data, where }, context: Context) {
       return context.prisma.updateTeam({
         data,

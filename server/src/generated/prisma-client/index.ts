@@ -16,7 +16,10 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  match: (where?: MatchWhereInput) => Promise<boolean>;
   player: (where?: PlayerWhereInput) => Promise<boolean>;
+  schedule: (where?: ScheduleWhereInput) => Promise<boolean>;
+  season: (where?: SeasonWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   tournament: (where?: TournamentWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -41,6 +44,25 @@ export interface Prisma {
    * Queries
    */
 
+  match: (where: MatchWhereUniqueInput) => MatchNullablePromise;
+  matches: (args?: {
+    where?: MatchWhereInput;
+    orderBy?: MatchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Match>;
+  matchesConnection: (args?: {
+    where?: MatchWhereInput;
+    orderBy?: MatchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => MatchConnectionPromise;
   player: (where: PlayerWhereUniqueInput) => PlayerNullablePromise;
   players: (args?: {
     where?: PlayerWhereInput;
@@ -60,6 +82,44 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => PlayerConnectionPromise;
+  schedule: (where: ScheduleWhereUniqueInput) => ScheduleNullablePromise;
+  schedules: (args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Schedule>;
+  schedulesConnection: (args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ScheduleConnectionPromise;
+  season: (where: SeasonWhereUniqueInput) => SeasonNullablePromise;
+  seasons: (args?: {
+    where?: SeasonWhereInput;
+    orderBy?: SeasonOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Season>;
+  seasonsConnection: (args?: {
+    where?: SeasonWhereInput;
+    orderBy?: SeasonOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => SeasonConnectionPromise;
   team: (where: TeamWhereUniqueInput) => TeamNullablePromise;
   teams: (args?: {
     where?: TeamWhereInput;
@@ -123,6 +183,18 @@ export interface Prisma {
    * Mutations
    */
 
+  createMatch: (data: MatchCreateInput) => MatchPromise;
+  updateMatch: (args: {
+    data: MatchUpdateInput;
+    where: MatchWhereUniqueInput;
+  }) => MatchPromise;
+  upsertMatch: (args: {
+    where: MatchWhereUniqueInput;
+    create: MatchCreateInput;
+    update: MatchUpdateInput;
+  }) => MatchPromise;
+  deleteMatch: (where: MatchWhereUniqueInput) => MatchPromise;
+  deleteManyMatches: (where?: MatchWhereInput) => BatchPayloadPromise;
   createPlayer: (data: PlayerCreateInput) => PlayerPromise;
   updatePlayer: (args: {
     data: PlayerUpdateInput;
@@ -139,6 +211,38 @@ export interface Prisma {
   }) => PlayerPromise;
   deletePlayer: (where: PlayerWhereUniqueInput) => PlayerPromise;
   deleteManyPlayers: (where?: PlayerWhereInput) => BatchPayloadPromise;
+  createSchedule: (data: ScheduleCreateInput) => SchedulePromise;
+  updateSchedule: (args: {
+    data: ScheduleUpdateInput;
+    where: ScheduleWhereUniqueInput;
+  }) => SchedulePromise;
+  updateManySchedules: (args: {
+    data: ScheduleUpdateManyMutationInput;
+    where?: ScheduleWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSchedule: (args: {
+    where: ScheduleWhereUniqueInput;
+    create: ScheduleCreateInput;
+    update: ScheduleUpdateInput;
+  }) => SchedulePromise;
+  deleteSchedule: (where: ScheduleWhereUniqueInput) => SchedulePromise;
+  deleteManySchedules: (where?: ScheduleWhereInput) => BatchPayloadPromise;
+  createSeason: (data: SeasonCreateInput) => SeasonPromise;
+  updateSeason: (args: {
+    data: SeasonUpdateInput;
+    where: SeasonWhereUniqueInput;
+  }) => SeasonPromise;
+  updateManySeasons: (args: {
+    data: SeasonUpdateManyMutationInput;
+    where?: SeasonWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSeason: (args: {
+    where: SeasonWhereUniqueInput;
+    create: SeasonCreateInput;
+    update: SeasonUpdateInput;
+  }) => SeasonPromise;
+  deleteSeason: (where: SeasonWhereUniqueInput) => SeasonPromise;
+  deleteManySeasons: (where?: SeasonWhereInput) => BatchPayloadPromise;
   createTeam: (data: TeamCreateInput) => TeamPromise;
   updateTeam: (args: {
     data: TeamUpdateInput;
@@ -196,9 +300,18 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  match: (
+    where?: MatchSubscriptionWhereInput
+  ) => MatchSubscriptionPayloadSubscription;
   player: (
     where?: PlayerSubscriptionWhereInput
   ) => PlayerSubscriptionPayloadSubscription;
+  schedule: (
+    where?: ScheduleSubscriptionWhereInput
+  ) => ScheduleSubscriptionPayloadSubscription;
+  season: (
+    where?: SeasonSubscriptionWhereInput
+  ) => SeasonSubscriptionPayloadSubscription;
   team: (
     where?: TeamSubscriptionWhereInput
   ) => TeamSubscriptionPayloadSubscription;
@@ -232,6 +345,20 @@ export type TournamentOrderByInput =
 
 export type TeamOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
 
+export type SeasonOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type ScheduleOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "week_ASC"
+  | "week_DESC";
+
+export type MatchOrderByInput = "id_ASC" | "id_DESC";
+
 export type PlayerOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -242,7 +369,7 @@ export type UserOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type PlayerWhereUniqueInput = AtLeastOne<{
+export type MatchWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -309,6 +436,9 @@ export interface TournamentWhereInput {
   teams_every?: Maybe<TeamWhereInput>;
   teams_some?: Maybe<TeamWhereInput>;
   teams_none?: Maybe<TeamWhereInput>;
+  seasons_every?: Maybe<SeasonWhereInput>;
+  seasons_some?: Maybe<SeasonWhereInput>;
+  seasons_none?: Maybe<SeasonWhereInput>;
   AND?: Maybe<TournamentWhereInput[] | TournamentWhereInput>;
   OR?: Maybe<TournamentWhereInput[] | TournamentWhereInput>;
   NOT?: Maybe<TournamentWhereInput[] | TournamentWhereInput>;
@@ -424,6 +554,111 @@ export interface PlayerWhereInput {
   NOT?: Maybe<PlayerWhereInput[] | PlayerWhereInput>;
 }
 
+export interface SeasonWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  schedules_every?: Maybe<ScheduleWhereInput>;
+  schedules_some?: Maybe<ScheduleWhereInput>;
+  schedules_none?: Maybe<ScheduleWhereInput>;
+  tournament?: Maybe<TournamentWhereInput>;
+  AND?: Maybe<SeasonWhereInput[] | SeasonWhereInput>;
+  OR?: Maybe<SeasonWhereInput[] | SeasonWhereInput>;
+  NOT?: Maybe<SeasonWhereInput[] | SeasonWhereInput>;
+}
+
+export interface ScheduleWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  week?: Maybe<Int>;
+  week_not?: Maybe<Int>;
+  week_in?: Maybe<Int[] | Int>;
+  week_not_in?: Maybe<Int[] | Int>;
+  week_lt?: Maybe<Int>;
+  week_lte?: Maybe<Int>;
+  week_gt?: Maybe<Int>;
+  week_gte?: Maybe<Int>;
+  matches_every?: Maybe<MatchWhereInput>;
+  matches_some?: Maybe<MatchWhereInput>;
+  matches_none?: Maybe<MatchWhereInput>;
+  season?: Maybe<SeasonWhereInput>;
+  AND?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  OR?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  NOT?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+}
+
+export interface MatchWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  teamA?: Maybe<TeamWhereInput>;
+  teamB?: Maybe<TeamWhereInput>;
+  schedule?: Maybe<ScheduleWhereInput>;
+  AND?: Maybe<MatchWhereInput[] | MatchWhereInput>;
+  OR?: Maybe<MatchWhereInput[] | MatchWhereInput>;
+  NOT?: Maybe<MatchWhereInput[] | MatchWhereInput>;
+}
+
+export type PlayerWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type ScheduleWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type SeasonWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type TeamWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
@@ -436,21 +671,23 @@ export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface PlayerCreateInput {
+export interface MatchCreateInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  team: TeamCreateOneWithoutPlayersInput;
+  teamA: TeamCreateOneInput;
+  teamB: TeamCreateOneInput;
+  schedule: ScheduleCreateOneWithoutMatchesInput;
 }
 
-export interface TeamCreateOneWithoutPlayersInput {
-  create?: Maybe<TeamCreateWithoutPlayersInput>;
+export interface TeamCreateOneInput {
+  create?: Maybe<TeamCreateInput>;
   connect?: Maybe<TeamWhereUniqueInput>;
 }
 
-export interface TeamCreateWithoutPlayersInput {
+export interface TeamCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   tournament: TournamentCreateOneWithoutTeamsInput;
+  players?: Maybe<PlayerCreateManyWithoutTeamInput>;
 }
 
 export interface TournamentCreateOneWithoutTeamsInput {
@@ -465,6 +702,7 @@ export interface TournamentCreateWithoutTeamsInput {
   description?: Maybe<String>;
   start?: Maybe<DateTimeInput>;
   end?: Maybe<DateTimeInput>;
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>;
 }
 
 export interface UserCreateOneWithoutTournamentsInput {
@@ -477,21 +715,122 @@ export interface UserCreateWithoutTournamentsInput {
   name: String;
 }
 
-export interface PlayerUpdateInput {
-  name?: Maybe<String>;
-  team?: Maybe<TeamUpdateOneRequiredWithoutPlayersInput>;
+export interface SeasonCreateManyWithoutTournamentInput {
+  create?: Maybe<
+    SeasonCreateWithoutTournamentInput[] | SeasonCreateWithoutTournamentInput
+  >;
+  connect?: Maybe<SeasonWhereUniqueInput[] | SeasonWhereUniqueInput>;
 }
 
-export interface TeamUpdateOneRequiredWithoutPlayersInput {
-  create?: Maybe<TeamCreateWithoutPlayersInput>;
-  update?: Maybe<TeamUpdateWithoutPlayersDataInput>;
-  upsert?: Maybe<TeamUpsertWithoutPlayersInput>;
+export interface SeasonCreateWithoutTournamentInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  schedules?: Maybe<ScheduleCreateManyWithoutSeasonInput>;
+}
+
+export interface ScheduleCreateManyWithoutSeasonInput {
+  create?: Maybe<
+    ScheduleCreateWithoutSeasonInput[] | ScheduleCreateWithoutSeasonInput
+  >;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateWithoutSeasonInput {
+  id?: Maybe<ID_Input>;
+  week?: Maybe<Int>;
+  matches?: Maybe<MatchCreateManyWithoutScheduleInput>;
+}
+
+export interface MatchCreateManyWithoutScheduleInput {
+  create?: Maybe<
+    MatchCreateWithoutScheduleInput[] | MatchCreateWithoutScheduleInput
+  >;
+  connect?: Maybe<MatchWhereUniqueInput[] | MatchWhereUniqueInput>;
+}
+
+export interface MatchCreateWithoutScheduleInput {
+  id?: Maybe<ID_Input>;
+  teamA: TeamCreateOneInput;
+  teamB: TeamCreateOneInput;
+}
+
+export interface PlayerCreateManyWithoutTeamInput {
+  create?: Maybe<PlayerCreateWithoutTeamInput[] | PlayerCreateWithoutTeamInput>;
+  connect?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
+}
+
+export interface PlayerCreateWithoutTeamInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface ScheduleCreateOneWithoutMatchesInput {
+  create?: Maybe<ScheduleCreateWithoutMatchesInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateWithoutMatchesInput {
+  id?: Maybe<ID_Input>;
+  week?: Maybe<Int>;
+  season: SeasonCreateOneWithoutSchedulesInput;
+}
+
+export interface SeasonCreateOneWithoutSchedulesInput {
+  create?: Maybe<SeasonCreateWithoutSchedulesInput>;
+  connect?: Maybe<SeasonWhereUniqueInput>;
+}
+
+export interface SeasonCreateWithoutSchedulesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  tournament: TournamentCreateOneWithoutSeasonsInput;
+}
+
+export interface TournamentCreateOneWithoutSeasonsInput {
+  create?: Maybe<TournamentCreateWithoutSeasonsInput>;
+  connect?: Maybe<TournamentWhereUniqueInput>;
+}
+
+export interface TournamentCreateWithoutSeasonsInput {
+  id?: Maybe<ID_Input>;
+  owner: UserCreateOneWithoutTournamentsInput;
+  name: String;
+  description?: Maybe<String>;
+  start?: Maybe<DateTimeInput>;
+  end?: Maybe<DateTimeInput>;
+  teams?: Maybe<TeamCreateManyWithoutTournamentInput>;
+}
+
+export interface TeamCreateManyWithoutTournamentInput {
+  create?: Maybe<
+    TeamCreateWithoutTournamentInput[] | TeamCreateWithoutTournamentInput
+  >;
+  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+}
+
+export interface TeamCreateWithoutTournamentInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  players?: Maybe<PlayerCreateManyWithoutTeamInput>;
+}
+
+export interface MatchUpdateInput {
+  teamA?: Maybe<TeamUpdateOneRequiredInput>;
+  teamB?: Maybe<TeamUpdateOneRequiredInput>;
+  schedule?: Maybe<ScheduleUpdateOneRequiredWithoutMatchesInput>;
+}
+
+export interface TeamUpdateOneRequiredInput {
+  create?: Maybe<TeamCreateInput>;
+  update?: Maybe<TeamUpdateDataInput>;
+  upsert?: Maybe<TeamUpsertNestedInput>;
   connect?: Maybe<TeamWhereUniqueInput>;
 }
 
-export interface TeamUpdateWithoutPlayersDataInput {
+export interface TeamUpdateDataInput {
   name?: Maybe<String>;
   tournament?: Maybe<TournamentUpdateOneRequiredWithoutTeamsInput>;
+  players?: Maybe<PlayerUpdateManyWithoutTeamInput>;
 }
 
 export interface TournamentUpdateOneRequiredWithoutTeamsInput {
@@ -507,6 +846,7 @@ export interface TournamentUpdateWithoutTeamsDataInput {
   description?: Maybe<String>;
   start?: Maybe<DateTimeInput>;
   end?: Maybe<DateTimeInput>;
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>;
 }
 
 export interface UserUpdateOneRequiredWithoutTournamentsInput {
@@ -525,41 +865,222 @@ export interface UserUpsertWithoutTournamentsInput {
   create: UserCreateWithoutTournamentsInput;
 }
 
+export interface SeasonUpdateManyWithoutTournamentInput {
+  create?: Maybe<
+    SeasonCreateWithoutTournamentInput[] | SeasonCreateWithoutTournamentInput
+  >;
+  delete?: Maybe<SeasonWhereUniqueInput[] | SeasonWhereUniqueInput>;
+  connect?: Maybe<SeasonWhereUniqueInput[] | SeasonWhereUniqueInput>;
+  set?: Maybe<SeasonWhereUniqueInput[] | SeasonWhereUniqueInput>;
+  disconnect?: Maybe<SeasonWhereUniqueInput[] | SeasonWhereUniqueInput>;
+  update?: Maybe<
+    | SeasonUpdateWithWhereUniqueWithoutTournamentInput[]
+    | SeasonUpdateWithWhereUniqueWithoutTournamentInput
+  >;
+  upsert?: Maybe<
+    | SeasonUpsertWithWhereUniqueWithoutTournamentInput[]
+    | SeasonUpsertWithWhereUniqueWithoutTournamentInput
+  >;
+  deleteMany?: Maybe<SeasonScalarWhereInput[] | SeasonScalarWhereInput>;
+  updateMany?: Maybe<
+    | SeasonUpdateManyWithWhereNestedInput[]
+    | SeasonUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface SeasonUpdateWithWhereUniqueWithoutTournamentInput {
+  where: SeasonWhereUniqueInput;
+  data: SeasonUpdateWithoutTournamentDataInput;
+}
+
+export interface SeasonUpdateWithoutTournamentDataInput {
+  name?: Maybe<String>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSeasonInput>;
+}
+
+export interface ScheduleUpdateManyWithoutSeasonInput {
+  create?: Maybe<
+    ScheduleCreateWithoutSeasonInput[] | ScheduleCreateWithoutSeasonInput
+  >;
+  delete?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  set?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  disconnect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  update?: Maybe<
+    | ScheduleUpdateWithWhereUniqueWithoutSeasonInput[]
+    | ScheduleUpdateWithWhereUniqueWithoutSeasonInput
+  >;
+  upsert?: Maybe<
+    | ScheduleUpsertWithWhereUniqueWithoutSeasonInput[]
+    | ScheduleUpsertWithWhereUniqueWithoutSeasonInput
+  >;
+  deleteMany?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  updateMany?: Maybe<
+    | ScheduleUpdateManyWithWhereNestedInput[]
+    | ScheduleUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ScheduleUpdateWithWhereUniqueWithoutSeasonInput {
+  where: ScheduleWhereUniqueInput;
+  data: ScheduleUpdateWithoutSeasonDataInput;
+}
+
+export interface ScheduleUpdateWithoutSeasonDataInput {
+  week?: Maybe<Int>;
+  matches?: Maybe<MatchUpdateManyWithoutScheduleInput>;
+}
+
+export interface MatchUpdateManyWithoutScheduleInput {
+  create?: Maybe<
+    MatchCreateWithoutScheduleInput[] | MatchCreateWithoutScheduleInput
+  >;
+  delete?: Maybe<MatchWhereUniqueInput[] | MatchWhereUniqueInput>;
+  connect?: Maybe<MatchWhereUniqueInput[] | MatchWhereUniqueInput>;
+  set?: Maybe<MatchWhereUniqueInput[] | MatchWhereUniqueInput>;
+  disconnect?: Maybe<MatchWhereUniqueInput[] | MatchWhereUniqueInput>;
+  update?: Maybe<
+    | MatchUpdateWithWhereUniqueWithoutScheduleInput[]
+    | MatchUpdateWithWhereUniqueWithoutScheduleInput
+  >;
+  upsert?: Maybe<
+    | MatchUpsertWithWhereUniqueWithoutScheduleInput[]
+    | MatchUpsertWithWhereUniqueWithoutScheduleInput
+  >;
+  deleteMany?: Maybe<MatchScalarWhereInput[] | MatchScalarWhereInput>;
+}
+
+export interface MatchUpdateWithWhereUniqueWithoutScheduleInput {
+  where: MatchWhereUniqueInput;
+  data: MatchUpdateWithoutScheduleDataInput;
+}
+
+export interface MatchUpdateWithoutScheduleDataInput {
+  teamA?: Maybe<TeamUpdateOneRequiredInput>;
+  teamB?: Maybe<TeamUpdateOneRequiredInput>;
+}
+
+export interface MatchUpsertWithWhereUniqueWithoutScheduleInput {
+  where: MatchWhereUniqueInput;
+  update: MatchUpdateWithoutScheduleDataInput;
+  create: MatchCreateWithoutScheduleInput;
+}
+
+export interface MatchScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  AND?: Maybe<MatchScalarWhereInput[] | MatchScalarWhereInput>;
+  OR?: Maybe<MatchScalarWhereInput[] | MatchScalarWhereInput>;
+  NOT?: Maybe<MatchScalarWhereInput[] | MatchScalarWhereInput>;
+}
+
+export interface ScheduleUpsertWithWhereUniqueWithoutSeasonInput {
+  where: ScheduleWhereUniqueInput;
+  update: ScheduleUpdateWithoutSeasonDataInput;
+  create: ScheduleCreateWithoutSeasonInput;
+}
+
+export interface ScheduleScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  week?: Maybe<Int>;
+  week_not?: Maybe<Int>;
+  week_in?: Maybe<Int[] | Int>;
+  week_not_in?: Maybe<Int[] | Int>;
+  week_lt?: Maybe<Int>;
+  week_lte?: Maybe<Int>;
+  week_gt?: Maybe<Int>;
+  week_gte?: Maybe<Int>;
+  AND?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  OR?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  NOT?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+}
+
+export interface ScheduleUpdateManyWithWhereNestedInput {
+  where: ScheduleScalarWhereInput;
+  data: ScheduleUpdateManyDataInput;
+}
+
+export interface ScheduleUpdateManyDataInput {
+  week?: Maybe<Int>;
+}
+
+export interface SeasonUpsertWithWhereUniqueWithoutTournamentInput {
+  where: SeasonWhereUniqueInput;
+  update: SeasonUpdateWithoutTournamentDataInput;
+  create: SeasonCreateWithoutTournamentInput;
+}
+
+export interface SeasonScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  AND?: Maybe<SeasonScalarWhereInput[] | SeasonScalarWhereInput>;
+  OR?: Maybe<SeasonScalarWhereInput[] | SeasonScalarWhereInput>;
+  NOT?: Maybe<SeasonScalarWhereInput[] | SeasonScalarWhereInput>;
+}
+
+export interface SeasonUpdateManyWithWhereNestedInput {
+  where: SeasonScalarWhereInput;
+  data: SeasonUpdateManyDataInput;
+}
+
+export interface SeasonUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
 export interface TournamentUpsertWithoutTeamsInput {
   update: TournamentUpdateWithoutTeamsDataInput;
   create: TournamentCreateWithoutTeamsInput;
-}
-
-export interface TeamUpsertWithoutPlayersInput {
-  update: TeamUpdateWithoutPlayersDataInput;
-  create: TeamCreateWithoutPlayersInput;
-}
-
-export interface PlayerUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface TeamCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  tournament: TournamentCreateOneWithoutTeamsInput;
-  players?: Maybe<PlayerCreateManyWithoutTeamInput>;
-}
-
-export interface PlayerCreateManyWithoutTeamInput {
-  create?: Maybe<PlayerCreateWithoutTeamInput[] | PlayerCreateWithoutTeamInput>;
-  connect?: Maybe<PlayerWhereUniqueInput[] | PlayerWhereUniqueInput>;
-}
-
-export interface PlayerCreateWithoutTeamInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface TeamUpdateInput {
-  name?: Maybe<String>;
-  tournament?: Maybe<TournamentUpdateOneRequiredWithoutTeamsInput>;
-  players?: Maybe<PlayerUpdateManyWithoutTeamInput>;
 }
 
 export interface PlayerUpdateManyWithoutTeamInput {
@@ -641,34 +1162,43 @@ export interface PlayerUpdateManyDataInput {
   name?: Maybe<String>;
 }
 
-export interface TeamUpdateManyMutationInput {
+export interface TeamUpsertNestedInput {
+  update: TeamUpdateDataInput;
+  create: TeamCreateInput;
+}
+
+export interface ScheduleUpdateOneRequiredWithoutMatchesInput {
+  create?: Maybe<ScheduleCreateWithoutMatchesInput>;
+  update?: Maybe<ScheduleUpdateWithoutMatchesDataInput>;
+  upsert?: Maybe<ScheduleUpsertWithoutMatchesInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleUpdateWithoutMatchesDataInput {
+  week?: Maybe<Int>;
+  season?: Maybe<SeasonUpdateOneRequiredWithoutSchedulesInput>;
+}
+
+export interface SeasonUpdateOneRequiredWithoutSchedulesInput {
+  create?: Maybe<SeasonCreateWithoutSchedulesInput>;
+  update?: Maybe<SeasonUpdateWithoutSchedulesDataInput>;
+  upsert?: Maybe<SeasonUpsertWithoutSchedulesInput>;
+  connect?: Maybe<SeasonWhereUniqueInput>;
+}
+
+export interface SeasonUpdateWithoutSchedulesDataInput {
   name?: Maybe<String>;
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSeasonsInput>;
 }
 
-export interface TournamentCreateInput {
-  id?: Maybe<ID_Input>;
-  owner: UserCreateOneWithoutTournamentsInput;
-  name: String;
-  description?: Maybe<String>;
-  start?: Maybe<DateTimeInput>;
-  end?: Maybe<DateTimeInput>;
-  teams?: Maybe<TeamCreateManyWithoutTournamentInput>;
+export interface TournamentUpdateOneRequiredWithoutSeasonsInput {
+  create?: Maybe<TournamentCreateWithoutSeasonsInput>;
+  update?: Maybe<TournamentUpdateWithoutSeasonsDataInput>;
+  upsert?: Maybe<TournamentUpsertWithoutSeasonsInput>;
+  connect?: Maybe<TournamentWhereUniqueInput>;
 }
 
-export interface TeamCreateManyWithoutTournamentInput {
-  create?: Maybe<
-    TeamCreateWithoutTournamentInput[] | TeamCreateWithoutTournamentInput
-  >;
-  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
-}
-
-export interface TeamCreateWithoutTournamentInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  players?: Maybe<PlayerCreateManyWithoutTeamInput>;
-}
-
-export interface TournamentUpdateInput {
+export interface TournamentUpdateWithoutSeasonsDataInput {
   owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>;
   name?: Maybe<String>;
   description?: Maybe<String>;
@@ -758,6 +1288,129 @@ export interface TeamUpdateManyDataInput {
   name?: Maybe<String>;
 }
 
+export interface TournamentUpsertWithoutSeasonsInput {
+  update: TournamentUpdateWithoutSeasonsDataInput;
+  create: TournamentCreateWithoutSeasonsInput;
+}
+
+export interface SeasonUpsertWithoutSchedulesInput {
+  update: SeasonUpdateWithoutSchedulesDataInput;
+  create: SeasonCreateWithoutSchedulesInput;
+}
+
+export interface ScheduleUpsertWithoutMatchesInput {
+  update: ScheduleUpdateWithoutMatchesDataInput;
+  create: ScheduleCreateWithoutMatchesInput;
+}
+
+export interface PlayerCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  team: TeamCreateOneWithoutPlayersInput;
+}
+
+export interface TeamCreateOneWithoutPlayersInput {
+  create?: Maybe<TeamCreateWithoutPlayersInput>;
+  connect?: Maybe<TeamWhereUniqueInput>;
+}
+
+export interface TeamCreateWithoutPlayersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  tournament: TournamentCreateOneWithoutTeamsInput;
+}
+
+export interface PlayerUpdateInput {
+  name?: Maybe<String>;
+  team?: Maybe<TeamUpdateOneRequiredWithoutPlayersInput>;
+}
+
+export interface TeamUpdateOneRequiredWithoutPlayersInput {
+  create?: Maybe<TeamCreateWithoutPlayersInput>;
+  update?: Maybe<TeamUpdateWithoutPlayersDataInput>;
+  upsert?: Maybe<TeamUpsertWithoutPlayersInput>;
+  connect?: Maybe<TeamWhereUniqueInput>;
+}
+
+export interface TeamUpdateWithoutPlayersDataInput {
+  name?: Maybe<String>;
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutTeamsInput>;
+}
+
+export interface TeamUpsertWithoutPlayersInput {
+  update: TeamUpdateWithoutPlayersDataInput;
+  create: TeamCreateWithoutPlayersInput;
+}
+
+export interface PlayerUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface ScheduleCreateInput {
+  id?: Maybe<ID_Input>;
+  week?: Maybe<Int>;
+  matches?: Maybe<MatchCreateManyWithoutScheduleInput>;
+  season: SeasonCreateOneWithoutSchedulesInput;
+}
+
+export interface ScheduleUpdateInput {
+  week?: Maybe<Int>;
+  matches?: Maybe<MatchUpdateManyWithoutScheduleInput>;
+  season?: Maybe<SeasonUpdateOneRequiredWithoutSchedulesInput>;
+}
+
+export interface ScheduleUpdateManyMutationInput {
+  week?: Maybe<Int>;
+}
+
+export interface SeasonCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  schedules?: Maybe<ScheduleCreateManyWithoutSeasonInput>;
+  tournament: TournamentCreateOneWithoutSeasonsInput;
+}
+
+export interface SeasonUpdateInput {
+  name?: Maybe<String>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSeasonInput>;
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSeasonsInput>;
+}
+
+export interface SeasonUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface TeamUpdateInput {
+  name?: Maybe<String>;
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutTeamsInput>;
+  players?: Maybe<PlayerUpdateManyWithoutTeamInput>;
+}
+
+export interface TeamUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface TournamentCreateInput {
+  id?: Maybe<ID_Input>;
+  owner: UserCreateOneWithoutTournamentsInput;
+  name: String;
+  description?: Maybe<String>;
+  start?: Maybe<DateTimeInput>;
+  end?: Maybe<DateTimeInput>;
+  teams?: Maybe<TeamCreateManyWithoutTournamentInput>;
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>;
+}
+
+export interface TournamentUpdateInput {
+  owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>;
+  name?: Maybe<String>;
+  description?: Maybe<String>;
+  start?: Maybe<DateTimeInput>;
+  end?: Maybe<DateTimeInput>;
+  teams?: Maybe<TeamUpdateManyWithoutTournamentInput>;
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>;
+}
+
 export interface TournamentUpdateManyMutationInput {
   name?: Maybe<String>;
   description?: Maybe<String>;
@@ -785,6 +1438,7 @@ export interface TournamentCreateWithoutOwnerInput {
   start?: Maybe<DateTimeInput>;
   end?: Maybe<DateTimeInput>;
   teams?: Maybe<TeamCreateManyWithoutTournamentInput>;
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>;
 }
 
 export interface UserUpdateInput {
@@ -826,6 +1480,7 @@ export interface TournamentUpdateWithoutOwnerDataInput {
   start?: Maybe<DateTimeInput>;
   end?: Maybe<DateTimeInput>;
   teams?: Maybe<TeamUpdateManyWithoutTournamentInput>;
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>;
 }
 
 export interface TournamentUpsertWithWhereUniqueWithoutOwnerInput {
@@ -914,6 +1569,17 @@ export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
 }
 
+export interface MatchSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MatchWhereInput>;
+  AND?: Maybe<MatchSubscriptionWhereInput[] | MatchSubscriptionWhereInput>;
+  OR?: Maybe<MatchSubscriptionWhereInput[] | MatchSubscriptionWhereInput>;
+  NOT?: Maybe<MatchSubscriptionWhereInput[] | MatchSubscriptionWhereInput>;
+}
+
 export interface PlayerSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -923,6 +1589,32 @@ export interface PlayerSubscriptionWhereInput {
   AND?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
   OR?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
   NOT?: Maybe<PlayerSubscriptionWhereInput[] | PlayerSubscriptionWhereInput>;
+}
+
+export interface ScheduleSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ScheduleWhereInput>;
+  AND?: Maybe<
+    ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput
+  >;
+  OR?: Maybe<ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput>;
+  NOT?: Maybe<
+    ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput
+  >;
+}
+
+export interface SeasonSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<SeasonWhereInput>;
+  AND?: Maybe<SeasonSubscriptionWhereInput[] | SeasonSubscriptionWhereInput>;
+  OR?: Maybe<SeasonSubscriptionWhereInput[] | SeasonSubscriptionWhereInput>;
+  NOT?: Maybe<SeasonSubscriptionWhereInput[] | SeasonSubscriptionWhereInput>;
 }
 
 export interface TeamSubscriptionWhereInput {
@@ -968,31 +1660,33 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Player {
+export interface Match {
   id: ID_Output;
-  name: String;
 }
 
-export interface PlayerPromise extends Promise<Player>, Fragmentable {
+export interface MatchPromise extends Promise<Match>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  team: <T = TeamPromise>() => T;
+  teamA: <T = TeamPromise>() => T;
+  teamB: <T = TeamPromise>() => T;
+  schedule: <T = SchedulePromise>() => T;
 }
 
-export interface PlayerSubscription
-  extends Promise<AsyncIterator<Player>>,
+export interface MatchSubscription
+  extends Promise<AsyncIterator<Match>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  team: <T = TeamSubscription>() => T;
+  teamA: <T = TeamSubscription>() => T;
+  teamB: <T = TeamSubscription>() => T;
+  schedule: <T = ScheduleSubscription>() => T;
 }
 
-export interface PlayerNullablePromise
-  extends Promise<Player | null>,
+export interface MatchNullablePromise
+  extends Promise<Match | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  team: <T = TeamPromise>() => T;
+  teamA: <T = TeamPromise>() => T;
+  teamB: <T = TeamPromise>() => T;
+  schedule: <T = SchedulePromise>() => T;
 }
 
 export interface Team {
@@ -1073,6 +1767,15 @@ export interface TournamentPromise extends Promise<Tournament>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  seasons: <T = FragmentableArray<Season>>(args?: {
+    where?: SeasonWhereInput;
+    orderBy?: SeasonOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface TournamentSubscription
@@ -1093,6 +1796,15 @@ export interface TournamentSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  seasons: <T = Promise<AsyncIterator<SeasonSubscription>>>(args?: {
+    where?: SeasonWhereInput;
+    orderBy?: SeasonOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface TournamentNullablePromise
@@ -1107,6 +1819,15 @@ export interface TournamentNullablePromise
   teams: <T = FragmentableArray<Team>>(args?: {
     where?: TeamWhereInput;
     orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  seasons: <T = FragmentableArray<Season>>(args?: {
+    where?: SeasonWhereInput;
+    orderBy?: SeasonOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1166,25 +1887,160 @@ export interface UserNullablePromise
   }) => T;
 }
 
-export interface PlayerConnection {
-  pageInfo: PageInfo;
-  edges: PlayerEdge[];
+export interface Season {
+  id: ID_Output;
+  name: String;
 }
 
-export interface PlayerConnectionPromise
-  extends Promise<PlayerConnection>,
+export interface SeasonPromise extends Promise<Season>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tournament: <T = TournamentPromise>() => T;
+}
+
+export interface SeasonSubscription
+  extends Promise<AsyncIterator<Season>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  schedules: <T = Promise<AsyncIterator<ScheduleSubscription>>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tournament: <T = TournamentSubscription>() => T;
+}
+
+export interface SeasonNullablePromise
+  extends Promise<Season | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  tournament: <T = TournamentPromise>() => T;
+}
+
+export interface Schedule {
+  id: ID_Output;
+  week?: Int;
+}
+
+export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  week: () => Promise<Int>;
+  matches: <T = FragmentableArray<Match>>(args?: {
+    where?: MatchWhereInput;
+    orderBy?: MatchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  season: <T = SeasonPromise>() => T;
+}
+
+export interface ScheduleSubscription
+  extends Promise<AsyncIterator<Schedule>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  week: () => Promise<AsyncIterator<Int>>;
+  matches: <T = Promise<AsyncIterator<MatchSubscription>>>(args?: {
+    where?: MatchWhereInput;
+    orderBy?: MatchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  season: <T = SeasonSubscription>() => T;
+}
+
+export interface ScheduleNullablePromise
+  extends Promise<Schedule | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  week: () => Promise<Int>;
+  matches: <T = FragmentableArray<Match>>(args?: {
+    where?: MatchWhereInput;
+    orderBy?: MatchOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  season: <T = SeasonPromise>() => T;
+}
+
+export interface Player {
+  id: ID_Output;
+  name: String;
+}
+
+export interface PlayerPromise extends Promise<Player>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  team: <T = TeamPromise>() => T;
+}
+
+export interface PlayerSubscription
+  extends Promise<AsyncIterator<Player>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  team: <T = TeamSubscription>() => T;
+}
+
+export interface PlayerNullablePromise
+  extends Promise<Player | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  team: <T = TeamPromise>() => T;
+}
+
+export interface MatchConnection {
+  pageInfo: PageInfo;
+  edges: MatchEdge[];
+}
+
+export interface MatchConnectionPromise
+  extends Promise<MatchConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PlayerEdge>>() => T;
-  aggregate: <T = AggregatePlayerPromise>() => T;
+  edges: <T = FragmentableArray<MatchEdge>>() => T;
+  aggregate: <T = AggregateMatchPromise>() => T;
 }
 
-export interface PlayerConnectionSubscription
-  extends Promise<AsyncIterator<PlayerConnection>>,
+export interface MatchConnectionSubscription
+  extends Promise<AsyncIterator<MatchConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PlayerEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePlayerSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MatchEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMatchSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -1208,6 +2064,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MatchEdge {
+  node: Match;
+  cursor: String;
+}
+
+export interface MatchEdgePromise extends Promise<MatchEdge>, Fragmentable {
+  node: <T = MatchPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MatchEdgeSubscription
+  extends Promise<AsyncIterator<MatchEdge>>,
+    Fragmentable {
+  node: <T = MatchSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMatch {
+  count: Int;
+}
+
+export interface AggregateMatchPromise
+  extends Promise<AggregateMatch>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMatchSubscription
+  extends Promise<AsyncIterator<AggregateMatch>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface PlayerConnection {
+  pageInfo: PageInfo;
+  edges: PlayerEdge[];
+}
+
+export interface PlayerConnectionPromise
+  extends Promise<PlayerConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PlayerEdge>>() => T;
+  aggregate: <T = AggregatePlayerPromise>() => T;
+}
+
+export interface PlayerConnectionSubscription
+  extends Promise<AsyncIterator<PlayerConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PlayerEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePlayerSubscription>() => T;
 }
 
 export interface PlayerEdge {
@@ -1239,6 +2149,116 @@ export interface AggregatePlayerPromise
 
 export interface AggregatePlayerSubscription
   extends Promise<AsyncIterator<AggregatePlayer>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ScheduleConnection {
+  pageInfo: PageInfo;
+  edges: ScheduleEdge[];
+}
+
+export interface ScheduleConnectionPromise
+  extends Promise<ScheduleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ScheduleEdge>>() => T;
+  aggregate: <T = AggregateSchedulePromise>() => T;
+}
+
+export interface ScheduleConnectionSubscription
+  extends Promise<AsyncIterator<ScheduleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ScheduleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateScheduleSubscription>() => T;
+}
+
+export interface ScheduleEdge {
+  node: Schedule;
+  cursor: String;
+}
+
+export interface ScheduleEdgePromise
+  extends Promise<ScheduleEdge>,
+    Fragmentable {
+  node: <T = SchedulePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ScheduleEdgeSubscription
+  extends Promise<AsyncIterator<ScheduleEdge>>,
+    Fragmentable {
+  node: <T = ScheduleSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSchedule {
+  count: Int;
+}
+
+export interface AggregateSchedulePromise
+  extends Promise<AggregateSchedule>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateScheduleSubscription
+  extends Promise<AsyncIterator<AggregateSchedule>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SeasonConnection {
+  pageInfo: PageInfo;
+  edges: SeasonEdge[];
+}
+
+export interface SeasonConnectionPromise
+  extends Promise<SeasonConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<SeasonEdge>>() => T;
+  aggregate: <T = AggregateSeasonPromise>() => T;
+}
+
+export interface SeasonConnectionSubscription
+  extends Promise<AsyncIterator<SeasonConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<SeasonEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateSeasonSubscription>() => T;
+}
+
+export interface SeasonEdge {
+  node: Season;
+  cursor: String;
+}
+
+export interface SeasonEdgePromise extends Promise<SeasonEdge>, Fragmentable {
+  node: <T = SeasonPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface SeasonEdgeSubscription
+  extends Promise<AsyncIterator<SeasonEdge>>,
+    Fragmentable {
+  node: <T = SeasonSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSeason {
+  count: Int;
+}
+
+export interface AggregateSeasonPromise
+  extends Promise<AggregateSeason>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateSeasonSubscription
+  extends Promise<AsyncIterator<AggregateSeason>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1423,6 +2443,47 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface MatchSubscriptionPayload {
+  mutation: MutationType;
+  node: Match;
+  updatedFields: String[];
+  previousValues: MatchPreviousValues;
+}
+
+export interface MatchSubscriptionPayloadPromise
+  extends Promise<MatchSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MatchPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MatchPreviousValuesPromise>() => T;
+}
+
+export interface MatchSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MatchSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MatchSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MatchPreviousValuesSubscription>() => T;
+}
+
+export interface MatchPreviousValues {
+  id: ID_Output;
+}
+
+export interface MatchPreviousValuesPromise
+  extends Promise<MatchPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface MatchPreviousValuesSubscription
+  extends Promise<AsyncIterator<MatchPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
 export interface PlayerSubscriptionPayload {
   mutation: MutationType;
   node: Player;
@@ -1462,6 +2523,94 @@ export interface PlayerPreviousValuesPromise
 
 export interface PlayerPreviousValuesSubscription
   extends Promise<AsyncIterator<PlayerPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ScheduleSubscriptionPayload {
+  mutation: MutationType;
+  node: Schedule;
+  updatedFields: String[];
+  previousValues: SchedulePreviousValues;
+}
+
+export interface ScheduleSubscriptionPayloadPromise
+  extends Promise<ScheduleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SchedulePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SchedulePreviousValuesPromise>() => T;
+}
+
+export interface ScheduleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ScheduleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ScheduleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SchedulePreviousValuesSubscription>() => T;
+}
+
+export interface SchedulePreviousValues {
+  id: ID_Output;
+  week?: Int;
+}
+
+export interface SchedulePreviousValuesPromise
+  extends Promise<SchedulePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  week: () => Promise<Int>;
+}
+
+export interface SchedulePreviousValuesSubscription
+  extends Promise<AsyncIterator<SchedulePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  week: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface SeasonSubscriptionPayload {
+  mutation: MutationType;
+  node: Season;
+  updatedFields: String[];
+  previousValues: SeasonPreviousValues;
+}
+
+export interface SeasonSubscriptionPayloadPromise
+  extends Promise<SeasonSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SeasonPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SeasonPreviousValuesPromise>() => T;
+}
+
+export interface SeasonSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<SeasonSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = SeasonSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SeasonPreviousValuesSubscription>() => T;
+}
+
+export interface SeasonPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface SeasonPreviousValuesPromise
+  extends Promise<SeasonPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface SeasonPreviousValuesSubscription
+  extends Promise<AsyncIterator<SeasonPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
@@ -1661,6 +2810,18 @@ export const models: Model[] = [
   {
     name: "Player",
     embedded: false
+  },
+  {
+    name: "Season",
+    embedded: false
+  },
+  {
+    name: "Schedule",
+    embedded: false
+  },
+  {
+    name: "Match",
+    embedded: false
   }
 ];
 
@@ -1671,6 +2832,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/public-citrineguardian-909/server-2/dev`
+  endpoint: `https://eu1.prisma.sh/public-citrineguardian-909/server-1/dev`
 });
 export const prisma = new Prisma();

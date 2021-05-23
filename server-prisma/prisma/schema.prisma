@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String  @id @default(uuid())
+  name String
+  tournaments Tournament[]
+  @@map(name: "users")
+}
+
+model Tournament {
+  id String  @id @default(uuid())
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id")
+  name String
+  description String
+  start DateTime
+  end DateTime
+  teams Team[]
+  seasons Season[]
+  @@map(name: "tournaments")
+}
+
+model Team {
+  id String @id @default(uuid())
+  name String
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId String @map("tournament_id")
+  players Player[]
+  matchTeamA Match[] @relation("teamA")
+  matchTeamB Match[] @relation("teamB")
+  @@map(name: "teams")
+}
+
+model Player {
+  id String @id @default(uuid())
+  name String
+  team Team @relation(fields: [teamId], references: [id])
+  teamId String @map("team_id")
+  @@map(name: "players")
+}
+
+model Season {
+  id String @id @default(uuid())
+  name String
+  schedules Schedule[]
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId String @map("tournament_id")
+  @@map(name: "seasons")
+}
+
+model Schedule {
+  id String @id @default(uuid())
+  week Int
+  matches Match[]
+  season Season @relation(fields: [seasonId], references: [id])
+  seasonId String @map("season_id")
+  @@map(name: "schedules")
+}
+
+model Match {
+  id String @id @default(uuid())
+  teamA Team @relation("teamA", fields: [teamAId], references: [id])
+  teamAId String @map("team_a_id")
+  teamB Team @relation("teamB", fields: [teamBId], references: [id])
+  teamBId String @map("team_b_id")
+  schedule Schedule @relation(fields: [scheduleId], references: [id])
+  scheduleId String @map("schedule_id")
+  @@map(name: "matches")
+}

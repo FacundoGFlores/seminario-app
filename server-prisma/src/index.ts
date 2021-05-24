@@ -157,8 +157,45 @@ const resolvers = {
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
-    createTournament(parent, { data }, context: Context) {
-      return context.prisma.tournament.create({ data });
+    async createTournament(parent, { data }, context: Context) {
+      if (!data.teams || data.teams.length === 0)
+        return context.prisma.tournament.create({ data });
+      try {
+        const tournament = await context.prisma.tournament.create({
+          data,
+          include: { teams: true },
+        });
+
+        const teamsIds = tournament.teams.map((team) => team.id);
+        const schedules = robin(teamsIds);
+
+        const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] =
+          schedules.map((schedule, index) => {
+            const matches = schedule
+              .map((match) => {
+                if (match.length !== 2) return;
+                return {
+                  teamA: { connect: { id: match[0] } },
+                  teamB: { connect: { id: match[1] } },
+                };
+              })
+              .filter((match) => match !== undefined);
+            const scheduleInput: Prisma.ScheduleCreateWithoutSeasonInput = {
+              week: index,
+              matches: { create: matches },
+            };
+            return scheduleInput;
+          });
+        return context.prisma.season.create({
+          data: {
+            name: "season",
+            schedules: { create: createSchedules },
+            tournament: { connect: { id: tournament.id } },
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
     },
     createTeam(parent, { data }, context: Context) {
       return context.prisma.team.create({ data });

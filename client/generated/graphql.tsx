@@ -16,8 +16,23 @@ export type Scalars = {
   Long: any,
 };
 
+export type AggregateMatch = {
+   __typename?: 'AggregateMatch',
+  count: Scalars['Int'],
+};
+
 export type AggregatePlayer = {
    __typename?: 'AggregatePlayer',
+  count: Scalars['Int'],
+};
+
+export type AggregateSchedule = {
+   __typename?: 'AggregateSchedule',
+  count: Scalars['Int'],
+};
+
+export type AggregateSeason = {
+   __typename?: 'AggregateSeason',
   count: Scalars['Int'],
 };
 
@@ -43,70 +58,230 @@ export type BatchPayload = {
 
 
 
+export type Match = {
+   __typename?: 'Match',
+  id: Scalars['ID'],
+  teamA: Team,
+  teamB: Team,
+  schedule: Schedule,
+};
+
+export type MatchConnection = {
+   __typename?: 'MatchConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<MatchEdge>>,
+  aggregate: AggregateMatch,
+};
+
+export type MatchCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  teamA: TeamCreateOneInput,
+  teamB: TeamCreateOneInput,
+  schedule: ScheduleCreateOneWithoutMatchesInput,
+};
+
+export type MatchCreateManyWithoutScheduleInput = {
+  create?: Maybe<Array<MatchCreateWithoutScheduleInput>>,
+  connect?: Maybe<Array<MatchWhereUniqueInput>>,
+};
+
+export type MatchCreateWithoutScheduleInput = {
+  id?: Maybe<Scalars['ID']>,
+  teamA: TeamCreateOneInput,
+  teamB: TeamCreateOneInput,
+};
+
+export type MatchEdge = {
+   __typename?: 'MatchEdge',
+  node: Match,
+  cursor: Scalars['String'],
+};
+
+export enum MatchOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC'
+}
+
+export type MatchPreviousValues = {
+   __typename?: 'MatchPreviousValues',
+  id: Scalars['ID'],
+};
+
+export type MatchScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  AND?: Maybe<Array<MatchScalarWhereInput>>,
+  OR?: Maybe<Array<MatchScalarWhereInput>>,
+  NOT?: Maybe<Array<MatchScalarWhereInput>>,
+};
+
+export type MatchSubscriptionPayload = {
+   __typename?: 'MatchSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Match>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<MatchPreviousValues>,
+};
+
+export type MatchSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<MatchWhereInput>,
+  AND?: Maybe<Array<MatchSubscriptionWhereInput>>,
+  OR?: Maybe<Array<MatchSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<MatchSubscriptionWhereInput>>,
+};
+
+export type MatchUpdateInput = {
+  teamA?: Maybe<TeamUpdateOneRequiredInput>,
+  teamB?: Maybe<TeamUpdateOneRequiredInput>,
+  schedule?: Maybe<ScheduleUpdateOneRequiredWithoutMatchesInput>,
+};
+
+export type MatchUpdateManyWithoutScheduleInput = {
+  create?: Maybe<Array<MatchCreateWithoutScheduleInput>>,
+  delete?: Maybe<Array<MatchWhereUniqueInput>>,
+  connect?: Maybe<Array<MatchWhereUniqueInput>>,
+  set?: Maybe<Array<MatchWhereUniqueInput>>,
+  disconnect?: Maybe<Array<MatchWhereUniqueInput>>,
+  update?: Maybe<Array<MatchUpdateWithWhereUniqueWithoutScheduleInput>>,
+  upsert?: Maybe<Array<MatchUpsertWithWhereUniqueWithoutScheduleInput>>,
+  deleteMany?: Maybe<Array<MatchScalarWhereInput>>,
+};
+
+export type MatchUpdateWithoutScheduleDataInput = {
+  teamA?: Maybe<TeamUpdateOneRequiredInput>,
+  teamB?: Maybe<TeamUpdateOneRequiredInput>,
+};
+
+export type MatchUpdateWithWhereUniqueWithoutScheduleInput = {
+  where: MatchWhereUniqueInput,
+  data: MatchUpdateWithoutScheduleDataInput,
+};
+
+export type MatchUpsertWithWhereUniqueWithoutScheduleInput = {
+  where: MatchWhereUniqueInput,
+  update: MatchUpdateWithoutScheduleDataInput,
+  create: MatchCreateWithoutScheduleInput,
+};
+
+export type MatchWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  teamA?: Maybe<TeamWhereInput>,
+  teamB?: Maybe<TeamWhereInput>,
+  schedule?: Maybe<ScheduleWhereInput>,
+  AND?: Maybe<Array<MatchWhereInput>>,
+  OR?: Maybe<Array<MatchWhereInput>>,
+  NOT?: Maybe<Array<MatchWhereInput>>,
+};
+
+export type MatchWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
-  createUser: User,
-  createTournament: Tournament,
-  createTeam: Team,
+  createMatch: Match,
+  updateMatch?: Maybe<Match>,
+  upsertMatch: Match,
+  deleteMatch?: Maybe<Match>,
+  deleteManyMatches: BatchPayload,
   createPlayer: Player,
-  updateUser?: Maybe<User>,
-  updateTournament?: Maybe<Tournament>,
-  updateTeam?: Maybe<Team>,
   updatePlayer?: Maybe<Player>,
-  deleteUser?: Maybe<User>,
-  deleteTournament?: Maybe<Tournament>,
-  deleteTeam?: Maybe<Team>,
-  deletePlayer?: Maybe<Player>,
-  upsertUser: User,
-  upsertTournament: Tournament,
-  upsertTeam: Team,
-  upsertPlayer: Player,
-  updateManyUsers: BatchPayload,
-  updateManyTournaments: BatchPayload,
-  updateManyTeams: BatchPayload,
   updateManyPlayers: BatchPayload,
-  deleteManyUsers: BatchPayload,
-  deleteManyTournaments: BatchPayload,
-  deleteManyTeams: BatchPayload,
+  upsertPlayer: Player,
+  deletePlayer?: Maybe<Player>,
   deleteManyPlayers: BatchPayload,
+  createSchedule: Schedule,
+  updateSchedule?: Maybe<Schedule>,
+  updateManySchedules: BatchPayload,
+  upsertSchedule: Schedule,
+  deleteSchedule?: Maybe<Schedule>,
+  deleteManySchedules: BatchPayload,
+  createSeason: Season,
+  updateSeason?: Maybe<Season>,
+  updateManySeasons: BatchPayload,
+  upsertSeason: Season,
+  deleteSeason?: Maybe<Season>,
+  deleteManySeasons: BatchPayload,
+  createTeam: Team,
+  updateTeam?: Maybe<Team>,
+  updateManyTeams: BatchPayload,
+  upsertTeam: Team,
+  deleteTeam?: Maybe<Team>,
+  deleteManyTeams: BatchPayload,
+  createTournament: Tournament,
+  updateTournament?: Maybe<Tournament>,
+  updateManyTournaments: BatchPayload,
+  upsertTournament: Tournament,
+  deleteTournament?: Maybe<Tournament>,
+  deleteManyTournaments: BatchPayload,
+  createUser: User,
+  updateUser?: Maybe<User>,
+  updateManyUsers: BatchPayload,
+  upsertUser: User,
+  deleteUser?: Maybe<User>,
+  deleteManyUsers: BatchPayload,
 };
 
 
-export type MutationCreateUserArgs = {
-  data: UserCreateInput
+export type MutationCreateMatchArgs = {
+  data: MatchCreateInput
 };
 
 
-export type MutationCreateTournamentArgs = {
-  data: TournamentCreateInput
+export type MutationUpdateMatchArgs = {
+  data: MatchUpdateInput,
+  where: MatchWhereUniqueInput
 };
 
 
-export type MutationCreateTeamArgs = {
-  data: TeamCreateInput
+export type MutationUpsertMatchArgs = {
+  where: MatchWhereUniqueInput,
+  create: MatchCreateInput,
+  update: MatchUpdateInput
+};
+
+
+export type MutationDeleteMatchArgs = {
+  where: MatchWhereUniqueInput
+};
+
+
+export type MutationDeleteManyMatchesArgs = {
+  where?: Maybe<MatchWhereInput>
 };
 
 
 export type MutationCreatePlayerArgs = {
   data: PlayerCreateInput
-};
-
-
-export type MutationUpdateUserArgs = {
-  data: UserUpdateInput,
-  where: UserWhereUniqueInput
-};
-
-
-export type MutationUpdateTournamentArgs = {
-  data: TournamentUpdateInput,
-  where: TournamentWhereUniqueInput
-};
-
-
-export type MutationUpdateTeamArgs = {
-  data: TeamUpdateInput,
-  where: TeamWhereUniqueInput
 };
 
 
@@ -116,44 +291,9 @@ export type MutationUpdatePlayerArgs = {
 };
 
 
-export type MutationDeleteUserArgs = {
-  where: UserWhereUniqueInput
-};
-
-
-export type MutationDeleteTournamentArgs = {
-  where: TournamentWhereUniqueInput
-};
-
-
-export type MutationDeleteTeamArgs = {
-  where: TeamWhereUniqueInput
-};
-
-
-export type MutationDeletePlayerArgs = {
-  where: PlayerWhereUniqueInput
-};
-
-
-export type MutationUpsertUserArgs = {
-  where: UserWhereUniqueInput,
-  create: UserCreateInput,
-  update: UserUpdateInput
-};
-
-
-export type MutationUpsertTournamentArgs = {
-  where: TournamentWhereUniqueInput,
-  create: TournamentCreateInput,
-  update: TournamentUpdateInput
-};
-
-
-export type MutationUpsertTeamArgs = {
-  where: TeamWhereUniqueInput,
-  create: TeamCreateInput,
-  update: TeamUpdateInput
+export type MutationUpdateManyPlayersArgs = {
+  data: PlayerUpdateManyMutationInput,
+  where?: Maybe<PlayerWhereInput>
 };
 
 
@@ -164,15 +304,92 @@ export type MutationUpsertPlayerArgs = {
 };
 
 
-export type MutationUpdateManyUsersArgs = {
-  data: UserUpdateManyMutationInput,
-  where?: Maybe<UserWhereInput>
+export type MutationDeletePlayerArgs = {
+  where: PlayerWhereUniqueInput
 };
 
 
-export type MutationUpdateManyTournamentsArgs = {
-  data: TournamentUpdateManyMutationInput,
-  where?: Maybe<TournamentWhereInput>
+export type MutationDeleteManyPlayersArgs = {
+  where?: Maybe<PlayerWhereInput>
+};
+
+
+export type MutationCreateScheduleArgs = {
+  data: ScheduleCreateInput
+};
+
+
+export type MutationUpdateScheduleArgs = {
+  data: ScheduleUpdateInput,
+  where: ScheduleWhereUniqueInput
+};
+
+
+export type MutationUpdateManySchedulesArgs = {
+  data: ScheduleUpdateManyMutationInput,
+  where?: Maybe<ScheduleWhereInput>
+};
+
+
+export type MutationUpsertScheduleArgs = {
+  where: ScheduleWhereUniqueInput,
+  create: ScheduleCreateInput,
+  update: ScheduleUpdateInput
+};
+
+
+export type MutationDeleteScheduleArgs = {
+  where: ScheduleWhereUniqueInput
+};
+
+
+export type MutationDeleteManySchedulesArgs = {
+  where?: Maybe<ScheduleWhereInput>
+};
+
+
+export type MutationCreateSeasonArgs = {
+  data: SeasonCreateInput
+};
+
+
+export type MutationUpdateSeasonArgs = {
+  data: SeasonUpdateInput,
+  where: SeasonWhereUniqueInput
+};
+
+
+export type MutationUpdateManySeasonsArgs = {
+  data: SeasonUpdateManyMutationInput,
+  where?: Maybe<SeasonWhereInput>
+};
+
+
+export type MutationUpsertSeasonArgs = {
+  where: SeasonWhereUniqueInput,
+  create: SeasonCreateInput,
+  update: SeasonUpdateInput
+};
+
+
+export type MutationDeleteSeasonArgs = {
+  where: SeasonWhereUniqueInput
+};
+
+
+export type MutationDeleteManySeasonsArgs = {
+  where?: Maybe<SeasonWhereInput>
+};
+
+
+export type MutationCreateTeamArgs = {
+  data: TeamCreateInput
+};
+
+
+export type MutationUpdateTeamArgs = {
+  data: TeamUpdateInput,
+  where: TeamWhereUniqueInput
 };
 
 
@@ -182,19 +399,15 @@ export type MutationUpdateManyTeamsArgs = {
 };
 
 
-export type MutationUpdateManyPlayersArgs = {
-  data: PlayerUpdateManyMutationInput,
-  where?: Maybe<PlayerWhereInput>
+export type MutationUpsertTeamArgs = {
+  where: TeamWhereUniqueInput,
+  create: TeamCreateInput,
+  update: TeamUpdateInput
 };
 
 
-export type MutationDeleteManyUsersArgs = {
-  where?: Maybe<UserWhereInput>
-};
-
-
-export type MutationDeleteManyTournamentsArgs = {
-  where?: Maybe<TournamentWhereInput>
+export type MutationDeleteTeamArgs = {
+  where: TeamWhereUniqueInput
 };
 
 
@@ -203,8 +416,71 @@ export type MutationDeleteManyTeamsArgs = {
 };
 
 
-export type MutationDeleteManyPlayersArgs = {
-  where?: Maybe<PlayerWhereInput>
+export type MutationCreateTournamentArgs = {
+  data: TournamentCreateInput
+};
+
+
+export type MutationUpdateTournamentArgs = {
+  data: TournamentUpdateInput,
+  where: TournamentWhereUniqueInput
+};
+
+
+export type MutationUpdateManyTournamentsArgs = {
+  data: TournamentUpdateManyMutationInput,
+  where?: Maybe<TournamentWhereInput>
+};
+
+
+export type MutationUpsertTournamentArgs = {
+  where: TournamentWhereUniqueInput,
+  create: TournamentCreateInput,
+  update: TournamentUpdateInput
+};
+
+
+export type MutationDeleteTournamentArgs = {
+  where: TournamentWhereUniqueInput
+};
+
+
+export type MutationDeleteManyTournamentsArgs = {
+  where?: Maybe<TournamentWhereInput>
+};
+
+
+export type MutationCreateUserArgs = {
+  data: UserCreateInput
+};
+
+
+export type MutationUpdateUserArgs = {
+  data: UserUpdateInput,
+  where: UserWhereUniqueInput
+};
+
+
+export type MutationUpdateManyUsersArgs = {
+  data: UserUpdateManyMutationInput,
+  where?: Maybe<UserWhereInput>
+};
+
+
+export type MutationUpsertUserArgs = {
+  where: UserWhereUniqueInput,
+  create: UserCreateInput,
+  update: UserUpdateInput
+};
+
+
+export type MutationDeleteUserArgs = {
+  where: UserWhereUniqueInput
+};
+
+
+export type MutationDeleteManyUsersArgs = {
+  where?: Maybe<UserWhereInput>
 };
 
 export enum MutationType {
@@ -225,7 +501,7 @@ export type PageInfo = {
   endCursor?: Maybe<Scalars['String']>,
 };
 
-export type Player = Node & {
+export type Player = {
    __typename?: 'Player',
   id: Scalars['ID'],
   name: Scalars['String'],
@@ -275,9 +551,6 @@ export type PlayerPreviousValues = {
 };
 
 export type PlayerScalarWhereInput = {
-  AND?: Maybe<Array<PlayerScalarWhereInput>>,
-  OR?: Maybe<Array<PlayerScalarWhereInput>>,
-  NOT?: Maybe<Array<PlayerScalarWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -306,6 +579,9 @@ export type PlayerScalarWhereInput = {
   name_not_starts_with?: Maybe<Scalars['String']>,
   name_ends_with?: Maybe<Scalars['String']>,
   name_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<PlayerScalarWhereInput>>,
+  OR?: Maybe<Array<PlayerScalarWhereInput>>,
+  NOT?: Maybe<Array<PlayerScalarWhereInput>>,
 };
 
 export type PlayerSubscriptionPayload = {
@@ -317,14 +593,14 @@ export type PlayerSubscriptionPayload = {
 };
 
 export type PlayerSubscriptionWhereInput = {
-  AND?: Maybe<Array<PlayerSubscriptionWhereInput>>,
-  OR?: Maybe<Array<PlayerSubscriptionWhereInput>>,
-  NOT?: Maybe<Array<PlayerSubscriptionWhereInput>>,
   mutation_in?: Maybe<Array<MutationType>>,
   updatedFields_contains?: Maybe<Scalars['String']>,
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
   node?: Maybe<PlayerWhereInput>,
+  AND?: Maybe<Array<PlayerSubscriptionWhereInput>>,
+  OR?: Maybe<Array<PlayerSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<PlayerSubscriptionWhereInput>>,
 };
 
 export type PlayerUpdateInput = {
@@ -342,14 +618,14 @@ export type PlayerUpdateManyMutationInput = {
 
 export type PlayerUpdateManyWithoutTeamInput = {
   create?: Maybe<Array<PlayerCreateWithoutTeamInput>>,
+  delete?: Maybe<Array<PlayerWhereUniqueInput>>,
   connect?: Maybe<Array<PlayerWhereUniqueInput>>,
   set?: Maybe<Array<PlayerWhereUniqueInput>>,
   disconnect?: Maybe<Array<PlayerWhereUniqueInput>>,
-  delete?: Maybe<Array<PlayerWhereUniqueInput>>,
   update?: Maybe<Array<PlayerUpdateWithWhereUniqueWithoutTeamInput>>,
-  updateMany?: Maybe<Array<PlayerUpdateManyWithWhereNestedInput>>,
-  deleteMany?: Maybe<Array<PlayerScalarWhereInput>>,
   upsert?: Maybe<Array<PlayerUpsertWithWhereUniqueWithoutTeamInput>>,
+  deleteMany?: Maybe<Array<PlayerScalarWhereInput>>,
+  updateMany?: Maybe<Array<PlayerUpdateManyWithWhereNestedInput>>,
 };
 
 export type PlayerUpdateManyWithWhereNestedInput = {
@@ -373,9 +649,6 @@ export type PlayerUpsertWithWhereUniqueWithoutTeamInput = {
 };
 
 export type PlayerWhereInput = {
-  AND?: Maybe<Array<PlayerWhereInput>>,
-  OR?: Maybe<Array<PlayerWhereInput>>,
-  NOT?: Maybe<Array<PlayerWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -405,6 +678,9 @@ export type PlayerWhereInput = {
   name_ends_with?: Maybe<Scalars['String']>,
   name_not_ends_with?: Maybe<Scalars['String']>,
   team?: Maybe<TeamWhereInput>,
+  AND?: Maybe<Array<PlayerWhereInput>>,
+  OR?: Maybe<Array<PlayerWhereInput>>,
+  NOT?: Maybe<Array<PlayerWhereInput>>,
 };
 
 export type PlayerWhereUniqueInput = {
@@ -413,25 +689,39 @@ export type PlayerWhereUniqueInput = {
 
 export type Query = {
    __typename?: 'Query',
-  users: Array<Maybe<User>>,
-  tournaments: Array<Maybe<Tournament>>,
-  teams: Array<Maybe<Team>>,
-  players: Array<Maybe<Player>>,
-  user?: Maybe<User>,
-  tournament?: Maybe<Tournament>,
-  team?: Maybe<Team>,
+  match?: Maybe<Match>,
+  matches: Array<Maybe<Match>>,
+  matchesConnection: MatchConnection,
   player?: Maybe<Player>,
-  usersConnection: UserConnection,
-  tournamentsConnection: TournamentConnection,
-  teamsConnection: TeamConnection,
+  players: Array<Maybe<Player>>,
   playersConnection: PlayerConnection,
+  schedule?: Maybe<Schedule>,
+  schedules: Array<Maybe<Schedule>>,
+  schedulesConnection: ScheduleConnection,
+  season?: Maybe<Season>,
+  seasons: Array<Maybe<Season>>,
+  seasonsConnection: SeasonConnection,
+  team?: Maybe<Team>,
+  teams: Array<Maybe<Team>>,
+  teamsConnection: TeamConnection,
+  tournament?: Maybe<Tournament>,
+  tournaments: Array<Maybe<Tournament>>,
+  tournamentsConnection: TournamentConnection,
+  user?: Maybe<User>,
+  users: Array<Maybe<User>>,
+  usersConnection: UserConnection,
   node?: Maybe<Node>,
 };
 
 
-export type QueryUsersArgs = {
-  where?: Maybe<UserWhereInput>,
-  orderBy?: Maybe<UserOrderByInput>,
+export type QueryMatchArgs = {
+  where: MatchWhereUniqueInput
+};
+
+
+export type QueryMatchesArgs = {
+  where?: Maybe<MatchWhereInput>,
+  orderBy?: Maybe<MatchOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -440,51 +730,14 @@ export type QueryUsersArgs = {
 };
 
 
-export type QueryTournamentsArgs = {
-  where?: Maybe<TournamentWhereInput>,
-  orderBy?: Maybe<TournamentOrderByInput>,
+export type QueryMatchesConnectionArgs = {
+  where?: Maybe<MatchWhereInput>,
+  orderBy?: Maybe<MatchOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
   first?: Maybe<Scalars['Int']>,
   last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryTeamsArgs = {
-  where?: Maybe<TeamWhereInput>,
-  orderBy?: Maybe<TeamOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryPlayersArgs = {
-  where?: Maybe<PlayerWhereInput>,
-  orderBy?: Maybe<PlayerOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryUserArgs = {
-  where: UserWhereUniqueInput
-};
-
-
-export type QueryTournamentArgs = {
-  where: TournamentWhereUniqueInput
-};
-
-
-export type QueryTeamArgs = {
-  where: TeamWhereUniqueInput
 };
 
 
@@ -493,31 +746,9 @@ export type QueryPlayerArgs = {
 };
 
 
-export type QueryUsersConnectionArgs = {
-  where?: Maybe<UserWhereInput>,
-  orderBy?: Maybe<UserOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryTournamentsConnectionArgs = {
-  where?: Maybe<TournamentWhereInput>,
-  orderBy?: Maybe<TournamentOrderByInput>,
-  skip?: Maybe<Scalars['Int']>,
-  after?: Maybe<Scalars['String']>,
-  before?: Maybe<Scalars['String']>,
-  first?: Maybe<Scalars['Int']>,
-  last?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryTeamsConnectionArgs = {
-  where?: Maybe<TeamWhereInput>,
-  orderBy?: Maybe<TeamOrderByInput>,
+export type QueryPlayersArgs = {
+  where?: Maybe<PlayerWhereInput>,
+  orderBy?: Maybe<PlayerOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -537,26 +768,628 @@ export type QueryPlayersConnectionArgs = {
 };
 
 
+export type QueryScheduleArgs = {
+  where: ScheduleWhereUniqueInput
+};
+
+
+export type QuerySchedulesArgs = {
+  where?: Maybe<ScheduleWhereInput>,
+  orderBy?: Maybe<ScheduleOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySchedulesConnectionArgs = {
+  where?: Maybe<ScheduleWhereInput>,
+  orderBy?: Maybe<ScheduleOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySeasonArgs = {
+  where: SeasonWhereUniqueInput
+};
+
+
+export type QuerySeasonsArgs = {
+  where?: Maybe<SeasonWhereInput>,
+  orderBy?: Maybe<SeasonOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QuerySeasonsConnectionArgs = {
+  where?: Maybe<SeasonWhereInput>,
+  orderBy?: Maybe<SeasonOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTeamArgs = {
+  where: TeamWhereUniqueInput
+};
+
+
+export type QueryTeamsArgs = {
+  where?: Maybe<TeamWhereInput>,
+  orderBy?: Maybe<TeamOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTeamsConnectionArgs = {
+  where?: Maybe<TeamWhereInput>,
+  orderBy?: Maybe<TeamOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentArgs = {
+  where: TournamentWhereUniqueInput
+};
+
+
+export type QueryTournamentsArgs = {
+  where?: Maybe<TournamentWhereInput>,
+  orderBy?: Maybe<TournamentOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryTournamentsConnectionArgs = {
+  where?: Maybe<TournamentWhereInput>,
+  orderBy?: Maybe<TournamentOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryUserArgs = {
+  where: UserWhereUniqueInput
+};
+
+
+export type QueryUsersArgs = {
+  where?: Maybe<UserWhereInput>,
+  orderBy?: Maybe<UserOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryUsersConnectionArgs = {
+  where?: Maybe<UserWhereInput>,
+  orderBy?: Maybe<UserOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
 export type QueryNodeArgs = {
   id: Scalars['ID']
 };
 
+export type Schedule = {
+   __typename?: 'Schedule',
+  id: Scalars['ID'],
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<Array<Match>>,
+  season: Season,
+};
+
+
+export type ScheduleMatchesArgs = {
+  where?: Maybe<MatchWhereInput>,
+  orderBy?: Maybe<MatchOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+export type ScheduleConnection = {
+   __typename?: 'ScheduleConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<ScheduleEdge>>,
+  aggregate: AggregateSchedule,
+};
+
+export type ScheduleCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<MatchCreateManyWithoutScheduleInput>,
+  season: SeasonCreateOneWithoutSchedulesInput,
+};
+
+export type ScheduleCreateManyWithoutSeasonInput = {
+  create?: Maybe<Array<ScheduleCreateWithoutSeasonInput>>,
+  connect?: Maybe<Array<ScheduleWhereUniqueInput>>,
+};
+
+export type ScheduleCreateOneWithoutMatchesInput = {
+  create?: Maybe<ScheduleCreateWithoutMatchesInput>,
+  connect?: Maybe<ScheduleWhereUniqueInput>,
+};
+
+export type ScheduleCreateWithoutMatchesInput = {
+  id?: Maybe<Scalars['ID']>,
+  week?: Maybe<Scalars['Int']>,
+  season: SeasonCreateOneWithoutSchedulesInput,
+};
+
+export type ScheduleCreateWithoutSeasonInput = {
+  id?: Maybe<Scalars['ID']>,
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<MatchCreateManyWithoutScheduleInput>,
+};
+
+export type ScheduleEdge = {
+   __typename?: 'ScheduleEdge',
+  node: Schedule,
+  cursor: Scalars['String'],
+};
+
+export enum ScheduleOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  WeekAsc = 'week_ASC',
+  WeekDesc = 'week_DESC'
+}
+
+export type SchedulePreviousValues = {
+   __typename?: 'SchedulePreviousValues',
+  id: Scalars['ID'],
+  week?: Maybe<Scalars['Int']>,
+};
+
+export type ScheduleScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  week?: Maybe<Scalars['Int']>,
+  week_not?: Maybe<Scalars['Int']>,
+  week_in?: Maybe<Array<Scalars['Int']>>,
+  week_not_in?: Maybe<Array<Scalars['Int']>>,
+  week_lt?: Maybe<Scalars['Int']>,
+  week_lte?: Maybe<Scalars['Int']>,
+  week_gt?: Maybe<Scalars['Int']>,
+  week_gte?: Maybe<Scalars['Int']>,
+  AND?: Maybe<Array<ScheduleScalarWhereInput>>,
+  OR?: Maybe<Array<ScheduleScalarWhereInput>>,
+  NOT?: Maybe<Array<ScheduleScalarWhereInput>>,
+};
+
+export type ScheduleSubscriptionPayload = {
+   __typename?: 'ScheduleSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Schedule>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SchedulePreviousValues>,
+};
+
+export type ScheduleSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<ScheduleWhereInput>,
+  AND?: Maybe<Array<ScheduleSubscriptionWhereInput>>,
+  OR?: Maybe<Array<ScheduleSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<ScheduleSubscriptionWhereInput>>,
+};
+
+export type ScheduleUpdateInput = {
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<MatchUpdateManyWithoutScheduleInput>,
+  season?: Maybe<SeasonUpdateOneRequiredWithoutSchedulesInput>,
+};
+
+export type ScheduleUpdateManyDataInput = {
+  week?: Maybe<Scalars['Int']>,
+};
+
+export type ScheduleUpdateManyMutationInput = {
+  week?: Maybe<Scalars['Int']>,
+};
+
+export type ScheduleUpdateManyWithoutSeasonInput = {
+  create?: Maybe<Array<ScheduleCreateWithoutSeasonInput>>,
+  delete?: Maybe<Array<ScheduleWhereUniqueInput>>,
+  connect?: Maybe<Array<ScheduleWhereUniqueInput>>,
+  set?: Maybe<Array<ScheduleWhereUniqueInput>>,
+  disconnect?: Maybe<Array<ScheduleWhereUniqueInput>>,
+  update?: Maybe<Array<ScheduleUpdateWithWhereUniqueWithoutSeasonInput>>,
+  upsert?: Maybe<Array<ScheduleUpsertWithWhereUniqueWithoutSeasonInput>>,
+  deleteMany?: Maybe<Array<ScheduleScalarWhereInput>>,
+  updateMany?: Maybe<Array<ScheduleUpdateManyWithWhereNestedInput>>,
+};
+
+export type ScheduleUpdateManyWithWhereNestedInput = {
+  where: ScheduleScalarWhereInput,
+  data: ScheduleUpdateManyDataInput,
+};
+
+export type ScheduleUpdateOneRequiredWithoutMatchesInput = {
+  create?: Maybe<ScheduleCreateWithoutMatchesInput>,
+  update?: Maybe<ScheduleUpdateWithoutMatchesDataInput>,
+  upsert?: Maybe<ScheduleUpsertWithoutMatchesInput>,
+  connect?: Maybe<ScheduleWhereUniqueInput>,
+};
+
+export type ScheduleUpdateWithoutMatchesDataInput = {
+  week?: Maybe<Scalars['Int']>,
+  season?: Maybe<SeasonUpdateOneRequiredWithoutSchedulesInput>,
+};
+
+export type ScheduleUpdateWithoutSeasonDataInput = {
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<MatchUpdateManyWithoutScheduleInput>,
+};
+
+export type ScheduleUpdateWithWhereUniqueWithoutSeasonInput = {
+  where: ScheduleWhereUniqueInput,
+  data: ScheduleUpdateWithoutSeasonDataInput,
+};
+
+export type ScheduleUpsertWithoutMatchesInput = {
+  update: ScheduleUpdateWithoutMatchesDataInput,
+  create: ScheduleCreateWithoutMatchesInput,
+};
+
+export type ScheduleUpsertWithWhereUniqueWithoutSeasonInput = {
+  where: ScheduleWhereUniqueInput,
+  update: ScheduleUpdateWithoutSeasonDataInput,
+  create: ScheduleCreateWithoutSeasonInput,
+};
+
+export type ScheduleWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  week?: Maybe<Scalars['Int']>,
+  week_not?: Maybe<Scalars['Int']>,
+  week_in?: Maybe<Array<Scalars['Int']>>,
+  week_not_in?: Maybe<Array<Scalars['Int']>>,
+  week_lt?: Maybe<Scalars['Int']>,
+  week_lte?: Maybe<Scalars['Int']>,
+  week_gt?: Maybe<Scalars['Int']>,
+  week_gte?: Maybe<Scalars['Int']>,
+  matches_every?: Maybe<MatchWhereInput>,
+  matches_some?: Maybe<MatchWhereInput>,
+  matches_none?: Maybe<MatchWhereInput>,
+  season?: Maybe<SeasonWhereInput>,
+  AND?: Maybe<Array<ScheduleWhereInput>>,
+  OR?: Maybe<Array<ScheduleWhereInput>>,
+  NOT?: Maybe<Array<ScheduleWhereInput>>,
+};
+
+export type ScheduleWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
+export type Season = {
+   __typename?: 'Season',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  schedules?: Maybe<Array<Schedule>>,
+  tournament: Tournament,
+};
+
+
+export type SeasonSchedulesArgs = {
+  where?: Maybe<ScheduleWhereInput>,
+  orderBy?: Maybe<ScheduleOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+export type SeasonConnection = {
+   __typename?: 'SeasonConnection',
+  pageInfo: PageInfo,
+  edges: Array<Maybe<SeasonEdge>>,
+  aggregate: AggregateSeason,
+};
+
+export type SeasonCreateInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  schedules?: Maybe<ScheduleCreateManyWithoutSeasonInput>,
+  tournament: TournamentCreateOneWithoutSeasonsInput,
+};
+
+export type SeasonCreateManyWithoutTournamentInput = {
+  create?: Maybe<Array<SeasonCreateWithoutTournamentInput>>,
+  connect?: Maybe<Array<SeasonWhereUniqueInput>>,
+};
+
+export type SeasonCreateOneWithoutSchedulesInput = {
+  create?: Maybe<SeasonCreateWithoutSchedulesInput>,
+  connect?: Maybe<SeasonWhereUniqueInput>,
+};
+
+export type SeasonCreateWithoutSchedulesInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  tournament: TournamentCreateOneWithoutSeasonsInput,
+};
+
+export type SeasonCreateWithoutTournamentInput = {
+  id?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  schedules?: Maybe<ScheduleCreateManyWithoutSeasonInput>,
+};
+
+export type SeasonEdge = {
+   __typename?: 'SeasonEdge',
+  node: Season,
+  cursor: Scalars['String'],
+};
+
+export enum SeasonOrderByInput {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC'
+}
+
+export type SeasonPreviousValues = {
+   __typename?: 'SeasonPreviousValues',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+};
+
+export type SeasonScalarWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<SeasonScalarWhereInput>>,
+  OR?: Maybe<Array<SeasonScalarWhereInput>>,
+  NOT?: Maybe<Array<SeasonScalarWhereInput>>,
+};
+
+export type SeasonSubscriptionPayload = {
+   __typename?: 'SeasonSubscriptionPayload',
+  mutation: MutationType,
+  node?: Maybe<Season>,
+  updatedFields?: Maybe<Array<Scalars['String']>>,
+  previousValues?: Maybe<SeasonPreviousValues>,
+};
+
+export type SeasonSubscriptionWhereInput = {
+  mutation_in?: Maybe<Array<MutationType>>,
+  updatedFields_contains?: Maybe<Scalars['String']>,
+  updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
+  updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
+  node?: Maybe<SeasonWhereInput>,
+  AND?: Maybe<Array<SeasonSubscriptionWhereInput>>,
+  OR?: Maybe<Array<SeasonSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<SeasonSubscriptionWhereInput>>,
+};
+
+export type SeasonUpdateInput = {
+  name?: Maybe<Scalars['String']>,
+  schedules?: Maybe<ScheduleUpdateManyWithoutSeasonInput>,
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSeasonsInput>,
+};
+
+export type SeasonUpdateManyDataInput = {
+  name?: Maybe<Scalars['String']>,
+};
+
+export type SeasonUpdateManyMutationInput = {
+  name?: Maybe<Scalars['String']>,
+};
+
+export type SeasonUpdateManyWithoutTournamentInput = {
+  create?: Maybe<Array<SeasonCreateWithoutTournamentInput>>,
+  delete?: Maybe<Array<SeasonWhereUniqueInput>>,
+  connect?: Maybe<Array<SeasonWhereUniqueInput>>,
+  set?: Maybe<Array<SeasonWhereUniqueInput>>,
+  disconnect?: Maybe<Array<SeasonWhereUniqueInput>>,
+  update?: Maybe<Array<SeasonUpdateWithWhereUniqueWithoutTournamentInput>>,
+  upsert?: Maybe<Array<SeasonUpsertWithWhereUniqueWithoutTournamentInput>>,
+  deleteMany?: Maybe<Array<SeasonScalarWhereInput>>,
+  updateMany?: Maybe<Array<SeasonUpdateManyWithWhereNestedInput>>,
+};
+
+export type SeasonUpdateManyWithWhereNestedInput = {
+  where: SeasonScalarWhereInput,
+  data: SeasonUpdateManyDataInput,
+};
+
+export type SeasonUpdateOneRequiredWithoutSchedulesInput = {
+  create?: Maybe<SeasonCreateWithoutSchedulesInput>,
+  update?: Maybe<SeasonUpdateWithoutSchedulesDataInput>,
+  upsert?: Maybe<SeasonUpsertWithoutSchedulesInput>,
+  connect?: Maybe<SeasonWhereUniqueInput>,
+};
+
+export type SeasonUpdateWithoutSchedulesDataInput = {
+  name?: Maybe<Scalars['String']>,
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutSeasonsInput>,
+};
+
+export type SeasonUpdateWithoutTournamentDataInput = {
+  name?: Maybe<Scalars['String']>,
+  schedules?: Maybe<ScheduleUpdateManyWithoutSeasonInput>,
+};
+
+export type SeasonUpdateWithWhereUniqueWithoutTournamentInput = {
+  where: SeasonWhereUniqueInput,
+  data: SeasonUpdateWithoutTournamentDataInput,
+};
+
+export type SeasonUpsertWithoutSchedulesInput = {
+  update: SeasonUpdateWithoutSchedulesDataInput,
+  create: SeasonCreateWithoutSchedulesInput,
+};
+
+export type SeasonUpsertWithWhereUniqueWithoutTournamentInput = {
+  where: SeasonWhereUniqueInput,
+  update: SeasonUpdateWithoutTournamentDataInput,
+  create: SeasonCreateWithoutTournamentInput,
+};
+
+export type SeasonWhereInput = {
+  id?: Maybe<Scalars['ID']>,
+  id_not?: Maybe<Scalars['ID']>,
+  id_in?: Maybe<Array<Scalars['ID']>>,
+  id_not_in?: Maybe<Array<Scalars['ID']>>,
+  id_lt?: Maybe<Scalars['ID']>,
+  id_lte?: Maybe<Scalars['ID']>,
+  id_gt?: Maybe<Scalars['ID']>,
+  id_gte?: Maybe<Scalars['ID']>,
+  id_contains?: Maybe<Scalars['ID']>,
+  id_not_contains?: Maybe<Scalars['ID']>,
+  id_starts_with?: Maybe<Scalars['ID']>,
+  id_not_starts_with?: Maybe<Scalars['ID']>,
+  id_ends_with?: Maybe<Scalars['ID']>,
+  id_not_ends_with?: Maybe<Scalars['ID']>,
+  name?: Maybe<Scalars['String']>,
+  name_not?: Maybe<Scalars['String']>,
+  name_in?: Maybe<Array<Scalars['String']>>,
+  name_not_in?: Maybe<Array<Scalars['String']>>,
+  name_lt?: Maybe<Scalars['String']>,
+  name_lte?: Maybe<Scalars['String']>,
+  name_gt?: Maybe<Scalars['String']>,
+  name_gte?: Maybe<Scalars['String']>,
+  name_contains?: Maybe<Scalars['String']>,
+  name_not_contains?: Maybe<Scalars['String']>,
+  name_starts_with?: Maybe<Scalars['String']>,
+  name_not_starts_with?: Maybe<Scalars['String']>,
+  name_ends_with?: Maybe<Scalars['String']>,
+  name_not_ends_with?: Maybe<Scalars['String']>,
+  schedules_every?: Maybe<ScheduleWhereInput>,
+  schedules_some?: Maybe<ScheduleWhereInput>,
+  schedules_none?: Maybe<ScheduleWhereInput>,
+  tournament?: Maybe<TournamentWhereInput>,
+  AND?: Maybe<Array<SeasonWhereInput>>,
+  OR?: Maybe<Array<SeasonWhereInput>>,
+  NOT?: Maybe<Array<SeasonWhereInput>>,
+};
+
+export type SeasonWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>,
+};
+
 export type Subscription = {
    __typename?: 'Subscription',
-  user?: Maybe<UserSubscriptionPayload>,
-  tournament?: Maybe<TournamentSubscriptionPayload>,
-  team?: Maybe<TeamSubscriptionPayload>,
+  match?: Maybe<MatchSubscriptionPayload>,
   player?: Maybe<PlayerSubscriptionPayload>,
+  schedule?: Maybe<ScheduleSubscriptionPayload>,
+  season?: Maybe<SeasonSubscriptionPayload>,
+  team?: Maybe<TeamSubscriptionPayload>,
+  tournament?: Maybe<TournamentSubscriptionPayload>,
+  user?: Maybe<UserSubscriptionPayload>,
 };
 
 
-export type SubscriptionUserArgs = {
-  where?: Maybe<UserSubscriptionWhereInput>
+export type SubscriptionMatchArgs = {
+  where?: Maybe<MatchSubscriptionWhereInput>
 };
 
 
-export type SubscriptionTournamentArgs = {
-  where?: Maybe<TournamentSubscriptionWhereInput>
+export type SubscriptionPlayerArgs = {
+  where?: Maybe<PlayerSubscriptionWhereInput>
+};
+
+
+export type SubscriptionScheduleArgs = {
+  where?: Maybe<ScheduleSubscriptionWhereInput>
+};
+
+
+export type SubscriptionSeasonArgs = {
+  where?: Maybe<SeasonSubscriptionWhereInput>
 };
 
 
@@ -565,11 +1398,16 @@ export type SubscriptionTeamArgs = {
 };
 
 
-export type SubscriptionPlayerArgs = {
-  where?: Maybe<PlayerSubscriptionWhereInput>
+export type SubscriptionTournamentArgs = {
+  where?: Maybe<TournamentSubscriptionWhereInput>
 };
 
-export type Team = Node & {
+
+export type SubscriptionUserArgs = {
+  where?: Maybe<UserSubscriptionWhereInput>
+};
+
+export type Team = {
    __typename?: 'Team',
   id: Scalars['ID'],
   name: Scalars['String'],
@@ -605,6 +1443,11 @@ export type TeamCreateInput = {
 export type TeamCreateManyWithoutTournamentInput = {
   create?: Maybe<Array<TeamCreateWithoutTournamentInput>>,
   connect?: Maybe<Array<TeamWhereUniqueInput>>,
+};
+
+export type TeamCreateOneInput = {
+  create?: Maybe<TeamCreateInput>,
+  connect?: Maybe<TeamWhereUniqueInput>,
 };
 
 export type TeamCreateOneWithoutPlayersInput = {
@@ -644,9 +1487,6 @@ export type TeamPreviousValues = {
 };
 
 export type TeamScalarWhereInput = {
-  AND?: Maybe<Array<TeamScalarWhereInput>>,
-  OR?: Maybe<Array<TeamScalarWhereInput>>,
-  NOT?: Maybe<Array<TeamScalarWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -675,6 +1515,9 @@ export type TeamScalarWhereInput = {
   name_not_starts_with?: Maybe<Scalars['String']>,
   name_ends_with?: Maybe<Scalars['String']>,
   name_not_ends_with?: Maybe<Scalars['String']>,
+  AND?: Maybe<Array<TeamScalarWhereInput>>,
+  OR?: Maybe<Array<TeamScalarWhereInput>>,
+  NOT?: Maybe<Array<TeamScalarWhereInput>>,
 };
 
 export type TeamSubscriptionPayload = {
@@ -686,14 +1529,20 @@ export type TeamSubscriptionPayload = {
 };
 
 export type TeamSubscriptionWhereInput = {
-  AND?: Maybe<Array<TeamSubscriptionWhereInput>>,
-  OR?: Maybe<Array<TeamSubscriptionWhereInput>>,
-  NOT?: Maybe<Array<TeamSubscriptionWhereInput>>,
   mutation_in?: Maybe<Array<MutationType>>,
   updatedFields_contains?: Maybe<Scalars['String']>,
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
   node?: Maybe<TeamWhereInput>,
+  AND?: Maybe<Array<TeamSubscriptionWhereInput>>,
+  OR?: Maybe<Array<TeamSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<TeamSubscriptionWhereInput>>,
+};
+
+export type TeamUpdateDataInput = {
+  name?: Maybe<Scalars['String']>,
+  tournament?: Maybe<TournamentUpdateOneRequiredWithoutTeamsInput>,
+  players?: Maybe<PlayerUpdateManyWithoutTeamInput>,
 };
 
 export type TeamUpdateInput = {
@@ -712,14 +1561,14 @@ export type TeamUpdateManyMutationInput = {
 
 export type TeamUpdateManyWithoutTournamentInput = {
   create?: Maybe<Array<TeamCreateWithoutTournamentInput>>,
+  delete?: Maybe<Array<TeamWhereUniqueInput>>,
   connect?: Maybe<Array<TeamWhereUniqueInput>>,
   set?: Maybe<Array<TeamWhereUniqueInput>>,
   disconnect?: Maybe<Array<TeamWhereUniqueInput>>,
-  delete?: Maybe<Array<TeamWhereUniqueInput>>,
   update?: Maybe<Array<TeamUpdateWithWhereUniqueWithoutTournamentInput>>,
-  updateMany?: Maybe<Array<TeamUpdateManyWithWhereNestedInput>>,
-  deleteMany?: Maybe<Array<TeamScalarWhereInput>>,
   upsert?: Maybe<Array<TeamUpsertWithWhereUniqueWithoutTournamentInput>>,
+  deleteMany?: Maybe<Array<TeamScalarWhereInput>>,
+  updateMany?: Maybe<Array<TeamUpdateManyWithWhereNestedInput>>,
 };
 
 export type TeamUpdateManyWithWhereNestedInput = {
@@ -727,11 +1576,18 @@ export type TeamUpdateManyWithWhereNestedInput = {
   data: TeamUpdateManyDataInput,
 };
 
+export type TeamUpdateOneRequiredInput = {
+  create?: Maybe<TeamCreateInput>,
+  update?: Maybe<TeamUpdateDataInput>,
+  upsert?: Maybe<TeamUpsertNestedInput>,
+  connect?: Maybe<TeamWhereUniqueInput>,
+};
+
 export type TeamUpdateOneRequiredWithoutPlayersInput = {
   create?: Maybe<TeamCreateWithoutPlayersInput>,
-  connect?: Maybe<TeamWhereUniqueInput>,
   update?: Maybe<TeamUpdateWithoutPlayersDataInput>,
   upsert?: Maybe<TeamUpsertWithoutPlayersInput>,
+  connect?: Maybe<TeamWhereUniqueInput>,
 };
 
 export type TeamUpdateWithoutPlayersDataInput = {
@@ -749,6 +1605,11 @@ export type TeamUpdateWithWhereUniqueWithoutTournamentInput = {
   data: TeamUpdateWithoutTournamentDataInput,
 };
 
+export type TeamUpsertNestedInput = {
+  update: TeamUpdateDataInput,
+  create: TeamCreateInput,
+};
+
 export type TeamUpsertWithoutPlayersInput = {
   update: TeamUpdateWithoutPlayersDataInput,
   create: TeamCreateWithoutPlayersInput,
@@ -761,9 +1622,6 @@ export type TeamUpsertWithWhereUniqueWithoutTournamentInput = {
 };
 
 export type TeamWhereInput = {
-  AND?: Maybe<Array<TeamWhereInput>>,
-  OR?: Maybe<Array<TeamWhereInput>>,
-  NOT?: Maybe<Array<TeamWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -796,13 +1654,16 @@ export type TeamWhereInput = {
   players_every?: Maybe<PlayerWhereInput>,
   players_some?: Maybe<PlayerWhereInput>,
   players_none?: Maybe<PlayerWhereInput>,
+  AND?: Maybe<Array<TeamWhereInput>>,
+  OR?: Maybe<Array<TeamWhereInput>>,
+  NOT?: Maybe<Array<TeamWhereInput>>,
 };
 
 export type TeamWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>,
 };
 
-export type Tournament = Node & {
+export type Tournament = {
    __typename?: 'Tournament',
   id: Scalars['ID'],
   owner: User,
@@ -811,12 +1672,24 @@ export type Tournament = Node & {
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
   teams?: Maybe<Array<Team>>,
+  seasons?: Maybe<Array<Season>>,
 };
 
 
 export type TournamentTeamsArgs = {
   where?: Maybe<TeamWhereInput>,
   orderBy?: Maybe<TeamOrderByInput>,
+  skip?: Maybe<Scalars['Int']>,
+  after?: Maybe<Scalars['String']>,
+  before?: Maybe<Scalars['String']>,
+  first?: Maybe<Scalars['Int']>,
+  last?: Maybe<Scalars['Int']>
+};
+
+
+export type TournamentSeasonsArgs = {
+  where?: Maybe<SeasonWhereInput>,
+  orderBy?: Maybe<SeasonOrderByInput>,
   skip?: Maybe<Scalars['Int']>,
   after?: Maybe<Scalars['String']>,
   before?: Maybe<Scalars['String']>,
@@ -833,17 +1706,23 @@ export type TournamentConnection = {
 
 export type TournamentCreateInput = {
   id?: Maybe<Scalars['ID']>,
+  owner: UserCreateOneWithoutTournamentsInput,
   name: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
-  owner: UserCreateOneWithoutTournamentsInput,
   teams?: Maybe<TeamCreateManyWithoutTournamentInput>,
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>,
 };
 
 export type TournamentCreateManyWithoutOwnerInput = {
   create?: Maybe<Array<TournamentCreateWithoutOwnerInput>>,
   connect?: Maybe<Array<TournamentWhereUniqueInput>>,
+};
+
+export type TournamentCreateOneWithoutSeasonsInput = {
+  create?: Maybe<TournamentCreateWithoutSeasonsInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
 };
 
 export type TournamentCreateOneWithoutTeamsInput = {
@@ -858,15 +1737,27 @@ export type TournamentCreateWithoutOwnerInput = {
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
   teams?: Maybe<TeamCreateManyWithoutTournamentInput>,
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>,
 };
 
-export type TournamentCreateWithoutTeamsInput = {
+export type TournamentCreateWithoutSeasonsInput = {
   id?: Maybe<Scalars['ID']>,
+  owner: UserCreateOneWithoutTournamentsInput,
   name: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
+  teams?: Maybe<TeamCreateManyWithoutTournamentInput>,
+};
+
+export type TournamentCreateWithoutTeamsInput = {
+  id?: Maybe<Scalars['ID']>,
   owner: UserCreateOneWithoutTournamentsInput,
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['DateTime']>,
+  end?: Maybe<Scalars['DateTime']>,
+  seasons?: Maybe<SeasonCreateManyWithoutTournamentInput>,
 };
 
 export type TournamentEdge = {
@@ -898,9 +1789,6 @@ export type TournamentPreviousValues = {
 };
 
 export type TournamentScalarWhereInput = {
-  AND?: Maybe<Array<TournamentScalarWhereInput>>,
-  OR?: Maybe<Array<TournamentScalarWhereInput>>,
-  NOT?: Maybe<Array<TournamentScalarWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -959,6 +1847,9 @@ export type TournamentScalarWhereInput = {
   end_lte?: Maybe<Scalars['DateTime']>,
   end_gt?: Maybe<Scalars['DateTime']>,
   end_gte?: Maybe<Scalars['DateTime']>,
+  AND?: Maybe<Array<TournamentScalarWhereInput>>,
+  OR?: Maybe<Array<TournamentScalarWhereInput>>,
+  NOT?: Maybe<Array<TournamentScalarWhereInput>>,
 };
 
 export type TournamentSubscriptionPayload = {
@@ -970,23 +1861,24 @@ export type TournamentSubscriptionPayload = {
 };
 
 export type TournamentSubscriptionWhereInput = {
-  AND?: Maybe<Array<TournamentSubscriptionWhereInput>>,
-  OR?: Maybe<Array<TournamentSubscriptionWhereInput>>,
-  NOT?: Maybe<Array<TournamentSubscriptionWhereInput>>,
   mutation_in?: Maybe<Array<MutationType>>,
   updatedFields_contains?: Maybe<Scalars['String']>,
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
   node?: Maybe<TournamentWhereInput>,
+  AND?: Maybe<Array<TournamentSubscriptionWhereInput>>,
+  OR?: Maybe<Array<TournamentSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<TournamentSubscriptionWhereInput>>,
 };
 
 export type TournamentUpdateInput = {
+  owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>,
   name?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
-  owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>,
   teams?: Maybe<TeamUpdateManyWithoutTournamentInput>,
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>,
 };
 
 export type TournamentUpdateManyDataInput = {
@@ -1005,14 +1897,14 @@ export type TournamentUpdateManyMutationInput = {
 
 export type TournamentUpdateManyWithoutOwnerInput = {
   create?: Maybe<Array<TournamentCreateWithoutOwnerInput>>,
+  delete?: Maybe<Array<TournamentWhereUniqueInput>>,
   connect?: Maybe<Array<TournamentWhereUniqueInput>>,
   set?: Maybe<Array<TournamentWhereUniqueInput>>,
   disconnect?: Maybe<Array<TournamentWhereUniqueInput>>,
-  delete?: Maybe<Array<TournamentWhereUniqueInput>>,
   update?: Maybe<Array<TournamentUpdateWithWhereUniqueWithoutOwnerInput>>,
-  updateMany?: Maybe<Array<TournamentUpdateManyWithWhereNestedInput>>,
-  deleteMany?: Maybe<Array<TournamentScalarWhereInput>>,
   upsert?: Maybe<Array<TournamentUpsertWithWhereUniqueWithoutOwnerInput>>,
+  deleteMany?: Maybe<Array<TournamentScalarWhereInput>>,
+  updateMany?: Maybe<Array<TournamentUpdateManyWithWhereNestedInput>>,
 };
 
 export type TournamentUpdateManyWithWhereNestedInput = {
@@ -1020,11 +1912,18 @@ export type TournamentUpdateManyWithWhereNestedInput = {
   data: TournamentUpdateManyDataInput,
 };
 
+export type TournamentUpdateOneRequiredWithoutSeasonsInput = {
+  create?: Maybe<TournamentCreateWithoutSeasonsInput>,
+  update?: Maybe<TournamentUpdateWithoutSeasonsDataInput>,
+  upsert?: Maybe<TournamentUpsertWithoutSeasonsInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
+};
+
 export type TournamentUpdateOneRequiredWithoutTeamsInput = {
   create?: Maybe<TournamentCreateWithoutTeamsInput>,
-  connect?: Maybe<TournamentWhereUniqueInput>,
   update?: Maybe<TournamentUpdateWithoutTeamsDataInput>,
   upsert?: Maybe<TournamentUpsertWithoutTeamsInput>,
+  connect?: Maybe<TournamentWhereUniqueInput>,
 };
 
 export type TournamentUpdateWithoutOwnerDataInput = {
@@ -1033,19 +1932,35 @@ export type TournamentUpdateWithoutOwnerDataInput = {
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
   teams?: Maybe<TeamUpdateManyWithoutTournamentInput>,
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>,
 };
 
-export type TournamentUpdateWithoutTeamsDataInput = {
+export type TournamentUpdateWithoutSeasonsDataInput = {
+  owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>,
   name?: Maybe<Scalars['String']>,
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['DateTime']>,
   end?: Maybe<Scalars['DateTime']>,
+  teams?: Maybe<TeamUpdateManyWithoutTournamentInput>,
+};
+
+export type TournamentUpdateWithoutTeamsDataInput = {
   owner?: Maybe<UserUpdateOneRequiredWithoutTournamentsInput>,
+  name?: Maybe<Scalars['String']>,
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['DateTime']>,
+  end?: Maybe<Scalars['DateTime']>,
+  seasons?: Maybe<SeasonUpdateManyWithoutTournamentInput>,
 };
 
 export type TournamentUpdateWithWhereUniqueWithoutOwnerInput = {
   where: TournamentWhereUniqueInput,
   data: TournamentUpdateWithoutOwnerDataInput,
+};
+
+export type TournamentUpsertWithoutSeasonsInput = {
+  update: TournamentUpdateWithoutSeasonsDataInput,
+  create: TournamentCreateWithoutSeasonsInput,
 };
 
 export type TournamentUpsertWithoutTeamsInput = {
@@ -1060,9 +1975,6 @@ export type TournamentUpsertWithWhereUniqueWithoutOwnerInput = {
 };
 
 export type TournamentWhereInput = {
-  AND?: Maybe<Array<TournamentWhereInput>>,
-  OR?: Maybe<Array<TournamentWhereInput>>,
-  NOT?: Maybe<Array<TournamentWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -1077,6 +1989,7 @@ export type TournamentWhereInput = {
   id_not_starts_with?: Maybe<Scalars['ID']>,
   id_ends_with?: Maybe<Scalars['ID']>,
   id_not_ends_with?: Maybe<Scalars['ID']>,
+  owner?: Maybe<UserWhereInput>,
   name?: Maybe<Scalars['String']>,
   name_not?: Maybe<Scalars['String']>,
   name_in?: Maybe<Array<Scalars['String']>>,
@@ -1121,17 +2034,22 @@ export type TournamentWhereInput = {
   end_lte?: Maybe<Scalars['DateTime']>,
   end_gt?: Maybe<Scalars['DateTime']>,
   end_gte?: Maybe<Scalars['DateTime']>,
-  owner?: Maybe<UserWhereInput>,
   teams_every?: Maybe<TeamWhereInput>,
   teams_some?: Maybe<TeamWhereInput>,
   teams_none?: Maybe<TeamWhereInput>,
+  seasons_every?: Maybe<SeasonWhereInput>,
+  seasons_some?: Maybe<SeasonWhereInput>,
+  seasons_none?: Maybe<SeasonWhereInput>,
+  AND?: Maybe<Array<TournamentWhereInput>>,
+  OR?: Maybe<Array<TournamentWhereInput>>,
+  NOT?: Maybe<Array<TournamentWhereInput>>,
 };
 
 export type TournamentWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>,
 };
 
-export type User = Node & {
+export type User = {
    __typename?: 'User',
   id: Scalars['ID'],
   name: Scalars['String'],
@@ -1200,14 +2118,14 @@ export type UserSubscriptionPayload = {
 };
 
 export type UserSubscriptionWhereInput = {
-  AND?: Maybe<Array<UserSubscriptionWhereInput>>,
-  OR?: Maybe<Array<UserSubscriptionWhereInput>>,
-  NOT?: Maybe<Array<UserSubscriptionWhereInput>>,
   mutation_in?: Maybe<Array<MutationType>>,
   updatedFields_contains?: Maybe<Scalars['String']>,
   updatedFields_contains_every?: Maybe<Array<Scalars['String']>>,
   updatedFields_contains_some?: Maybe<Array<Scalars['String']>>,
   node?: Maybe<UserWhereInput>,
+  AND?: Maybe<Array<UserSubscriptionWhereInput>>,
+  OR?: Maybe<Array<UserSubscriptionWhereInput>>,
+  NOT?: Maybe<Array<UserSubscriptionWhereInput>>,
 };
 
 export type UserUpdateInput = {
@@ -1221,9 +2139,9 @@ export type UserUpdateManyMutationInput = {
 
 export type UserUpdateOneRequiredWithoutTournamentsInput = {
   create?: Maybe<UserCreateWithoutTournamentsInput>,
-  connect?: Maybe<UserWhereUniqueInput>,
   update?: Maybe<UserUpdateWithoutTournamentsDataInput>,
   upsert?: Maybe<UserUpsertWithoutTournamentsInput>,
+  connect?: Maybe<UserWhereUniqueInput>,
 };
 
 export type UserUpdateWithoutTournamentsDataInput = {
@@ -1236,9 +2154,6 @@ export type UserUpsertWithoutTournamentsInput = {
 };
 
 export type UserWhereInput = {
-  AND?: Maybe<Array<UserWhereInput>>,
-  OR?: Maybe<Array<UserWhereInput>>,
-  NOT?: Maybe<Array<UserWhereInput>>,
   id?: Maybe<Scalars['ID']>,
   id_not?: Maybe<Scalars['ID']>,
   id_in?: Maybe<Array<Scalars['ID']>>,
@@ -1270,6 +2185,9 @@ export type UserWhereInput = {
   tournaments_every?: Maybe<TournamentWhereInput>,
   tournaments_some?: Maybe<TournamentWhereInput>,
   tournaments_none?: Maybe<TournamentWhereInput>,
+  AND?: Maybe<Array<UserWhereInput>>,
+  OR?: Maybe<Array<UserWhereInput>>,
+  NOT?: Maybe<Array<UserWhereInput>>,
 };
 
 export type UserWhereUniqueInput = {
@@ -1333,16 +2251,12 @@ export type UpdateTeamMutation = (
   )> }
 );
 
-export type CreateTournamentMutationVariables = {
-  name: Scalars['String'],
-  description?: Maybe<Scalars['String']>,
-  start?: Maybe<Scalars['DateTime']>,
-  end?: Maybe<Scalars['DateTime']>,
-  owner: UserCreateOneWithoutTournamentsInput
+export type CreateTournamentWithScheduleMutationVariables = {
+  data: TournamentCreateInput
 };
 
 
-export type CreateTournamentMutation = (
+export type CreateTournamentWithScheduleMutation = (
   { __typename?: 'Mutation' }
   & { createTournament: (
     { __typename?: 'Tournament' }
@@ -1605,48 +2519,44 @@ export function useUpdateTeamMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type UpdateTeamMutationHookResult = ReturnType<typeof useUpdateTeamMutation>;
 export type UpdateTeamMutationResult = ApolloReactCommon.MutationResult<UpdateTeamMutation>;
 export type UpdateTeamMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTeamMutation, UpdateTeamMutationVariables>;
-export const CreateTournamentDocument = gql`
-    mutation CreateTournament($name: String!, $description: String, $start: DateTime, $end: DateTime, $owner: UserCreateOneWithoutTournamentsInput!) {
-  createTournament(data: {name: $name, description: $description, start: $start, end: $end, owner: $owner}) {
+export const CreateTournamentWithScheduleDocument = gql`
+    mutation createTournamentWithSchedule($data: TournamentCreateInput!) {
+  createTournament(data: $data) {
     id
   }
 }
     `;
-export type CreateTournamentMutationFn = ApolloReactCommon.MutationFunction<CreateTournamentMutation, CreateTournamentMutationVariables>;
-export type CreateTournamentComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreateTournamentMutation, CreateTournamentMutationVariables>, 'mutation'>;
+export type CreateTournamentWithScheduleMutationFn = ApolloReactCommon.MutationFunction<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>;
+export type CreateTournamentWithScheduleComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>, 'mutation'>;
 
-    export const CreateTournamentComponent = (props: CreateTournamentComponentProps) => (
-      <ApolloReactComponents.Mutation<CreateTournamentMutation, CreateTournamentMutationVariables> mutation={CreateTournamentDocument} {...props} />
+    export const CreateTournamentWithScheduleComponent = (props: CreateTournamentWithScheduleComponentProps) => (
+      <ApolloReactComponents.Mutation<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables> mutation={CreateTournamentWithScheduleDocument} {...props} />
     );
     
 
 /**
- * __useCreateTournamentMutation__
+ * __useCreateTournamentWithScheduleMutation__
  *
- * To run a mutation, you first call `useCreateTournamentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTournamentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateTournamentWithScheduleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTournamentWithScheduleMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createTournamentMutation, { data, loading, error }] = useCreateTournamentMutation({
+ * const [createTournamentWithScheduleMutation, { data, loading, error }] = useCreateTournamentWithScheduleMutation({
  *   variables: {
- *      name: // value for 'name'
- *      description: // value for 'description'
- *      start: // value for 'start'
- *      end: // value for 'end'
- *      owner: // value for 'owner'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function useCreateTournamentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateTournamentMutation, CreateTournamentMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateTournamentMutation, CreateTournamentMutationVariables>(CreateTournamentDocument, baseOptions);
+export function useCreateTournamentWithScheduleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>(CreateTournamentWithScheduleDocument, baseOptions);
       }
-export type CreateTournamentMutationHookResult = ReturnType<typeof useCreateTournamentMutation>;
-export type CreateTournamentMutationResult = ApolloReactCommon.MutationResult<CreateTournamentMutation>;
-export type CreateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentMutation, CreateTournamentMutationVariables>;
+export type CreateTournamentWithScheduleMutationHookResult = ReturnType<typeof useCreateTournamentWithScheduleMutation>;
+export type CreateTournamentWithScheduleMutationResult = ApolloReactCommon.MutationResult<CreateTournamentWithScheduleMutation>;
+export type CreateTournamentWithScheduleMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>;
 export const DeleteTournamentDocument = gql`
     mutation DeleteTournament($id: ID!) {
   deleteTournament(where: {id: $id}) {

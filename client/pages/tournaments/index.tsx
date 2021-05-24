@@ -134,11 +134,14 @@ const Tournaments = () => {
   };
 
   const handleTournamentUpdate = () => {
+    const startDate = new Date(selectedStartDate);
+    const endDate = new Date(selectedEndDate);
+
     const variables: UpdateTournamentMutationVariables = {
       name: name,
       description: description,
-      start: selectedStartDate,
-      end: selectedEndDate,
+      start: startDate,
+      end: endDate,
       owner: {
         connect: { id: "ckcuti685xz5409734aumeebe" }
       },
@@ -149,11 +152,14 @@ const Tournaments = () => {
   };
 
   const handleTournamentCreation = () => {
+    const startDate = new Date(selectedStartDate);
+    const endDate = new Date(selectedEndDate);
+
     const variables: CreateTournamentMutationVariables = {
       name: name,
       description: description,
-      start: selectedStartDate,
-      end: selectedEndDate,
+      start: startDate,
+      end: endDate,
       owner: {
         connect: { id: "ckcuti685xz5409734aumeebe" }
       }

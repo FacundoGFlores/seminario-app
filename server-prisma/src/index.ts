@@ -1,5 +1,5 @@
-import { GraphQLServer } from 'graphql-yoga';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { GraphQLServer } from "graphql-yoga";
+import { Prisma, PrismaClient } from "@prisma/client";
 // import { ScheduleCreateWithoutSeasonInput } from '.prisma/client';
 
 interface Context {
@@ -63,89 +63,92 @@ const resolvers = {
     },
     match(parent, { where }, context: Context) {
       return context.prisma.match.findUnique(where);
-    }
+    },
   },
   Tournament: {
     teams(parent) {
-      return prisma.tournament.findUnique({ where: { id: parent.id }}).teams();
+      return prisma.tournament.findUnique({ where: { id: parent.id } }).teams();
     },
     seasons(parent) {
-      return prisma.tournament.findUnique({ where: { id: parent.id }}).seasons();
-    }
+      return prisma.tournament
+        .findUnique({ where: { id: parent.id } })
+        .seasons();
+    },
   },
   Team: {
     players(parent) {
-      return prisma.team.findUnique({ where: { id: parent.id }}).players();
+      return prisma.team.findUnique({ where: { id: parent.id } }).players();
     },
     tournament(parent) {
-      return prisma.team.findUnique({ where: { id: parent.id }}).tournament();
-    }
+      return prisma.team.findUnique({ where: { id: parent.id } }).tournament();
+    },
   },
   Player: {
     team(parent) {
-      return prisma.player.findUnique({ where: { id: parent.id }}).team();
-    }
+      return prisma.player.findUnique({ where: { id: parent.id } }).team();
+    },
   },
   Season: {
     tournament(parent) {
-      return prisma.season.findUnique({ where: { id: parent.id }}).tournament();
+      return prisma.season
+        .findUnique({ where: { id: parent.id } })
+        .tournament();
     },
     schedules(parent) {
-      return prisma.season.findUnique({ where: { id: parent.id }}).schedules();
-    }
+      return prisma.season.findUnique({ where: { id: parent.id } }).schedules();
+    },
   },
   Schedule: {
     season(parent) {
-      return prisma.schedule.findUnique({ where: { id: parent.id }}).season();
+      return prisma.schedule.findUnique({ where: { id: parent.id } }).season();
     },
     matches(parent) {
-      return prisma.schedule.findUnique({ where: { id: parent.id }}).matches();
-    }
+      return prisma.schedule.findUnique({ where: { id: parent.id } }).matches();
+    },
   },
   Match: {
     schedule(parent) {
-      return prisma.match.findUnique({ where: { id: parent.id }}).schedule();
+      return prisma.match.findUnique({ where: { id: parent.id } }).schedule();
     },
     teamA(parent) {
-      return prisma.match.findUnique({ where: { id: parent.id }}).teamA();
+      return prisma.match.findUnique({ where: { id: parent.id } }).teamA();
     },
     teamB(parent) {
-      return prisma.match.findUnique({ where: { id: parent.id }}).teamB();
-    }
+      return prisma.match.findUnique({ where: { id: parent.id } }).teamB();
+    },
   },
   Mutation: {
     async createSeason(parent, { data }, context: Context) {
       try {
         const teams = await context.prisma.team.findMany({
-          where: { tournament: { id: data.tournament.connect.id } }
+          where: { tournament: { id: data.tournament.connect.id } },
         });
-        const teamsIds = teams.map(team => team.id);
+        const teamsIds = teams.map((team) => team.id);
         const schedules = robin(teamsIds);
 
-        const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] = schedules.map(
-          (schedule, index) => {
+        const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] =
+          schedules.map((schedule, index) => {
             const matches = schedule
-              .map(match => {
+              .map((match) => {
                 if (match.length !== 2) return;
                 return {
                   teamA: { connect: { id: match[0] } },
-                  teamB: { connect: { id: match[1] } }
+                  teamB: { connect: { id: match[1] } },
                 };
               })
-              .filter(match => match !== undefined);
+              .filter((match) => match !== undefined);
             const scheduleInput: Prisma.ScheduleCreateWithoutSeasonInput = {
               week: index,
-              matches: { create: matches }
+              matches: { create: matches },
             };
             return scheduleInput;
-          }
-        );
+          });
         return context.prisma.season.create({
           data: {
             name: data.name,
             schedules: { create: createSchedules },
             tournament: data.tournament,
-          }
+          },
         });
       } catch (e) {
         console.error(e);
@@ -163,13 +166,13 @@ const resolvers = {
     updateTeam(parent, { data, where }, context: Context) {
       return context.prisma.team.update({
         data,
-        where
+        where,
       });
     },
     updateTournament(parent, { data, where }, context: Context) {
       return context.prisma.tournament.update({
         data,
-        where
+        where,
       });
     },
     deletePlayer(parent, { where }, context: Context) {
@@ -180,8 +183,8 @@ const resolvers = {
     },
     deleteTeam(parent, { where }, context: Context) {
       return context.prisma.team.delete(where);
-    }
-  }
+    },
+  },
 };
 
 const prisma = new PrismaClient();
@@ -189,7 +192,7 @@ const prisma = new PrismaClient();
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
   resolvers,
-  context: { prisma }
+  context: { prisma },
 });
 
 server.start(() => console.log("Server is running on http://localhost:4000"));

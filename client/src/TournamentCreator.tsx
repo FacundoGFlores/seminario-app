@@ -9,7 +9,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
-import { useCreateTournamentWithScheduleMutation } from "../generated/graphql";
+import { useCreateTournamentMutation } from "../generated/graphql";
 import { useRouter } from "next/router";
 import { useUser } from "@auth0/nextjs-auth0";
 import { useSession } from "../hooks/Session";
@@ -18,7 +18,7 @@ const TournamentCreator = () => {
   const { push } = useRouter();
   const {user} = useSession()
 
-  const [createTournament] = useCreateTournamentWithScheduleMutation({
+  const [createTournament] = useCreateTournamentMutation({
     onCompleted: data => {
       if (!data.createTournament) return;
       push(`/season/${data.createTournament.id}`);

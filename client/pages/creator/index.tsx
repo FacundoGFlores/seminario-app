@@ -10,9 +10,16 @@ import {
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { withApollo } from "../../lib/apollo";
 import { useCreateTournamentWithScheduleMutation } from "../../generated/graphql";
+import { useRouter } from "next/router";
 
 const CreateTournament = () => {
-  const [createTournament] = useCreateTournamentWithScheduleMutation();
+  const { push } = useRouter();
+  const [createTournament] = useCreateTournamentWithScheduleMutation({
+    onCompleted: data => {
+      if (!data.createTournament) return;
+      push(`/season/${data.createTournament.id}`);
+    }
+  });
   const { register, control, handleSubmit, getValues } = useForm({
     defaultValues: {
       tournament: "",

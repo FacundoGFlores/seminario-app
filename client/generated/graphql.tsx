@@ -2357,6 +2357,24 @@ export type TournamentQuery = (
     & { teams: Maybe<Array<(
       { __typename?: 'Team' }
       & Pick<Team, 'id' | 'name'>
+    )>>, seasons: Maybe<Array<(
+      { __typename?: 'Season' }
+      & Pick<Season, 'id' | 'name'>
+      & { schedules: Maybe<Array<(
+        { __typename?: 'Schedule' }
+        & Pick<Schedule, 'week'>
+        & { matches: Maybe<Array<(
+          { __typename?: 'Match' }
+          & Pick<Match, 'id'>
+          & { teamA: (
+            { __typename?: 'Team' }
+            & Pick<Team, 'id' | 'name'>
+          ), teamB: (
+            { __typename?: 'Team' }
+            & Pick<Team, 'id' | 'name'>
+          ) }
+        )>> }
+      )>> }
     )>> }
   )> }
 );
@@ -2781,6 +2799,24 @@ export const TournamentDocument = gql`
     teams {
       id
       name
+    }
+    seasons {
+      id
+      name
+      schedules {
+        week
+        matches {
+          id
+          teamA {
+            id
+            name
+          }
+          teamB {
+            id
+            name
+          }
+        }
+      }
     }
   }
 }

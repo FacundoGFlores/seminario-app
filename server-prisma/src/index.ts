@@ -38,31 +38,31 @@ const resolvers = {
       return context.prisma.player.findMany();
     },
     player(parent, { where }, context: Context) {
-      return context.prisma.player.findUnique(where);
+      return context.prisma.player.findUnique({ where });
     },
     teams(parent, { id }, context: Context) {
       return context.prisma.team.findMany({ where: { tournament: id } });
     },
     team(parent, { where }, context: Context) {
-      return context.prisma.team.findUnique(where);
+      return context.prisma.team.findUnique({ where });
     },
     tournaments(parent, args, context: Context) {
       return context.prisma.tournament.findMany();
     },
     tournament(parent, { where }, context: Context) {
-      return context.prisma.tournament.findUnique(where);
+      return context.prisma.tournament.findUnique({ where });
     },
     schedules(parent, args, context: Context) {
       return context.prisma.schedule.findMany();
     },
     schedule(parent, { where }, context: Context) {
-      return context.prisma.schedule.findUnique(where);
+      return context.prisma.schedule.findUnique({ where });
     },
     matches(parent, args, context: Context) {
       return context.prisma.match.findMany();
     },
     match(parent, { where }, context: Context) {
-      return context.prisma.match.findUnique(where);
+      return context.prisma.match.findUnique({ where });
     },
   },
   Tournament: {
@@ -186,13 +186,14 @@ const resolvers = {
             };
             return scheduleInput;
           });
-        return context.prisma.season.create({
+        await context.prisma.season.create({
           data: {
             name: "season",
             schedules: { create: createSchedules },
             tournament: { connect: { id: tournament.id } },
           },
         });
+        return tournament;
       } catch (e) {
         console.error(e);
       }

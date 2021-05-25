@@ -8,73 +8,81 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 model User {
-  id String  @id @default(uuid())
-  name String
+  id          String       @id @default(uuid())
+  name        String
   tournaments Tournament[]
+  email       String
+
   @@map(name: "users")
 }
 
 model Tournament {
-  id String  @id @default(uuid())
-  owner User @relation(fields: [ownerId], references: [id])
-  ownerId String @map("owner_id")
-  name String
+  id          String   @id @default(uuid())
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     String   @map("owner_id")
+  name        String
   description String
-  start DateTime
-  end DateTime
-  teams Team[]
-  seasons Season[]
+  start       DateTime
+  end         DateTime
+  teams       Team[]
+  seasons     Season[]
+
   @@map(name: "tournaments")
 }
 
 model Team {
-  id String @id @default(uuid())
-  name String
-  tournament Tournament @relation(fields: [tournamentId], references: [id])
-  tournamentId String @map("tournament_id")
-  players Player[]
-  matchTeamA Match[] @relation("teamA")
-  matchTeamB Match[] @relation("teamB")
+  id           String     @id @default(uuid())
+  name         String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId String     @map("tournament_id")
+  players      Player[]
+  matchTeamA   Match[]    @relation("teamA")
+  matchTeamB   Match[]    @relation("teamB")
+
   @@map(name: "teams")
 }
 
 model Player {
-  id String @id @default(uuid())
-  name String
-  team Team @relation(fields: [teamId], references: [id])
+  id     String @id @default(uuid())
+  name   String
+  team   Team   @relation(fields: [teamId], references: [id])
   teamId String @map("team_id")
+
   @@map(name: "players")
 }
 
 model Season {
-  id String @id @default(uuid())
-  name String
-  schedules Schedule[]
-  tournament Tournament @relation(fields: [tournamentId], references: [id])
-  tournamentId String @map("tournament_id")
+  id           String     @id @default(uuid())
+  name         String
+  schedules    Schedule[]
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId String     @map("tournament_id")
+
   @@map(name: "seasons")
 }
 
 model Schedule {
-  id String @id @default(uuid())
-  week Int
-  matches Match[]
-  season Season @relation(fields: [seasonId], references: [id])
-  seasonId String @map("season_id")
+  id       String  @id @default(uuid())
+  week     Int
+  matches  Match[]
+  season   Season  @relation(fields: [seasonId], references: [id])
+  seasonId String  @map("season_id")
+
   @@map(name: "schedules")
 }
 
 model Match {
-  id String @id @default(uuid())
-  teamA Team @relation("teamA", fields: [teamAId], references: [id])
-  teamAId String @map("team_a_id")
-  teamB Team @relation("teamB", fields: [teamBId], references: [id])
-  teamBId String @map("team_b_id")
-  schedule Schedule @relation(fields: [scheduleId], references: [id])
-  scheduleId String @map("schedule_id")
+  id         String   @id @default(uuid())
+  teamA      Team     @relation("teamA", fields: [teamAId], references: [id])
+  teamAId    String   @map("team_a_id")
+  teamB      Team     @relation("teamB", fields: [teamBId], references: [id])
+  teamBId    String   @map("team_b_id")
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+  scheduleId String   @map("schedule_id")
+
   @@map(name: "matches")
 }

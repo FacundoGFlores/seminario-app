@@ -4,8 +4,10 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../theme";
+import { UserProvider } from "@auth0/nextjs-auth0";
+import { SessionProvider } from "../hooks/Session";
 
-export default function MyApp(props) {
+function MyApp(props) {
   const { Component, pageProps } = props;
 
   React.useEffect(() => {
@@ -28,7 +30,11 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <UserProvider>
+          <SessionProvider>
+            <Component {...pageProps} />
+          </SessionProvider>
+        </UserProvider>
       </ThemeProvider>
     </React.Fragment>
   );
@@ -38,3 +44,5 @@ MyApp.propTypes = {
   Component: PropTypes.func.isRequired,
   pageProps: PropTypes.object.isRequired
 };
+
+export default MyApp;

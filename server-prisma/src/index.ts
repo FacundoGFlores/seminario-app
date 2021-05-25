@@ -1,6 +1,6 @@
 import { GraphQLServer } from "graphql-yoga";
 import { Prisma, PrismaClient } from "@prisma/client";
-// import { ScheduleCreateWithoutSeasonInput } from '.prisma/client';
+import faker from "faker";
 
 interface Context {
   prisma: PrismaClient;
@@ -37,32 +37,19 @@ const resolvers = {
     players(parent, args, context: Context) {
       return context.prisma.player.findMany();
     },
-    player(parent, { where }, context: Context) {
-      return context.prisma.player.findUnique({ where });
-    },
     teams(parent, { id }, context: Context) {
       return context.prisma.team.findMany({ where: { tournament: id } });
-    },
-    team(parent, { where }, context: Context) {
-      return context.prisma.team.findUnique({ where });
     },
     tournaments(parent, args, context: Context) {
       return context.prisma.tournament.findMany();
     },
-    tournament(parent, { where }, context: Context) {
-      return context.prisma.tournament.findUnique({ where });
+    tournament(parent, { id }, context: Context) {
+      return context.prisma.tournament.findUnique({ where: { id } });
     },
-    schedules(parent, args, context: Context) {
-      return context.prisma.schedule.findMany();
-    },
-    schedule(parent, { where }, context: Context) {
-      return context.prisma.schedule.findUnique({ where });
-    },
-    matches(parent, args, context: Context) {
-      return context.prisma.match.findMany();
-    },
-    match(parent, { where }, context: Context) {
-      return context.prisma.match.findUnique({ where });
+    async userByEmail(parent, { email }, context: Context) {
+      const users = await context.prisma.user.findMany();
+      const userFound = users.filter((user) => user.email === email);
+      return userFound[0];
     },
   },
   Tournament: {
@@ -118,42 +105,6 @@ const resolvers = {
     },
   },
   Mutation: {
-    async createSeason(parent, { data }, context: Context) {
-      try {
-        const teams = await context.prisma.team.findMany({
-          where: { tournament: { id: data.tournament.connect.id } },
-        });
-        const teamsIds = teams.map((team) => team.id);
-        const schedules = robin(teamsIds);
-
-        const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] =
-          schedules.map((schedule, index) => {
-            const matches = schedule
-              .map((match) => {
-                if (match.length !== 2) return;
-                return {
-                  teamA: { connect: { id: match[0] } },
-                  teamB: { connect: { id: match[1] } },
-                };
-              })
-              .filter((match) => match !== undefined);
-            const scheduleInput: Prisma.ScheduleCreateWithoutSeasonInput = {
-              week: index,
-              matches: { create: matches },
-            };
-            return scheduleInput;
-          });
-        return context.prisma.season.create({
-          data: {
-            name: data.name,
-            schedules: { create: createSchedules },
-            tournament: data.tournament,
-          },
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    },
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
@@ -161,8 +112,27 @@ const resolvers = {
       if (!data.teams || data.teams.length === 0)
         return context.prisma.tournament.create({ data });
       try {
+        let user = null;
+        if (!data.owner) {
+          user = await context.prisma.user.create({
+            data: { name: faker.random.word(), email: faker.internet.email() },
+          });
+        } else {
+          user = await context.prisma.user.findUnique({
+            where: { id: data.owner as string },
+          });
+        }
+
         const tournament = await context.prisma.tournament.create({
-          data,
+          data: {
+            ...data,
+            start: new Date(data.start),
+            end: new Date(data.end),
+            teams: {
+              create: data.teams.map((team) => ({ name: team })),
+            },
+            owner: { connect: { id: user.id } },
+          },
           include: { teams: true },
         });
 
@@ -198,39 +168,105 @@ const resolvers = {
         console.error(e);
       }
     },
-    createTeam(parent, { data }, context: Context) {
-      return context.prisma.team.create({ data });
-    },
-    updateTeam(parent, { data, where }, context: Context) {
-      return context.prisma.team.update({
-        data,
-        where,
-      });
-    },
-    updateTournament(parent, { data, where }, context: Context) {
-      return context.prisma.tournament.update({
-        data,
-        where,
-      });
-    },
-    deletePlayer(parent, { where }, context: Context) {
-      return context.prisma.player.delete(where);
-    },
-    deleteTournament(parent, { where }, context: Context) {
-      return context.prisma.tournament.delete(where);
-    },
-    deleteTeam(parent, { where }, context: Context) {
-      return context.prisma.team.delete(where);
-    },
   },
 };
 
 const prisma = new PrismaClient();
 
 const server = new GraphQLServer({
-  typeDefs: "./src/schema.graphql",
+  typeDefs: `
+  type Query {
+    tournament(id: ID!): Tournament!
+    player(id: ID!): Player!
+    team(id: ID!): Team!
+    users: [User!]
+    players: [Player!]
+    tournaments: [Tournament!]
+    teams: [Team!]
+    schedules: [Schedule!]
+    matches: [Match!]
+    userByEmail(email: String!): User!
+  }
+
+  type Mutation {
+    createTournament(data: TournamentCreateInput!): Tournament!
+    createUser(data: UserCreatInput!): User!
+  }
+  
+  input UserCreatInput {
+    name: String!
+    email: String!
+  }
+
+  input TournamentCreateInput {
+    id: ID
+    owner: ID
+    name: String!
+    description: String
+    start: String
+    end: String
+    teams: [String!]
+  }
+  
+  input CreateTeamInput {
+    name: [String!]
+  }
+  
+  type Tournament {
+    id: ID!
+    name: String!
+    description: String
+    start: String
+    end: String
+    teams: [Team!]
+    seasons: [Season!]
+  }
+  
+  type Season {
+    id: ID!
+    name: String!
+    schedules: [Schedule!]
+    tournament: Tournament!
+  }
+  
+  type Schedule {
+    id: ID!
+    week: Int
+    matches: [Match!]
+    season: Season!
+  }
+  
+  type Match {
+    id: ID!
+    teamA: Team!
+    teamB: Team!
+    schedule: Schedule!
+  }
+  
+  type Team {
+    id: ID!
+    name: String!
+    players: [Player!]
+    tournament: Tournament!
+  }
+  
+  type Player {
+    id: ID!
+    name: String!
+    team: Team!
+  }
+  
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    tournaments: [Tournament!]
+  }
+  
+  `,
   resolvers,
+
   context: { prisma },
 });
 
-server.start(() => console.log("Server is running on http://localhost:4000"));
+server.start();

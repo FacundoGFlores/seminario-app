@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { useTournamentQuery } from "../../../generated/graphql";
 import { withApollo } from "../../../lib/apollo";
 import { Grid, Card, CardHeader, CardContent } from "@material-ui/core";

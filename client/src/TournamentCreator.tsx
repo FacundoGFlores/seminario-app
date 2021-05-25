@@ -6,7 +6,8 @@ import {
   Input,
   Button,
   TextField,
-  Typography
+  Typography,
+  Box
 } from "@material-ui/core";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { useCreateTournamentMutation } from "../generated/graphql";
@@ -41,18 +42,15 @@ const TournamentCreator = () => {
   const onSubmit = () => {
     const { tournament, teams, startDate, endDate, description } = getValues();
 
-
     createTournament({
       variables: {
         data: {
           name: tournament,
           start: startDate,
           end: endDate,
-          teams: {
-            name: teams.map(team => team.name)
-          },
+          teams: teams.map(team => team.name),
           description,
-          owner: user.id
+          owner: user ? user.id : ''
         }
       }
     });
@@ -142,7 +140,9 @@ const TournamentCreator = () => {
                 {index > 0 && <Button onClick={() => remove(index)}>-</Button>}
               </div>
             ))}
-            <Button type="submit">Generar Schedule</Button>
+            <Grid item>
+              <Button type="submit" variant="contained">Generar Schedule</Button>
+            </Grid>
           </Grid>
         </form>
       </Grid>

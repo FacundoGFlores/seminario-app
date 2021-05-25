@@ -49,7 +49,6 @@ const resolvers = {
     async userByEmail(parent, { email }, context: Context) {
       const users = await context.prisma.user.findMany();
       const userFound = users.filter((user) => user.email === email);
-      console.log({ userFound });
       return userFound[0];
     },
   },
@@ -119,12 +118,20 @@ const resolvers = {
             data: { name: faker.random.word(), email: faker.internet.email() },
           });
         } else {
-          user = context.prisma.user.findUnique({ where: data.owner });
+          user = await context.prisma.user.findUnique({
+            where: { id: data.owner as string },
+          });
         }
+
         const tournament = await context.prisma.tournament.create({
           data: {
             ...data,
-            owner: user.id,
+            start: new Date(data.start),
+            end: new Date(data.end),
+            teams: {
+              create: data.teams.map((team) => ({ name: team })),
+            },
+            owner: { connect: { id: user.id } },
           },
           include: { teams: true },
         });
@@ -198,7 +205,7 @@ const server = new GraphQLServer({
     description: String
     start: String
     end: String
-    teams: CreateTeamInput
+    teams: [String!]
   }
   
   input CreateTeamInput {

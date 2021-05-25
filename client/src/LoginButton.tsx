@@ -1,5 +1,6 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import { Button } from "@material-ui/core";
+import { Button, Menu, MenuItem } from "@material-ui/core";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import {
   useCreateUserMutation,
@@ -8,6 +9,8 @@ import {
 import { useSession } from "../hooks/Session";
 
 const LoginButton = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { push } = useRouter();
   const { user: userSession, setUser } = useSession();
 
   const { user } = useUser();
@@ -42,11 +45,36 @@ const LoginButton = () => {
     getUser({ variables: { email: user.email } });
   }, [user]);
 
-  if (!userSession) return <div>Loading...</div>;
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  if (!userSession.name) return <Button>Login</Button>;
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-  return <div>{userSession.name}</div>;
+  const handleLogout = () => {
+    push("/api/auth/logout");
+    setAnchorEl(null);
+  };
+
+  if (!userSession?.name)
+    return <Button onClick={() => push("/api/auth/login")}>Login</Button>;
+
+  return (
+    <>
+      <Button onClick={handleClick}>{userSession.name}</Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      </Menu>
+    </>
+  );
 };
 
 export { LoginButton };

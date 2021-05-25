@@ -125,7 +125,7 @@ export type TournamentCreateInput = {
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['String']>,
   end?: Maybe<Scalars['String']>,
-  teams?: Maybe<CreateTeamInput>,
+  teams?: Maybe<Array<Scalars['String']>>,
 };
 
 export type User = {

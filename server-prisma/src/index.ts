@@ -38,31 +38,31 @@ const resolvers = {
       return context.prisma.player.findMany();
     },
     player(parent, { where }, context: Context) {
-      return context.prisma.player.findUnique(where);
+      return context.prisma.player.findUnique({ where });
     },
     teams(parent, { id }, context: Context) {
       return context.prisma.team.findMany({ where: { tournament: id } });
     },
     team(parent, { where }, context: Context) {
-      return context.prisma.team.findUnique(where);
+      return context.prisma.team.findUnique({ where });
     },
     tournaments(parent, args, context: Context) {
       return context.prisma.tournament.findMany();
     },
     tournament(parent, { where }, context: Context) {
-      return context.prisma.tournament.findUnique(where);
+      return context.prisma.tournament.findUnique({ where });
     },
     schedules(parent, args, context: Context) {
       return context.prisma.schedule.findMany();
     },
     schedule(parent, { where }, context: Context) {
-      return context.prisma.schedule.findUnique(where);
+      return context.prisma.schedule.findUnique({ where });
     },
     matches(parent, args, context: Context) {
       return context.prisma.match.findMany();
     },
     match(parent, { where }, context: Context) {
-      return context.prisma.match.findUnique(where);
+      return context.prisma.match.findUnique({ where });
     },
   },
   Tournament: {
@@ -157,8 +157,46 @@ const resolvers = {
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
-    createTournament(parent, { data }, context: Context) {
-      return context.prisma.tournament.create({ data });
+    async createTournament(parent, { data }, context: Context) {
+      if (!data.teams || data.teams.length === 0)
+        return context.prisma.tournament.create({ data });
+      try {
+        const tournament = await context.prisma.tournament.create({
+          data,
+          include: { teams: true },
+        });
+
+        const teamsIds = tournament.teams.map((team) => team.id);
+        const schedules = robin(teamsIds);
+
+        const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] =
+          schedules.map((schedule, index) => {
+            const matches = schedule
+              .map((match) => {
+                if (match.length !== 2) return;
+                return {
+                  teamA: { connect: { id: match[0] } },
+                  teamB: { connect: { id: match[1] } },
+                };
+              })
+              .filter((match) => match !== undefined);
+            const scheduleInput: Prisma.ScheduleCreateWithoutSeasonInput = {
+              week: index,
+              matches: { create: matches },
+            };
+            return scheduleInput;
+          });
+        await context.prisma.season.create({
+          data: {
+            name: "season",
+            schedules: { create: createSchedules },
+            tournament: { connect: { id: tournament.id } },
+          },
+        });
+        return tournament;
+      } catch (e) {
+        console.error(e);
+      }
     },
     createTeam(parent, { data }, context: Context) {
       return context.prisma.team.create({ data });

@@ -26,6 +26,25 @@ export const TOURNAMENT_QUERY = gql`
         id
         name
       }
+      seasons {
+        id
+        name
+        schedules {
+          week
+          matches {
+            id
+            teamA {
+              id
+              name
+            }
+
+            teamB {
+              id
+              name
+            }
+          }
+        }
+      }
     }
   }
 `;

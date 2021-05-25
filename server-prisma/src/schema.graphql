@@ -1,0 +1,3927 @@
+#
+type Query {
+  #
+  match(where: MatchWhereUniqueInput!): Match
+
+  #
+  matches(
+    where: MatchWhereInput
+    orderBy: MatchOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Match]!
+
+  #
+  matchesConnection(
+    where: MatchWhereInput
+    orderBy: MatchOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): MatchConnection!
+
+  #
+  player(where: PlayerWhereUniqueInput!): Player
+
+  #
+  players(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Player]!
+
+  #
+  playersConnection(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PlayerConnection!
+
+  #
+  schedule(where: ScheduleWhereUniqueInput!): Schedule
+
+  #
+  schedules(
+    where: ScheduleWhereInput
+    orderBy: ScheduleOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Schedule]!
+
+  #
+  schedulesConnection(
+    where: ScheduleWhereInput
+    orderBy: ScheduleOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ScheduleConnection!
+
+  #
+  season(where: SeasonWhereUniqueInput!): Season
+
+  #
+  seasons(
+    where: SeasonWhereInput
+    orderBy: SeasonOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Season]!
+
+  #
+  seasonsConnection(
+    where: SeasonWhereInput
+    orderBy: SeasonOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): SeasonConnection!
+
+  #
+  team(where: TeamWhereUniqueInput!): Team
+
+  #
+  teams(
+    where: TeamWhereInput
+    orderBy: TeamOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Team]!
+
+  #
+  teamsConnection(
+    where: TeamWhereInput
+    orderBy: TeamOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): TeamConnection!
+
+  #
+  tournament(where: TournamentWhereUniqueInput!): Tournament
+
+  #
+  tournaments(
+    where: TournamentWhereInput
+    orderBy: TournamentOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Tournament]!
+
+  #
+  tournamentsConnection(
+    where: TournamentWhereInput
+    orderBy: TournamentOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): TournamentConnection!
+
+  #
+  user(where: UserWhereUniqueInput!): User
+
+  #
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [User]!
+
+  #
+  usersConnection(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): UserConnection!
+
+  #
+  node(id: ID!): Node
+}
+
+#
+input MatchWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type Match {
+  #
+  id: ID!
+
+  #
+  teamA: Team!
+
+  #
+  teamB: Team!
+
+  #
+  schedule: Schedule!
+}
+
+#
+type Team {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  tournament: Tournament!
+
+  #
+  players(
+    where: PlayerWhereInput
+    orderBy: PlayerOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Player!]
+}
+
+#
+type Tournament {
+  #
+  id: ID!
+
+  #
+  owner: User!
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams(
+    where: TeamWhereInput
+    orderBy: TeamOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Team!]
+
+  #
+  seasons(
+    where: SeasonWhereInput
+    orderBy: SeasonOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Season!]
+}
+
+#
+type User {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  tournaments(
+    where: TournamentWhereInput
+    orderBy: TournamentOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Tournament!]
+}
+
+#
+input TournamentWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  owner: UserWhereInput
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  description: String
+
+  #
+  description_not: String
+
+  #
+  description_in: [String!]
+
+  #
+  description_not_in: [String!]
+
+  #
+  description_lt: String
+
+  #
+  description_lte: String
+
+  #
+  description_gt: String
+
+  #
+  description_gte: String
+
+  #
+  description_contains: String
+
+  #
+  description_not_contains: String
+
+  #
+  description_starts_with: String
+
+  #
+  description_not_starts_with: String
+
+  #
+  description_ends_with: String
+
+  #
+  description_not_ends_with: String
+
+  #
+  start: DateTime
+
+  #
+  start_not: DateTime
+
+  #
+  start_in: [DateTime!]
+
+  #
+  start_not_in: [DateTime!]
+
+  #
+  start_lt: DateTime
+
+  #
+  start_lte: DateTime
+
+  #
+  start_gt: DateTime
+
+  #
+  start_gte: DateTime
+
+  #
+  end: DateTime
+
+  #
+  end_not: DateTime
+
+  #
+  end_in: [DateTime!]
+
+  #
+  end_not_in: [DateTime!]
+
+  #
+  end_lt: DateTime
+
+  #
+  end_lte: DateTime
+
+  #
+  end_gt: DateTime
+
+  #
+  end_gte: DateTime
+
+  #
+  teams_every: TeamWhereInput
+
+  #
+  teams_some: TeamWhereInput
+
+  #
+  teams_none: TeamWhereInput
+
+  #
+  seasons_every: SeasonWhereInput
+
+  #
+  seasons_some: SeasonWhereInput
+
+  #
+  seasons_none: SeasonWhereInput
+
+  #
+  AND: [TournamentWhereInput!]
+
+  #
+  OR: [TournamentWhereInput!]
+
+  #
+  NOT: [TournamentWhereInput!]
+}
+
+#
+input UserWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  tournaments_every: TournamentWhereInput
+
+  #
+  tournaments_some: TournamentWhereInput
+
+  #
+  tournaments_none: TournamentWhereInput
+
+  #
+  AND: [UserWhereInput!]
+
+  #
+  OR: [UserWhereInput!]
+
+  #
+  NOT: [UserWhereInput!]
+}
+
+#
+scalar DateTime
+
+#
+input TeamWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  tournament: TournamentWhereInput
+
+  #
+  players_every: PlayerWhereInput
+
+  #
+  players_some: PlayerWhereInput
+
+  #
+  players_none: PlayerWhereInput
+
+  #
+  AND: [TeamWhereInput!]
+
+  #
+  OR: [TeamWhereInput!]
+
+  #
+  NOT: [TeamWhereInput!]
+}
+
+#
+input PlayerWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  team: TeamWhereInput
+
+  #
+  AND: [PlayerWhereInput!]
+
+  #
+  OR: [PlayerWhereInput!]
+
+  #
+  NOT: [PlayerWhereInput!]
+}
+
+#
+input SeasonWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  schedules_every: ScheduleWhereInput
+
+  #
+  schedules_some: ScheduleWhereInput
+
+  #
+  schedules_none: ScheduleWhereInput
+
+  #
+  tournament: TournamentWhereInput
+
+  #
+  AND: [SeasonWhereInput!]
+
+  #
+  OR: [SeasonWhereInput!]
+
+  #
+  NOT: [SeasonWhereInput!]
+}
+
+#
+input ScheduleWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  week: Int
+
+  #
+  week_not: Int
+
+  #
+  week_in: [Int!]
+
+  #
+  week_not_in: [Int!]
+
+  #
+  week_lt: Int
+
+  #
+  week_lte: Int
+
+  #
+  week_gt: Int
+
+  #
+  week_gte: Int
+
+  #
+  matches_every: MatchWhereInput
+
+  #
+  matches_some: MatchWhereInput
+
+  #
+  matches_none: MatchWhereInput
+
+  #
+  season: SeasonWhereInput
+
+  #
+  AND: [ScheduleWhereInput!]
+
+  #
+  OR: [ScheduleWhereInput!]
+
+  #
+  NOT: [ScheduleWhereInput!]
+}
+
+#
+input MatchWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  teamA: TeamWhereInput
+
+  #
+  teamB: TeamWhereInput
+
+  #
+  schedule: ScheduleWhereInput
+
+  #
+  AND: [MatchWhereInput!]
+
+  #
+  OR: [MatchWhereInput!]
+
+  #
+  NOT: [MatchWhereInput!]
+}
+
+#
+enum TournamentOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  name_ASC
+
+  #
+  name_DESC
+
+  #
+  description_ASC
+
+  #
+  description_DESC
+
+  #
+  start_ASC
+
+  #
+  start_DESC
+
+  #
+  end_ASC
+
+  #
+  end_DESC
+}
+
+#
+enum TeamOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  name_ASC
+
+  #
+  name_DESC
+}
+
+#
+enum SeasonOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  name_ASC
+
+  #
+  name_DESC
+}
+
+#
+type Season {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  schedules(
+    where: ScheduleWhereInput
+    orderBy: ScheduleOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Schedule!]
+
+  #
+  tournament: Tournament!
+}
+
+#
+enum ScheduleOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  week_ASC
+
+  #
+  week_DESC
+}
+
+#
+type Schedule {
+  #
+  id: ID!
+
+  #
+  week: Int
+
+  #
+  matches(
+    where: MatchWhereInput
+    orderBy: MatchOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Match!]
+
+  #
+  season: Season!
+}
+
+#
+enum MatchOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+}
+
+#
+enum PlayerOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  name_ASC
+
+  #
+  name_DESC
+}
+
+#
+type Player {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  team: Team!
+}
+
+#
+type MatchConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [MatchEdge]!
+
+  #
+  aggregate: AggregateMatch!
+}
+
+#
+type PageInfo {
+  #
+  hasNextPage: Boolean!
+
+  #
+  hasPreviousPage: Boolean!
+
+  #
+  startCursor: String
+
+  #
+  endCursor: String
+}
+
+#
+type MatchEdge {
+  #
+  node: Match!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateMatch {
+  #
+  count: Int!
+}
+
+#
+input PlayerWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type PlayerConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [PlayerEdge]!
+
+  #
+  aggregate: AggregatePlayer!
+}
+
+#
+type PlayerEdge {
+  #
+  node: Player!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregatePlayer {
+  #
+  count: Int!
+}
+
+#
+input ScheduleWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type ScheduleConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [ScheduleEdge]!
+
+  #
+  aggregate: AggregateSchedule!
+}
+
+#
+type ScheduleEdge {
+  #
+  node: Schedule!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateSchedule {
+  #
+  count: Int!
+}
+
+#
+input SeasonWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type SeasonConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [SeasonEdge]!
+
+  #
+  aggregate: AggregateSeason!
+}
+
+#
+type SeasonEdge {
+  #
+  node: Season!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateSeason {
+  #
+  count: Int!
+}
+
+#
+input TeamWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type TeamConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [TeamEdge]!
+
+  #
+  aggregate: AggregateTeam!
+}
+
+#
+type TeamEdge {
+  #
+  node: Team!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateTeam {
+  #
+  count: Int!
+}
+
+#
+input TournamentWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+type TournamentConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [TournamentEdge]!
+
+  #
+  aggregate: AggregateTournament!
+}
+
+#
+type TournamentEdge {
+  #
+  node: Tournament!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateTournament {
+  #
+  count: Int!
+}
+
+#
+input UserWhereUniqueInput {
+  #
+  id: ID
+}
+
+#
+enum UserOrderByInput {
+  #
+  id_ASC
+
+  #
+  id_DESC
+
+  #
+  name_ASC
+
+  #
+  name_DESC
+}
+
+#
+type UserConnection {
+  #
+  pageInfo: PageInfo!
+
+  #
+  edges: [UserEdge]!
+
+  #
+  aggregate: AggregateUser!
+}
+
+#
+type UserEdge {
+  #
+  node: User!
+
+  #
+  cursor: String!
+}
+
+#
+type AggregateUser {
+  #
+  count: Int!
+}
+
+#
+interface Node {
+  #
+  id: ID!
+}
+
+#
+type Mutation {
+  #
+  createMatch(data: MatchCreateInput!): Match!
+
+  #
+  updateMatch(data: MatchUpdateInput!, where: MatchWhereUniqueInput!): Match
+
+  #
+  upsertMatch(
+    where: MatchWhereUniqueInput!
+    create: MatchCreateInput!
+    update: MatchUpdateInput!
+  ): Match!
+
+  #
+  deleteMatch(where: MatchWhereUniqueInput!): Match
+
+  #
+  deleteManyMatches(where: MatchWhereInput): BatchPayload!
+
+  #
+  createPlayer(data: PlayerCreateInput!): Player!
+
+  #
+  updatePlayer(data: PlayerUpdateInput!, where: PlayerWhereUniqueInput!): Player
+
+  #
+  updateManyPlayers(
+    data: PlayerUpdateManyMutationInput!
+    where: PlayerWhereInput
+  ): BatchPayload!
+
+  #
+  upsertPlayer(
+    where: PlayerWhereUniqueInput!
+    create: PlayerCreateInput!
+    update: PlayerUpdateInput!
+  ): Player!
+
+  #
+  deletePlayer(where: PlayerWhereUniqueInput!): Player
+
+  #
+  deleteManyPlayers(where: PlayerWhereInput): BatchPayload!
+
+  #
+  createSchedule(data: ScheduleCreateInput!): Schedule!
+
+  #
+  updateSchedule(
+    data: ScheduleUpdateInput!
+    where: ScheduleWhereUniqueInput!
+  ): Schedule
+
+  #
+  updateManySchedules(
+    data: ScheduleUpdateManyMutationInput!
+    where: ScheduleWhereInput
+  ): BatchPayload!
+
+  #
+  upsertSchedule(
+    where: ScheduleWhereUniqueInput!
+    create: ScheduleCreateInput!
+    update: ScheduleUpdateInput!
+  ): Schedule!
+
+  #
+  deleteSchedule(where: ScheduleWhereUniqueInput!): Schedule
+
+  #
+  deleteManySchedules(where: ScheduleWhereInput): BatchPayload!
+
+  #
+  createSeason(data: SeasonCreateInput!): Season!
+
+  #
+  updateSeason(data: SeasonUpdateInput!, where: SeasonWhereUniqueInput!): Season
+
+  #
+  updateManySeasons(
+    data: SeasonUpdateManyMutationInput!
+    where: SeasonWhereInput
+  ): BatchPayload!
+
+  #
+  upsertSeason(
+    where: SeasonWhereUniqueInput!
+    create: SeasonCreateInput!
+    update: SeasonUpdateInput!
+  ): Season!
+
+  #
+  deleteSeason(where: SeasonWhereUniqueInput!): Season
+
+  #
+  deleteManySeasons(where: SeasonWhereInput): BatchPayload!
+
+  #
+  createTeam(data: TeamCreateInput!): Team!
+
+  #
+  updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
+
+  #
+  updateManyTeams(
+    data: TeamUpdateManyMutationInput!
+    where: TeamWhereInput
+  ): BatchPayload!
+
+  #
+  upsertTeam(
+    where: TeamWhereUniqueInput!
+    create: TeamCreateInput!
+    update: TeamUpdateInput!
+  ): Team!
+
+  #
+  deleteTeam(where: TeamWhereUniqueInput!): Team
+
+  #
+  deleteManyTeams(where: TeamWhereInput): BatchPayload!
+
+  #
+  createTournament(data: TournamentCreateInput!): Tournament!
+
+  #
+  updateTournament(
+    data: TournamentUpdateInput!
+    where: TournamentWhereUniqueInput!
+  ): Tournament
+
+  #
+  updateManyTournaments(
+    data: TournamentUpdateManyMutationInput!
+    where: TournamentWhereInput
+  ): BatchPayload!
+
+  #
+  upsertTournament(
+    where: TournamentWhereUniqueInput!
+    create: TournamentCreateInput!
+    update: TournamentUpdateInput!
+  ): Tournament!
+
+  #
+  deleteTournament(where: TournamentWhereUniqueInput!): Tournament
+
+  #
+  deleteManyTournaments(where: TournamentWhereInput): BatchPayload!
+
+  #
+  createUser(data: UserCreateInput!): User!
+
+  #
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+
+  #
+  updateManyUsers(
+    data: UserUpdateManyMutationInput!
+    where: UserWhereInput
+  ): BatchPayload!
+
+  #
+  upsertUser(
+    where: UserWhereUniqueInput!
+    create: UserCreateInput!
+    update: UserUpdateInput!
+  ): User!
+
+  #
+  deleteUser(where: UserWhereUniqueInput!): User
+
+  #
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+#
+input MatchCreateInput {
+  #
+  id: ID
+
+  #
+  teamA: TeamCreateOneInput!
+
+  #
+  teamB: TeamCreateOneInput!
+
+  #
+  schedule: ScheduleCreateOneWithoutMatchesInput!
+}
+
+#
+input TeamCreateOneInput {
+  #
+  create: TeamCreateInput
+
+  #
+  connect: TeamWhereUniqueInput
+}
+
+#
+input TeamCreateInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  tournament: TournamentCreateOneWithoutTeamsInput!
+
+  #
+  players: PlayerCreateManyWithoutTeamInput
+}
+
+#
+input TournamentCreateOneWithoutTeamsInput {
+  #
+  create: TournamentCreateWithoutTeamsInput
+
+  #
+  connect: TournamentWhereUniqueInput
+}
+
+#
+input TournamentCreateWithoutTeamsInput {
+  #
+  id: ID
+
+  #
+  owner: UserCreateOneWithoutTournamentsInput!
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  seasons: SeasonCreateManyWithoutTournamentInput
+}
+
+#
+input UserCreateOneWithoutTournamentsInput {
+  #
+  create: UserCreateWithoutTournamentsInput
+
+  #
+  connect: UserWhereUniqueInput
+}
+
+#
+input UserCreateWithoutTournamentsInput {
+  #
+  id: ID
+
+  #
+  name: String!
+}
+
+#
+input SeasonCreateManyWithoutTournamentInput {
+  #
+  create: [SeasonCreateWithoutTournamentInput!]
+
+  #
+  connect: [SeasonWhereUniqueInput!]
+}
+
+#
+input SeasonCreateWithoutTournamentInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  schedules: ScheduleCreateManyWithoutSeasonInput
+}
+
+#
+input ScheduleCreateManyWithoutSeasonInput {
+  #
+  create: [ScheduleCreateWithoutSeasonInput!]
+
+  #
+  connect: [ScheduleWhereUniqueInput!]
+}
+
+#
+input ScheduleCreateWithoutSeasonInput {
+  #
+  id: ID
+
+  #
+  week: Int
+
+  #
+  matches: MatchCreateManyWithoutScheduleInput
+}
+
+#
+input MatchCreateManyWithoutScheduleInput {
+  #
+  create: [MatchCreateWithoutScheduleInput!]
+
+  #
+  connect: [MatchWhereUniqueInput!]
+}
+
+#
+input MatchCreateWithoutScheduleInput {
+  #
+  id: ID
+
+  #
+  teamA: TeamCreateOneInput!
+
+  #
+  teamB: TeamCreateOneInput!
+}
+
+#
+input PlayerCreateManyWithoutTeamInput {
+  #
+  create: [PlayerCreateWithoutTeamInput!]
+
+  #
+  connect: [PlayerWhereUniqueInput!]
+}
+
+#
+input PlayerCreateWithoutTeamInput {
+  #
+  id: ID
+
+  #
+  name: String!
+}
+
+#
+input ScheduleCreateOneWithoutMatchesInput {
+  #
+  create: ScheduleCreateWithoutMatchesInput
+
+  #
+  connect: ScheduleWhereUniqueInput
+}
+
+#
+input ScheduleCreateWithoutMatchesInput {
+  #
+  id: ID
+
+  #
+  week: Int
+
+  #
+  season: SeasonCreateOneWithoutSchedulesInput!
+}
+
+#
+input SeasonCreateOneWithoutSchedulesInput {
+  #
+  create: SeasonCreateWithoutSchedulesInput
+
+  #
+  connect: SeasonWhereUniqueInput
+}
+
+#
+input SeasonCreateWithoutSchedulesInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  tournament: TournamentCreateOneWithoutSeasonsInput!
+}
+
+#
+input TournamentCreateOneWithoutSeasonsInput {
+  #
+  create: TournamentCreateWithoutSeasonsInput
+
+  #
+  connect: TournamentWhereUniqueInput
+}
+
+#
+input TournamentCreateWithoutSeasonsInput {
+  #
+  id: ID
+
+  #
+  owner: UserCreateOneWithoutTournamentsInput!
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamCreateManyWithoutTournamentInput
+}
+
+#
+input TeamCreateManyWithoutTournamentInput {
+  #
+  create: [TeamCreateWithoutTournamentInput!]
+
+  #
+  connect: [TeamWhereUniqueInput!]
+}
+
+#
+input TeamCreateWithoutTournamentInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  players: PlayerCreateManyWithoutTeamInput
+}
+
+#
+input MatchUpdateInput {
+  #
+  teamA: TeamUpdateOneRequiredInput
+
+  #
+  teamB: TeamUpdateOneRequiredInput
+
+  #
+  schedule: ScheduleUpdateOneRequiredWithoutMatchesInput
+}
+
+#
+input TeamUpdateOneRequiredInput {
+  #
+  create: TeamCreateInput
+
+  #
+  update: TeamUpdateDataInput
+
+  #
+  upsert: TeamUpsertNestedInput
+
+  #
+  connect: TeamWhereUniqueInput
+}
+
+#
+input TeamUpdateDataInput {
+  #
+  name: String
+
+  #
+  tournament: TournamentUpdateOneRequiredWithoutTeamsInput
+
+  #
+  players: PlayerUpdateManyWithoutTeamInput
+}
+
+#
+input TournamentUpdateOneRequiredWithoutTeamsInput {
+  #
+  create: TournamentCreateWithoutTeamsInput
+
+  #
+  update: TournamentUpdateWithoutTeamsDataInput
+
+  #
+  upsert: TournamentUpsertWithoutTeamsInput
+
+  #
+  connect: TournamentWhereUniqueInput
+}
+
+#
+input TournamentUpdateWithoutTeamsDataInput {
+  #
+  owner: UserUpdateOneRequiredWithoutTournamentsInput
+
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  seasons: SeasonUpdateManyWithoutTournamentInput
+}
+
+#
+input UserUpdateOneRequiredWithoutTournamentsInput {
+  #
+  create: UserCreateWithoutTournamentsInput
+
+  #
+  update: UserUpdateWithoutTournamentsDataInput
+
+  #
+  upsert: UserUpsertWithoutTournamentsInput
+
+  #
+  connect: UserWhereUniqueInput
+}
+
+#
+input UserUpdateWithoutTournamentsDataInput {
+  #
+  name: String
+}
+
+#
+input UserUpsertWithoutTournamentsInput {
+  #
+  update: UserUpdateWithoutTournamentsDataInput!
+
+  #
+  create: UserCreateWithoutTournamentsInput!
+}
+
+#
+input SeasonUpdateManyWithoutTournamentInput {
+  #
+  create: [SeasonCreateWithoutTournamentInput!]
+
+  #
+  delete: [SeasonWhereUniqueInput!]
+
+  #
+  connect: [SeasonWhereUniqueInput!]
+
+  #
+  set: [SeasonWhereUniqueInput!]
+
+  #
+  disconnect: [SeasonWhereUniqueInput!]
+
+  #
+  update: [SeasonUpdateWithWhereUniqueWithoutTournamentInput!]
+
+  #
+  upsert: [SeasonUpsertWithWhereUniqueWithoutTournamentInput!]
+
+  #
+  deleteMany: [SeasonScalarWhereInput!]
+
+  #
+  updateMany: [SeasonUpdateManyWithWhereNestedInput!]
+}
+
+#
+input SeasonUpdateWithWhereUniqueWithoutTournamentInput {
+  #
+  where: SeasonWhereUniqueInput!
+
+  #
+  data: SeasonUpdateWithoutTournamentDataInput!
+}
+
+#
+input SeasonUpdateWithoutTournamentDataInput {
+  #
+  name: String
+
+  #
+  schedules: ScheduleUpdateManyWithoutSeasonInput
+}
+
+#
+input ScheduleUpdateManyWithoutSeasonInput {
+  #
+  create: [ScheduleCreateWithoutSeasonInput!]
+
+  #
+  delete: [ScheduleWhereUniqueInput!]
+
+  #
+  connect: [ScheduleWhereUniqueInput!]
+
+  #
+  set: [ScheduleWhereUniqueInput!]
+
+  #
+  disconnect: [ScheduleWhereUniqueInput!]
+
+  #
+  update: [ScheduleUpdateWithWhereUniqueWithoutSeasonInput!]
+
+  #
+  upsert: [ScheduleUpsertWithWhereUniqueWithoutSeasonInput!]
+
+  #
+  deleteMany: [ScheduleScalarWhereInput!]
+
+  #
+  updateMany: [ScheduleUpdateManyWithWhereNestedInput!]
+}
+
+#
+input ScheduleUpdateWithWhereUniqueWithoutSeasonInput {
+  #
+  where: ScheduleWhereUniqueInput!
+
+  #
+  data: ScheduleUpdateWithoutSeasonDataInput!
+}
+
+#
+input ScheduleUpdateWithoutSeasonDataInput {
+  #
+  week: Int
+
+  #
+  matches: MatchUpdateManyWithoutScheduleInput
+}
+
+#
+input MatchUpdateManyWithoutScheduleInput {
+  #
+  create: [MatchCreateWithoutScheduleInput!]
+
+  #
+  delete: [MatchWhereUniqueInput!]
+
+  #
+  connect: [MatchWhereUniqueInput!]
+
+  #
+  set: [MatchWhereUniqueInput!]
+
+  #
+  disconnect: [MatchWhereUniqueInput!]
+
+  #
+  update: [MatchUpdateWithWhereUniqueWithoutScheduleInput!]
+
+  #
+  upsert: [MatchUpsertWithWhereUniqueWithoutScheduleInput!]
+
+  #
+  deleteMany: [MatchScalarWhereInput!]
+}
+
+#
+input MatchUpdateWithWhereUniqueWithoutScheduleInput {
+  #
+  where: MatchWhereUniqueInput!
+
+  #
+  data: MatchUpdateWithoutScheduleDataInput!
+}
+
+#
+input MatchUpdateWithoutScheduleDataInput {
+  #
+  teamA: TeamUpdateOneRequiredInput
+
+  #
+  teamB: TeamUpdateOneRequiredInput
+}
+
+#
+input MatchUpsertWithWhereUniqueWithoutScheduleInput {
+  #
+  where: MatchWhereUniqueInput!
+
+  #
+  update: MatchUpdateWithoutScheduleDataInput!
+
+  #
+  create: MatchCreateWithoutScheduleInput!
+}
+
+#
+input MatchScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  AND: [MatchScalarWhereInput!]
+
+  #
+  OR: [MatchScalarWhereInput!]
+
+  #
+  NOT: [MatchScalarWhereInput!]
+}
+
+#
+input ScheduleUpsertWithWhereUniqueWithoutSeasonInput {
+  #
+  where: ScheduleWhereUniqueInput!
+
+  #
+  update: ScheduleUpdateWithoutSeasonDataInput!
+
+  #
+  create: ScheduleCreateWithoutSeasonInput!
+}
+
+#
+input ScheduleScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  week: Int
+
+  #
+  week_not: Int
+
+  #
+  week_in: [Int!]
+
+  #
+  week_not_in: [Int!]
+
+  #
+  week_lt: Int
+
+  #
+  week_lte: Int
+
+  #
+  week_gt: Int
+
+  #
+  week_gte: Int
+
+  #
+  AND: [ScheduleScalarWhereInput!]
+
+  #
+  OR: [ScheduleScalarWhereInput!]
+
+  #
+  NOT: [ScheduleScalarWhereInput!]
+}
+
+#
+input ScheduleUpdateManyWithWhereNestedInput {
+  #
+  where: ScheduleScalarWhereInput!
+
+  #
+  data: ScheduleUpdateManyDataInput!
+}
+
+#
+input ScheduleUpdateManyDataInput {
+  #
+  week: Int
+}
+
+#
+input SeasonUpsertWithWhereUniqueWithoutTournamentInput {
+  #
+  where: SeasonWhereUniqueInput!
+
+  #
+  update: SeasonUpdateWithoutTournamentDataInput!
+
+  #
+  create: SeasonCreateWithoutTournamentInput!
+}
+
+#
+input SeasonScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  AND: [SeasonScalarWhereInput!]
+
+  #
+  OR: [SeasonScalarWhereInput!]
+
+  #
+  NOT: [SeasonScalarWhereInput!]
+}
+
+#
+input SeasonUpdateManyWithWhereNestedInput {
+  #
+  where: SeasonScalarWhereInput!
+
+  #
+  data: SeasonUpdateManyDataInput!
+}
+
+#
+input SeasonUpdateManyDataInput {
+  #
+  name: String
+}
+
+#
+input TournamentUpsertWithoutTeamsInput {
+  #
+  update: TournamentUpdateWithoutTeamsDataInput!
+
+  #
+  create: TournamentCreateWithoutTeamsInput!
+}
+
+#
+input PlayerUpdateManyWithoutTeamInput {
+  #
+  create: [PlayerCreateWithoutTeamInput!]
+
+  #
+  delete: [PlayerWhereUniqueInput!]
+
+  #
+  connect: [PlayerWhereUniqueInput!]
+
+  #
+  set: [PlayerWhereUniqueInput!]
+
+  #
+  disconnect: [PlayerWhereUniqueInput!]
+
+  #
+  update: [PlayerUpdateWithWhereUniqueWithoutTeamInput!]
+
+  #
+  upsert: [PlayerUpsertWithWhereUniqueWithoutTeamInput!]
+
+  #
+  deleteMany: [PlayerScalarWhereInput!]
+
+  #
+  updateMany: [PlayerUpdateManyWithWhereNestedInput!]
+}
+
+#
+input PlayerUpdateWithWhereUniqueWithoutTeamInput {
+  #
+  where: PlayerWhereUniqueInput!
+
+  #
+  data: PlayerUpdateWithoutTeamDataInput!
+}
+
+#
+input PlayerUpdateWithoutTeamDataInput {
+  #
+  name: String
+}
+
+#
+input PlayerUpsertWithWhereUniqueWithoutTeamInput {
+  #
+  where: PlayerWhereUniqueInput!
+
+  #
+  update: PlayerUpdateWithoutTeamDataInput!
+
+  #
+  create: PlayerCreateWithoutTeamInput!
+}
+
+#
+input PlayerScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  AND: [PlayerScalarWhereInput!]
+
+  #
+  OR: [PlayerScalarWhereInput!]
+
+  #
+  NOT: [PlayerScalarWhereInput!]
+}
+
+#
+input PlayerUpdateManyWithWhereNestedInput {
+  #
+  where: PlayerScalarWhereInput!
+
+  #
+  data: PlayerUpdateManyDataInput!
+}
+
+#
+input PlayerUpdateManyDataInput {
+  #
+  name: String
+}
+
+#
+input TeamUpsertNestedInput {
+  #
+  update: TeamUpdateDataInput!
+
+  #
+  create: TeamCreateInput!
+}
+
+#
+input ScheduleUpdateOneRequiredWithoutMatchesInput {
+  #
+  create: ScheduleCreateWithoutMatchesInput
+
+  #
+  update: ScheduleUpdateWithoutMatchesDataInput
+
+  #
+  upsert: ScheduleUpsertWithoutMatchesInput
+
+  #
+  connect: ScheduleWhereUniqueInput
+}
+
+#
+input ScheduleUpdateWithoutMatchesDataInput {
+  #
+  week: Int
+
+  #
+  season: SeasonUpdateOneRequiredWithoutSchedulesInput
+}
+
+#
+input SeasonUpdateOneRequiredWithoutSchedulesInput {
+  #
+  create: SeasonCreateWithoutSchedulesInput
+
+  #
+  update: SeasonUpdateWithoutSchedulesDataInput
+
+  #
+  upsert: SeasonUpsertWithoutSchedulesInput
+
+  #
+  connect: SeasonWhereUniqueInput
+}
+
+#
+input SeasonUpdateWithoutSchedulesDataInput {
+  #
+  name: String
+
+  #
+  tournament: TournamentUpdateOneRequiredWithoutSeasonsInput
+}
+
+#
+input TournamentUpdateOneRequiredWithoutSeasonsInput {
+  #
+  create: TournamentCreateWithoutSeasonsInput
+
+  #
+  update: TournamentUpdateWithoutSeasonsDataInput
+
+  #
+  upsert: TournamentUpsertWithoutSeasonsInput
+
+  #
+  connect: TournamentWhereUniqueInput
+}
+
+#
+input TournamentUpdateWithoutSeasonsDataInput {
+  #
+  owner: UserUpdateOneRequiredWithoutTournamentsInput
+
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamUpdateManyWithoutTournamentInput
+}
+
+#
+input TeamUpdateManyWithoutTournamentInput {
+  #
+  create: [TeamCreateWithoutTournamentInput!]
+
+  #
+  delete: [TeamWhereUniqueInput!]
+
+  #
+  connect: [TeamWhereUniqueInput!]
+
+  #
+  set: [TeamWhereUniqueInput!]
+
+  #
+  disconnect: [TeamWhereUniqueInput!]
+
+  #
+  update: [TeamUpdateWithWhereUniqueWithoutTournamentInput!]
+
+  #
+  upsert: [TeamUpsertWithWhereUniqueWithoutTournamentInput!]
+
+  #
+  deleteMany: [TeamScalarWhereInput!]
+
+  #
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
+}
+
+#
+input TeamUpdateWithWhereUniqueWithoutTournamentInput {
+  #
+  where: TeamWhereUniqueInput!
+
+  #
+  data: TeamUpdateWithoutTournamentDataInput!
+}
+
+#
+input TeamUpdateWithoutTournamentDataInput {
+  #
+  name: String
+
+  #
+  players: PlayerUpdateManyWithoutTeamInput
+}
+
+#
+input TeamUpsertWithWhereUniqueWithoutTournamentInput {
+  #
+  where: TeamWhereUniqueInput!
+
+  #
+  update: TeamUpdateWithoutTournamentDataInput!
+
+  #
+  create: TeamCreateWithoutTournamentInput!
+}
+
+#
+input TeamScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  AND: [TeamScalarWhereInput!]
+
+  #
+  OR: [TeamScalarWhereInput!]
+
+  #
+  NOT: [TeamScalarWhereInput!]
+}
+
+#
+input TeamUpdateManyWithWhereNestedInput {
+  #
+  where: TeamScalarWhereInput!
+
+  #
+  data: TeamUpdateManyDataInput!
+}
+
+#
+input TeamUpdateManyDataInput {
+  #
+  name: String
+}
+
+#
+input TournamentUpsertWithoutSeasonsInput {
+  #
+  update: TournamentUpdateWithoutSeasonsDataInput!
+
+  #
+  create: TournamentCreateWithoutSeasonsInput!
+}
+
+#
+input SeasonUpsertWithoutSchedulesInput {
+  #
+  update: SeasonUpdateWithoutSchedulesDataInput!
+
+  #
+  create: SeasonCreateWithoutSchedulesInput!
+}
+
+#
+input ScheduleUpsertWithoutMatchesInput {
+  #
+  update: ScheduleUpdateWithoutMatchesDataInput!
+
+  #
+  create: ScheduleCreateWithoutMatchesInput!
+}
+
+#
+type BatchPayload {
+  #
+  count: Long!
+}
+
+#
+scalar Long
+
+#
+input PlayerCreateInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  team: TeamCreateOneWithoutPlayersInput!
+}
+
+#
+input TeamCreateOneWithoutPlayersInput {
+  #
+  create: TeamCreateWithoutPlayersInput
+
+  #
+  connect: TeamWhereUniqueInput
+}
+
+#
+input TeamCreateWithoutPlayersInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  tournament: TournamentCreateOneWithoutTeamsInput!
+}
+
+#
+input PlayerUpdateInput {
+  #
+  name: String
+
+  #
+  team: TeamUpdateOneRequiredWithoutPlayersInput
+}
+
+#
+input TeamUpdateOneRequiredWithoutPlayersInput {
+  #
+  create: TeamCreateWithoutPlayersInput
+
+  #
+  update: TeamUpdateWithoutPlayersDataInput
+
+  #
+  upsert: TeamUpsertWithoutPlayersInput
+
+  #
+  connect: TeamWhereUniqueInput
+}
+
+#
+input TeamUpdateWithoutPlayersDataInput {
+  #
+  name: String
+
+  #
+  tournament: TournamentUpdateOneRequiredWithoutTeamsInput
+}
+
+#
+input TeamUpsertWithoutPlayersInput {
+  #
+  update: TeamUpdateWithoutPlayersDataInput!
+
+  #
+  create: TeamCreateWithoutPlayersInput!
+}
+
+#
+input PlayerUpdateManyMutationInput {
+  #
+  name: String
+}
+
+#
+input ScheduleCreateInput {
+  #
+  id: ID
+
+  #
+  week: Int
+
+  #
+  matches: MatchCreateManyWithoutScheduleInput
+
+  #
+  season: SeasonCreateOneWithoutSchedulesInput!
+}
+
+#
+input ScheduleUpdateInput {
+  #
+  week: Int
+
+  #
+  matches: MatchUpdateManyWithoutScheduleInput
+
+  #
+  season: SeasonUpdateOneRequiredWithoutSchedulesInput
+}
+
+#
+input ScheduleUpdateManyMutationInput {
+  #
+  week: Int
+}
+
+#
+input SeasonCreateInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  schedules: ScheduleCreateManyWithoutSeasonInput
+
+  #
+  tournament: TournamentCreateOneWithoutSeasonsInput!
+}
+
+#
+input SeasonUpdateInput {
+  #
+  name: String
+
+  #
+  schedules: ScheduleUpdateManyWithoutSeasonInput
+
+  #
+  tournament: TournamentUpdateOneRequiredWithoutSeasonsInput
+}
+
+#
+input SeasonUpdateManyMutationInput {
+  #
+  name: String
+}
+
+#
+input TeamUpdateInput {
+  #
+  name: String
+
+  #
+  tournament: TournamentUpdateOneRequiredWithoutTeamsInput
+
+  #
+  players: PlayerUpdateManyWithoutTeamInput
+}
+
+#
+input TeamUpdateManyMutationInput {
+  #
+  name: String
+}
+
+#
+input TournamentCreateInput {
+  #
+  id: ID
+
+  #
+  owner: UserCreateOneWithoutTournamentsInput!
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamCreateManyWithoutTournamentInput
+
+  #
+  seasons: SeasonCreateManyWithoutTournamentInput
+}
+
+#
+input TournamentUpdateInput {
+  #
+  owner: UserUpdateOneRequiredWithoutTournamentsInput
+
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamUpdateManyWithoutTournamentInput
+
+  #
+  seasons: SeasonUpdateManyWithoutTournamentInput
+}
+
+#
+input TournamentUpdateManyMutationInput {
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+}
+
+#
+input UserCreateInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  tournaments: TournamentCreateManyWithoutOwnerInput
+}
+
+#
+input TournamentCreateManyWithoutOwnerInput {
+  #
+  create: [TournamentCreateWithoutOwnerInput!]
+
+  #
+  connect: [TournamentWhereUniqueInput!]
+}
+
+#
+input TournamentCreateWithoutOwnerInput {
+  #
+  id: ID
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamCreateManyWithoutTournamentInput
+
+  #
+  seasons: SeasonCreateManyWithoutTournamentInput
+}
+
+#
+input UserUpdateInput {
+  #
+  name: String
+
+  #
+  tournaments: TournamentUpdateManyWithoutOwnerInput
+}
+
+#
+input TournamentUpdateManyWithoutOwnerInput {
+  #
+  create: [TournamentCreateWithoutOwnerInput!]
+
+  #
+  delete: [TournamentWhereUniqueInput!]
+
+  #
+  connect: [TournamentWhereUniqueInput!]
+
+  #
+  set: [TournamentWhereUniqueInput!]
+
+  #
+  disconnect: [TournamentWhereUniqueInput!]
+
+  #
+  update: [TournamentUpdateWithWhereUniqueWithoutOwnerInput!]
+
+  #
+  upsert: [TournamentUpsertWithWhereUniqueWithoutOwnerInput!]
+
+  #
+  deleteMany: [TournamentScalarWhereInput!]
+
+  #
+  updateMany: [TournamentUpdateManyWithWhereNestedInput!]
+}
+
+#
+input TournamentUpdateWithWhereUniqueWithoutOwnerInput {
+  #
+  where: TournamentWhereUniqueInput!
+
+  #
+  data: TournamentUpdateWithoutOwnerDataInput!
+}
+
+#
+input TournamentUpdateWithoutOwnerDataInput {
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+
+  #
+  teams: TeamUpdateManyWithoutTournamentInput
+
+  #
+  seasons: SeasonUpdateManyWithoutTournamentInput
+}
+
+#
+input TournamentUpsertWithWhereUniqueWithoutOwnerInput {
+  #
+  where: TournamentWhereUniqueInput!
+
+  #
+  update: TournamentUpdateWithoutOwnerDataInput!
+
+  #
+  create: TournamentCreateWithoutOwnerInput!
+}
+
+#
+input TournamentScalarWhereInput {
+  #
+  id: ID
+
+  #
+  id_not: ID
+
+  #
+  id_in: [ID!]
+
+  #
+  id_not_in: [ID!]
+
+  #
+  id_lt: ID
+
+  #
+  id_lte: ID
+
+  #
+  id_gt: ID
+
+  #
+  id_gte: ID
+
+  #
+  id_contains: ID
+
+  #
+  id_not_contains: ID
+
+  #
+  id_starts_with: ID
+
+  #
+  id_not_starts_with: ID
+
+  #
+  id_ends_with: ID
+
+  #
+  id_not_ends_with: ID
+
+  #
+  name: String
+
+  #
+  name_not: String
+
+  #
+  name_in: [String!]
+
+  #
+  name_not_in: [String!]
+
+  #
+  name_lt: String
+
+  #
+  name_lte: String
+
+  #
+  name_gt: String
+
+  #
+  name_gte: String
+
+  #
+  name_contains: String
+
+  #
+  name_not_contains: String
+
+  #
+  name_starts_with: String
+
+  #
+  name_not_starts_with: String
+
+  #
+  name_ends_with: String
+
+  #
+  name_not_ends_with: String
+
+  #
+  description: String
+
+  #
+  description_not: String
+
+  #
+  description_in: [String!]
+
+  #
+  description_not_in: [String!]
+
+  #
+  description_lt: String
+
+  #
+  description_lte: String
+
+  #
+  description_gt: String
+
+  #
+  description_gte: String
+
+  #
+  description_contains: String
+
+  #
+  description_not_contains: String
+
+  #
+  description_starts_with: String
+
+  #
+  description_not_starts_with: String
+
+  #
+  description_ends_with: String
+
+  #
+  description_not_ends_with: String
+
+  #
+  start: DateTime
+
+  #
+  start_not: DateTime
+
+  #
+  start_in: [DateTime!]
+
+  #
+  start_not_in: [DateTime!]
+
+  #
+  start_lt: DateTime
+
+  #
+  start_lte: DateTime
+
+  #
+  start_gt: DateTime
+
+  #
+  start_gte: DateTime
+
+  #
+  end: DateTime
+
+  #
+  end_not: DateTime
+
+  #
+  end_in: [DateTime!]
+
+  #
+  end_not_in: [DateTime!]
+
+  #
+  end_lt: DateTime
+
+  #
+  end_lte: DateTime
+
+  #
+  end_gt: DateTime
+
+  #
+  end_gte: DateTime
+
+  #
+  AND: [TournamentScalarWhereInput!]
+
+  #
+  OR: [TournamentScalarWhereInput!]
+
+  #
+  NOT: [TournamentScalarWhereInput!]
+}
+
+#
+input TournamentUpdateManyWithWhereNestedInput {
+  #
+  where: TournamentScalarWhereInput!
+
+  #
+  data: TournamentUpdateManyDataInput!
+}
+
+#
+input TournamentUpdateManyDataInput {
+  #
+  name: String
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+}
+
+#
+input UserUpdateManyMutationInput {
+  #
+  name: String
+}
+
+#
+type Subscription {
+  #
+  match(where: MatchSubscriptionWhereInput): MatchSubscriptionPayload
+
+  #
+  player(where: PlayerSubscriptionWhereInput): PlayerSubscriptionPayload
+
+  #
+  schedule(where: ScheduleSubscriptionWhereInput): ScheduleSubscriptionPayload
+
+  #
+  season(where: SeasonSubscriptionWhereInput): SeasonSubscriptionPayload
+
+  #
+  team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
+
+  #
+  tournament(
+    where: TournamentSubscriptionWhereInput
+  ): TournamentSubscriptionPayload
+
+  #
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+#
+input MatchSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: MatchWhereInput
+
+  #
+  AND: [MatchSubscriptionWhereInput!]
+
+  #
+  OR: [MatchSubscriptionWhereInput!]
+
+  #
+  NOT: [MatchSubscriptionWhereInput!]
+}
+
+#
+enum MutationType {
+  #
+  CREATED
+
+  #
+  UPDATED
+
+  #
+  DELETED
+}
+
+#
+type MatchSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Match
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: MatchPreviousValues
+}
+
+#
+type MatchPreviousValues {
+  #
+  id: ID!
+}
+
+#
+input PlayerSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: PlayerWhereInput
+
+  #
+  AND: [PlayerSubscriptionWhereInput!]
+
+  #
+  OR: [PlayerSubscriptionWhereInput!]
+
+  #
+  NOT: [PlayerSubscriptionWhereInput!]
+}
+
+#
+type PlayerSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Player
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: PlayerPreviousValues
+}
+
+#
+type PlayerPreviousValues {
+  #
+  id: ID!
+
+  #
+  name: String!
+}
+
+#
+input ScheduleSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: ScheduleWhereInput
+
+  #
+  AND: [ScheduleSubscriptionWhereInput!]
+
+  #
+  OR: [ScheduleSubscriptionWhereInput!]
+
+  #
+  NOT: [ScheduleSubscriptionWhereInput!]
+}
+
+#
+type ScheduleSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Schedule
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: SchedulePreviousValues
+}
+
+#
+type SchedulePreviousValues {
+  #
+  id: ID!
+
+  #
+  week: Int
+}
+
+#
+input SeasonSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: SeasonWhereInput
+
+  #
+  AND: [SeasonSubscriptionWhereInput!]
+
+  #
+  OR: [SeasonSubscriptionWhereInput!]
+
+  #
+  NOT: [SeasonSubscriptionWhereInput!]
+}
+
+#
+type SeasonSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Season
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: SeasonPreviousValues
+}
+
+#
+type SeasonPreviousValues {
+  #
+  id: ID!
+
+  #
+  name: String!
+}
+
+#
+input TeamSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: TeamWhereInput
+
+  #
+  AND: [TeamSubscriptionWhereInput!]
+
+  #
+  OR: [TeamSubscriptionWhereInput!]
+
+  #
+  NOT: [TeamSubscriptionWhereInput!]
+}
+
+#
+type TeamSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Team
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: TeamPreviousValues
+}
+
+#
+type TeamPreviousValues {
+  #
+  id: ID!
+
+  #
+  name: String!
+}
+
+#
+input TournamentSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: TournamentWhereInput
+
+  #
+  AND: [TournamentSubscriptionWhereInput!]
+
+  #
+  OR: [TournamentSubscriptionWhereInput!]
+
+  #
+  NOT: [TournamentSubscriptionWhereInput!]
+}
+
+#
+type TournamentSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: Tournament
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: TournamentPreviousValues
+}
+
+#
+type TournamentPreviousValues {
+  #
+  id: ID!
+
+  #
+  name: String!
+
+  #
+  description: String
+
+  #
+  start: DateTime
+
+  #
+  end: DateTime
+}
+
+#
+input UserSubscriptionWhereInput {
+  #
+  mutation_in: [MutationType!]
+
+  #
+  updatedFields_contains: String
+
+  #
+  updatedFields_contains_every: [String!]
+
+  #
+  updatedFields_contains_some: [String!]
+
+  #
+  node: UserWhereInput
+
+  #
+  AND: [UserSubscriptionWhereInput!]
+
+  #
+  OR: [UserSubscriptionWhereInput!]
+
+  #
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+#
+type UserSubscriptionPayload {
+  #
+  mutation: MutationType!
+
+  #
+  node: User
+
+  #
+  updatedFields: [String!]
+
+  #
+  previousValues: UserPreviousValues
+}
+
+#
+type UserPreviousValues {
+  #
+  id: ID!
+
+  #
+  name: String!
+}

@@ -1,5 +1,5 @@
 import { GraphQLServer } from "graphql-yoga";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Match, Prisma, PrismaClient } from "@prisma/client";
 import faker from "faker";
 
 interface Context {
@@ -48,6 +48,9 @@ const resolvers = {
     },
     tournament(parent, { id }, context: Context) {
       return context.prisma.tournament.findUnique({ where: { id } });
+    },
+    matches(parent, args, context: Context) {
+      return context.prisma.match.findMany();
     },
     async userByEmail(parent, { email }, context: Context) {
       const users = await context.prisma.user.findMany();
@@ -108,6 +111,22 @@ const resolvers = {
     },
   },
   Mutation: {
+    async updateMatches(parent, { data }, context: Context) {
+      const promises = data.map((match) => {
+        return context.prisma.match.update({
+          where: { id: match.matchId },
+          data: {
+            resultA: match.resultA,
+            resultB: match.resultB,
+          },
+        });
+      });
+      const matches = await Promise.all<Match>(promises);
+      const schedule = context.prisma.schedule.findFirst({
+        where: { id: matches[0].scheduleId },
+      });
+      return schedule;
+    },
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
@@ -213,8 +232,9 @@ const server = new GraphQLServer({
     createUser(data: UserCreatInput!): User!
     updateTournament(data: TournamentUpdateInput!): Tournament!
     deleteTournament(id: ID!): Tournament!
+    updateMatches(data: [MatchResult!]!): Schedule!
   }
-  
+
   input UserCreatInput {
     name: String!
     email: String!
@@ -266,11 +286,19 @@ const server = new GraphQLServer({
     season: Season!
   }
   
+  input MatchResult {
+    matchId: String!
+    resultA: Int!
+    resultB: Int!
+  }
+
   type Match {
     id: ID!
     teamA: Team!
     teamB: Team!
     schedule: Schedule!
+    resultA: Int!
+    resultB: Int!
   }
   
   type Team {

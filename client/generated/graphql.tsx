@@ -24,6 +24,14 @@ export type Match = {
   teamA: Team,
   teamB: Team,
   schedule: Schedule,
+  resultA: Scalars['Int'],
+  resultB: Scalars['Int'],
+};
+
+export type MatchResult = {
+  matchId: Scalars['String'],
+  resultA: Scalars['Int'],
+  resultB: Scalars['Int'],
 };
 
 export type Mutation = {
@@ -32,6 +40,7 @@ export type Mutation = {
   createUser: User,
   updateTournament: Tournament,
   deleteTournament: Tournament,
+  updateMatches: Schedule,
 };
 
 
@@ -52,6 +61,11 @@ export type MutationUpdateTournamentArgs = {
 
 export type MutationDeleteTournamentArgs = {
   id: Scalars['ID']
+};
+
+
+export type MutationUpdateMatchesArgs = {
+  data: Array<MatchResult>
 };
 
 export type Player = {
@@ -167,6 +181,19 @@ export type UserCreatInput = {
   email: Scalars['String'],
 };
 
+export type UpdateMatchesMutationVariables = {
+  data: Array<MatchResult>
+};
+
+
+export type UpdateMatchesMutation = (
+  { __typename?: 'Mutation' }
+  & { updateMatches: (
+    { __typename?: 'Schedule' }
+    & Pick<Schedule, 'id'>
+  ) }
+);
+
 export type CreateTournamentMutationVariables = {
   data: TournamentCreateInput
 };
@@ -237,10 +264,10 @@ export type TournamentQuery = (
       & Pick<Season, 'id' | 'name'>
       & { schedules: Maybe<Array<(
         { __typename?: 'Schedule' }
-        & Pick<Schedule, 'week'>
+        & Pick<Schedule, 'id' | 'week'>
         & { matches: Maybe<Array<(
           { __typename?: 'Match' }
-          & Pick<Match, 'id'>
+          & Pick<Match, 'id' | 'resultA' | 'resultB'>
           & { teamA: (
             { __typename?: 'Team' }
             & Pick<Team, 'id' | 'name'>
@@ -285,6 +312,44 @@ export type GetUserByEmailQuery = (
 );
 
 
+export const UpdateMatchesDocument = gql`
+    mutation UpdateMatches($data: [MatchResult!]!) {
+  updateMatches(data: $data) {
+    id
+  }
+}
+    `;
+export type UpdateMatchesMutationFn = ApolloReactCommon.MutationFunction<UpdateMatchesMutation, UpdateMatchesMutationVariables>;
+export type UpdateMatchesComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateMatchesMutation, UpdateMatchesMutationVariables>, 'mutation'>;
+
+    export const UpdateMatchesComponent = (props: UpdateMatchesComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateMatchesMutation, UpdateMatchesMutationVariables> mutation={UpdateMatchesDocument} {...props} />
+    );
+    
+
+/**
+ * __useUpdateMatchesMutation__
+ *
+ * To run a mutation, you first call `useUpdateMatchesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMatchesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMatchesMutation, { data, loading, error }] = useUpdateMatchesMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateMatchesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateMatchesMutation, UpdateMatchesMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateMatchesMutation, UpdateMatchesMutationVariables>(UpdateMatchesDocument, baseOptions);
+      }
+export type UpdateMatchesMutationHookResult = ReturnType<typeof useUpdateMatchesMutation>;
+export type UpdateMatchesMutationResult = ApolloReactCommon.MutationResult<UpdateMatchesMutation>;
+export type UpdateMatchesMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateMatchesMutation, UpdateMatchesMutationVariables>;
 export const CreateTournamentDocument = gql`
     mutation CreateTournament($data: TournamentCreateInput!) {
   createTournament(data: $data) {
@@ -455,6 +520,7 @@ export const TournamentDocument = gql`
       id
       name
       schedules {
+        id
         week
         matches {
           id
@@ -466,6 +532,8 @@ export const TournamentDocument = gql`
             id
             name
           }
+          resultA
+          resultB
         }
       }
     }

@@ -84,5 +84,7 @@ model Match {
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
   scheduleId String   @map("schedule_id")
 
+  resultA Int @default(0) @map("result_a")
+  resultB Int @default(0) @map("result_b")
   @@map(name: "matches")
 }

@@ -16,6 +16,7 @@ export const TOURNAMENT_QUERY = gql`
         id
         name
         schedules {
+          id
           week
           matches {
             id
@@ -27,6 +28,8 @@ export const TOURNAMENT_QUERY = gql`
               id
               name
             }
+            resultA
+            resultB
           }
         }
       }

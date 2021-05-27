@@ -40,7 +40,6 @@ const LoginButton = () => {
   });
 
   useEffect(() => {
-    console.log({ userSession, user });
     if (userSession) return;
     if (!user) return;
     getUser({ variables: { email: user.email } });

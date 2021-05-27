@@ -40,6 +40,7 @@ const LoginButton = () => {
   });
 
   useEffect(() => {
+    console.log({ userSession, user });
     if (userSession) return;
     if (!user) return;
     getUser({ variables: { email: user.email } });
@@ -58,6 +59,11 @@ const LoginButton = () => {
     setAnchorEl(null);
   };
 
+  const handleTournaments = () => {
+    push("/tournaments");
+    setAnchorEl(null);
+  };
+
   if (!userSession?.name)
     return <Button onClick={() => push("/api/auth/login")}>Login</Button>;
 
@@ -71,6 +77,7 @@ const LoginButton = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem onClick={handleTournaments}>Mis torneos</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </>

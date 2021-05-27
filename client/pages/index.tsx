@@ -1,7 +1,7 @@
 import { useUser } from "@auth0/nextjs-auth0";
-import Navbar from "../src/Navbar";
 import React from "react";
-import TournamentCreator from "../src/TournamentCreator";
+import { Layout } from "../components";
+import TournamentCreator from "../components/TournamentCreator";
 import { withApollo } from "../lib/apollo";
 
 function Home(props) {
@@ -11,10 +11,9 @@ function Home(props) {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div>
-      <Navbar />
+    <Layout>
       <TournamentCreator />
-    </div>
+    </Layout>
   );
 }
 

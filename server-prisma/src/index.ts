@@ -31,6 +31,9 @@ function robin(ls: string[]) {
 
 const resolvers = {
   Query: {
+    tournamentsByUserId(parent, { id }, context: Context) {
+      return context.prisma.tournament.findMany({ where: { ownerId: id } });
+    },
     users(parent, args, context: Context) {
       return context.prisma.user.findMany();
     },
@@ -108,6 +111,22 @@ const resolvers = {
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
+    updateTournament(parent, { data }, context: Context) {
+      return context.prisma.tournament.update({
+        data: {
+          name: data.name,
+          start: new Date(data.start),
+          end: new Date(data.end),
+          description: data.description,
+        },
+        where: {
+          id: data.id,
+        },
+      });
+    },
+    deleteTournament(parent, { id }, context: Context) {
+      return context.prisma.tournament.delete({ where: { id } });
+    },
     async createTournament(parent, { data }, context: Context) {
       if (!data.teams || data.teams.length === 0)
         return context.prisma.tournament.create({ data });
@@ -115,7 +134,7 @@ const resolvers = {
         let user = null;
         if (!data.owner) {
           user = await context.prisma.user.create({
-            data: { name: faker.random.word(), email: faker.internet.email() },
+            data: { name: "anonymous", email: faker.internet.email() },
           });
         } else {
           user = await context.prisma.user.findUnique({
@@ -182,6 +201,7 @@ const server = new GraphQLServer({
     users: [User!]
     players: [Player!]
     tournaments: [Tournament!]
+    tournamentsByUserId(id: ID!): [Tournament!]
     teams: [Team!]
     schedules: [Schedule!]
     matches: [Match!]
@@ -191,6 +211,8 @@ const server = new GraphQLServer({
   type Mutation {
     createTournament(data: TournamentCreateInput!): Tournament!
     createUser(data: UserCreatInput!): User!
+    updateTournament(data: TournamentUpdateInput!): Tournament!
+    deleteTournament(id: ID!): Tournament!
   }
   
   input UserCreatInput {
@@ -206,6 +228,14 @@ const server = new GraphQLServer({
     start: String
     end: String
     teams: [String!]
+  }
+
+  input TournamentUpdateInput {
+    id: ID!
+    name: String!
+    description: String
+    start: String
+    end: String
   }
   
   input CreateTeamInput {
@@ -269,4 +299,4 @@ const server = new GraphQLServer({
   context: { prisma },
 });
 
-server.start();
+server.start(() => console.log("app is running on https://localhost:4000"));

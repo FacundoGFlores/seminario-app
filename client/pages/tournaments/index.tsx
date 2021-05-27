@@ -5,6 +5,8 @@ import { withApollo } from "../../lib/apollo";
 
 import PeopleIcon from "@material-ui/icons/People";
 import EditIcon from "@material-ui/icons/Edit";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+
 import {
   useTournamentsByUserIdQuery,
   useTournamentLazyQuery,
@@ -58,7 +60,6 @@ const Tournaments = () => {
   const { push } = useRouter();
   const { user } = useSession();
 
-  console.log({ user });
   // Form Values
   const [selectedStartDate, setSelectedStartDate] = React.useState<string>();
   const [selectedEndDate, setSelectedEndDate] = React.useState<string>();
@@ -229,17 +230,24 @@ const Tournaments = () => {
                     <TableCell component="th" scope="row">
                       {tournament.description}
                     </TableCell>
-                    <IconButton
-                      onClick={() => handleAddTeam(tournament.id)}
-                      size="small"
-                    >
-                      <PeopleIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleTournamentSelection(tournament.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
+                    <TableCell>
+                      <IconButton
+                        onClick={() => handleAddTeam(tournament.id)}
+                        size="small"
+                      >
+                        <PeopleIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleTournamentSelection(tournament.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => push(`/season/${tournament.id}`)}
+                      >
+                        <PlayArrowIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

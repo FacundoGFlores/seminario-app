@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "matches" ADD COLUMN     "result_a" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "result_b" INTEGER NOT NULL DEFAULT 0;

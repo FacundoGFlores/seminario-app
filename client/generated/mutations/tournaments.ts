@@ -7,3 +7,19 @@ export const CREATE_TOURNAMENT = gql`
     }
   }
 `;
+
+export const UPDATE_TOURNAMENT = gql`
+  mutation UpdateTournament($data: TournamentUpdateInput!) {
+    updateTournament(data: $data) {
+      id
+    }
+  }
+`;
+
+export const DELETE_TOURNAMENT = gql`
+  mutation DeleteTournament($id: ID!) {
+    deleteTournament(id: $id) {
+      id
+    }
+  }
+`;

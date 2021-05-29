@@ -19,7 +19,6 @@ const useStyles = makeStyles({
   content: {
     flex: '1 0 auto',
     padding: '3em',
-    overflowY: 'scroll',
   },
   footer: {
     background: grey[800],

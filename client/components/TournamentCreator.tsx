@@ -24,7 +24,8 @@ import { useSession } from '../hooks/Session';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '3em',
-    overflow: 'auto',
+    maxHeight: '800px',
+    overflowY: 'auto',
   },
 }));
 

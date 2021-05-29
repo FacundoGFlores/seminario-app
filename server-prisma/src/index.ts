@@ -1,5 +1,5 @@
 import { GraphQLServer } from "graphql-yoga";
-import { Match, Prisma, PrismaClient } from "@prisma/client";
+import { Match, Prisma, PrismaClient, Team } from "@prisma/client";
 import faker from "faker";
 
 interface Context {
@@ -29,6 +29,30 @@ function robin(ls: string[]) {
   return rs;
 }
 
+type TournamentPosition = {
+  [teamId in string]: {
+    team: Team;
+    pg: number;
+    pe: number;
+    pp: number;
+    gf: number;
+    gc: number;
+
+    points: number;
+  };
+};
+
+type Position = {
+  team: Team;
+  pg: number;
+  pe: number;
+  pp: number;
+  gf: number;
+  gc: number;
+
+  points: number;
+};
+
 const resolvers = {
   Query: {
     tournamentsByUserId(parent, { id }, context: Context) {
@@ -56,6 +80,88 @@ const resolvers = {
       const users = await context.prisma.user.findMany();
       const userFound = users.filter((user) => user.email === email);
       return userFound[0];
+    },
+    async positionsByTournament(parent, { tournamentId }, context: Context) {
+      const season = await context.prisma.season.findFirst({
+        where: { tournamentId },
+        include: {
+          schedules: {
+            include: {
+              matches: {
+                where: { played: true },
+                include: { teamA: true, teamB: true },
+              },
+            },
+          },
+        },
+      });
+
+      const matches = season.schedules.reduce(
+        (prev, curr) => {
+          return [...prev, ...curr.matches];
+        },
+        [] as (Match & {
+          teamA: Team;
+          teamB: Team;
+        })[]
+      );
+
+      const positionsObj = matches.reduce((prevPosition, currMatch) => {
+        return {
+          ...prevPosition,
+          [currMatch.teamAId]: {
+            team: currMatch.teamA,
+            pg:
+              (prevPosition[currMatch.teamAId]?.pg || 0) +
+              (currMatch.resultA > currMatch.resultB ? 1 : 0),
+            pe:
+              (prevPosition[currMatch.teamAId]?.pe || 0) +
+              (currMatch.resultA == currMatch.resultB ? 1 : 0),
+            pp:
+              (prevPosition[currMatch.teamAId]?.pp || 0) +
+              (currMatch.resultA <= currMatch.resultB ? 1 : 0),
+
+            gf: (prevPosition[currMatch.teamAId]?.gf || 0) + currMatch.resultA,
+            gc: (prevPosition[currMatch.teamAId]?.gc || 0) + currMatch.resultB,
+
+            points:
+              (prevPosition[currMatch.teamAId]?.points || 0) +
+              (currMatch.resultA > currMatch.resultB
+                ? 3
+                : currMatch.resultA === currMatch.resultB
+                ? 1
+                : 0),
+          },
+          [currMatch.teamBId]: {
+            team: currMatch.teamB,
+            pg:
+              (prevPosition[currMatch.teamBId]?.pg || 0) +
+              (currMatch.resultB > currMatch.resultA ? 1 : 0),
+            pe:
+              (prevPosition[currMatch.teamBId]?.pe || 0) +
+              (currMatch.resultB == currMatch.resultA ? 1 : 0),
+            pp:
+              (prevPosition[currMatch.teamBId]?.pp || 0) +
+              (currMatch.resultB <= currMatch.resultA ? 1 : 0),
+
+            gf: (prevPosition[currMatch.teamBId]?.gf || 0) + currMatch.resultB,
+            gc: (prevPosition[currMatch.teamBId]?.gc || 0) + currMatch.resultA,
+
+            points:
+              (prevPosition[currMatch.teamBId]?.points || 0) +
+              (currMatch.resultB > currMatch.resultA
+                ? 3
+                : currMatch.resultB === currMatch.resultA
+                ? 1
+                : 0),
+          },
+        };
+      }, {} as TournamentPosition);
+
+      const positions: Position[] = Object.keys(positionsObj).map((teamId) => ({
+        ...positionsObj[teamId],
+      }));
+      return positions;
     },
   },
   Tournament: {
@@ -118,10 +224,12 @@ const resolvers = {
           data: {
             resultA: match.resultA,
             resultB: match.resultB,
+            played: true,
           },
         });
       });
       const matches = await Promise.all<Match>(promises);
+
       const schedule = context.prisma.schedule.findFirst({
         where: { id: matches[0].scheduleId },
       });
@@ -177,6 +285,17 @@ const resolvers = {
         const teamsIds = tournament.teams.map((team) => team.id);
         const schedules = robin(teamsIds);
 
+        const positions = teamsIds.map((teamId) =>
+          context.prisma.position.create({
+            data: {
+              teamId,
+              tournamentId: tournament.id,
+            },
+          })
+        );
+
+        await Promise.all(positions);
+
         const createSchedules: Prisma.ScheduleCreateWithoutSeasonInput[] =
           schedules.map((schedule, index) => {
             const matches = schedule
@@ -225,6 +344,7 @@ const server = new GraphQLServer({
     schedules: [Schedule!]
     matches: [Match!]
     userByEmail(email: String!): User!
+    positionsByTournament(tournamentId: ID!): [Position!]
   }
 
   type Mutation {
@@ -233,6 +353,10 @@ const server = new GraphQLServer({
     updateTournament(data: TournamentUpdateInput!): Tournament!
     deleteTournament(id: ID!): Tournament!
     updateMatches(data: [MatchResult!]!): Schedule!
+  }
+
+  input UpdateMatchWhereInput {
+    scheduleId: ID!
   }
 
   input UserCreatInput {
@@ -261,7 +385,18 @@ const server = new GraphQLServer({
   input CreateTeamInput {
     name: [String!]
   }
-  
+
+
+  type Position {
+    team:   Team!
+    pg: Int!
+    pe: Int!
+    pp: Int!
+    gf: Int!
+    gc: Int!
+    points: Int!
+  }
+
   type Tournament {
     id: ID!
     name: String!
@@ -270,6 +405,7 @@ const server = new GraphQLServer({
     end: String
     teams: [Team!]
     seasons: [Season!]
+    positions: [Position!]
   }
   
   type Season {

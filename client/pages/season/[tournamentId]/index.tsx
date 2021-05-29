@@ -74,7 +74,7 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultA: parseInt(resultA)
+        resultA: parseInt(resultA ? resultA : "0")
       }
     };
 
@@ -86,7 +86,7 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultB: parseInt(resultB)
+        resultB: parseInt(resultB ? resultB : "0")
       }
     };
     setMatchResults(updatedMatchResults);

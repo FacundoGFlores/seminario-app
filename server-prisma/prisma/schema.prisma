@@ -31,6 +31,7 @@ model Tournament {
   teams       Team[]
   seasons     Season[]
 
+  positions Position[]
   @@map(name: "tournaments")
 }
 
@@ -43,6 +44,7 @@ model Team {
   matchTeamA   Match[]    @relation("teamA")
   matchTeamB   Match[]    @relation("teamB")
 
+  Position Position[]
   @@map(name: "teams")
 }
 
@@ -83,8 +85,29 @@ model Match {
   teamBId    String   @map("team_b_id")
   schedule   Schedule @relation(fields: [scheduleId], references: [id])
   scheduleId String   @map("schedule_id")
+  played     Boolean  @default(false)
 
   resultA Int @default(0) @map("result_a")
   resultB Int @default(0) @map("result_b")
   @@map(name: "matches")
+}
+
+model Position {
+  id         String     @id @default(uuid())
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+
+  tournamentId String @map("tournament_id")
+
+  team   Team   @relation(fields: [teamId], references: [id])
+  teamId String @unique @map("team_id")
+
+  pg Int @default(0)
+  pe Int @default(0)
+  pp Int @default(0)
+  gf Int @default(0)
+  gc Int @default(0)
+
+  points Int @default(0)
+
+  @@map(name: "positions")
 }

@@ -16,13 +16,14 @@ const useStyles = makeStyles({
   },
   header: {},
   content: {
-    flex: '1 0 auto',
+    flex: '1',
     padding: '3em',
+    width: '80vh',
+    alignSelf: 'center',
   },
   footer: {
     background: grey[800],
     color: '#fff',
-    padding: 5,
     flexShrink: 0,
   },
 });

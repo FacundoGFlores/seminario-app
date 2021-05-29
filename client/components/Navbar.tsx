@@ -4,10 +4,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
+import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 import MenuIcon from "@material-ui/icons/Menu";
 import { LoginButton } from "./LoginButton";
-import Link from "next/link";
 import { lightBlue } from "@material-ui/core/colors";
+import Link from "next/link";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   menuButton: {
@@ -41,7 +43,12 @@ function Navbar() {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          <Link href="/">Sport and Tournaments</Link>
+          <Link href="/">
+            <Grid container alignItems="center" style={{ cursor: 'pointer' }}>
+              <SportsSoccerIcon />
+              Tournaments App
+            </Grid>
+          </Link>
         </Typography>
         <LoginButton />
       </Toolbar>

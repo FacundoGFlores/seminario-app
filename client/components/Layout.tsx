@@ -37,7 +37,7 @@ function Layout({ children, title }: Props): JSX.Element {
       <Grid container className={classes.header}>
         {title && <Typography variant="h3">{title}</Typography>}
       </Grid>
-      <Grid container className={classes.content}>
+      <Grid container className={classes.content} direction="column">
         {children}
       </Grid>
       <Grid container direction="row-reverse" className={classes.footer}>

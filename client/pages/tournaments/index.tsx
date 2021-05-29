@@ -6,6 +6,7 @@ import { withApollo } from "../../lib/apollo";
 import PeopleIcon from "@material-ui/icons/People";
 import EditIcon from "@material-ui/icons/Edit";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import FlagIcon from '@material-ui/icons/Flag';
 
 import {
   useTournamentsByUserIdQuery,
@@ -200,68 +201,69 @@ const Tournaments = () => {
 
   return (
     <Layout>
-      <Grid>
-        <Grid item>
-          <Typography variant="h3">Lista de Torneos</Typography>
-        </Grid>
-        <Grid item>
-          <Button variant="contained" onClick={handleTournamentAdd}>
-            Agregar Torneo
-          </Button>
-        </Grid>
-        <Grid container>
-          {allTournamentsLoading && <div>Loading</div>}
-          {allTournamentsError && <div> Error </div>}
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>nombre</TableCell>
-                  <TableCell>descripcion</TableCell>
-                  <TableCell>Acciones</TableCell>
+      <Grid container justify="space-between" alignItems="center" style={{ marginBottom: '2em' }}>
+        <Typography variant="h3">Lista de Torneos</Typography>
+        <Button variant="contained" onClick={handleTournamentAdd}>
+          Agregar Torneo
+        </Button>
+      </Grid>
+      <Grid container>
+        {allTournamentsLoading && <div>Loading</div>}
+        {allTournamentsError && <div> Error </div>}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>nombre</TableCell>
+                <TableCell>descripcion</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allTournaments?.tournamentsByUserId.map(tournament => (
+                <TableRow key={tournament.id}>
+                  <TableCell component="th" scope="row">
+                    {tournament.name}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {tournament.description}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      onClick={() => handleAddTeam(tournament.id)}
+                      size="small"
+                    >
+                      <PeopleIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleTournamentSelection(tournament.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => push(`/season/${tournament.id}`)}
+                    >
+                      <PlayArrowIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => push(`/positions/${tournament.id}`)}
+                    >
+                      <FlagIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {allTournaments?.tournamentsByUserId.map(tournament => (
-                  <TableRow key={tournament.id}>
-                    <TableCell component="th" scope="row">
-                      {tournament.name}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {tournament.description}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        onClick={() => handleAddTeam(tournament.id)}
-                        size="small"
-                      >
-                        <PeopleIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleTournamentSelection(tournament.id)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => push(`/season/${tournament.id}`)}
-                      >
-                        <PlayArrowIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Modal
-            open={modalOpen}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            {modalBody}
-          </Modal>
-        </Grid>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Modal
+          open={modalOpen}
+          onClose={handleClose}
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+        >
+          {modalBody}
+        </Modal>
       </Grid>
     </Layout>
   );

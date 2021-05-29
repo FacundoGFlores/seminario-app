@@ -161,7 +161,8 @@ const resolvers = {
       const positions: Position[] = Object.keys(positionsObj).map((teamId) => ({
         ...positionsObj[teamId],
       }));
-      return positions;
+      const sortedPositions = positions.sort((posA, posB) => posB.points - posA.points);
+      return sortedPositions;
     },
   },
   Tournament: {

@@ -36,3 +36,20 @@ export const TOURNAMENT_QUERY = gql`
     }
   }
 `;
+
+export const TOURNAMENT_POSITIONS = gql`
+  query PositionsByTournament($id: ID!) {
+    positionsByTournament(tournamentId: $id) {
+      team {
+        id
+        name
+      }
+      pg
+      pe
+      pp
+      gf
+      gc
+      points
+    }
+  }
+`;

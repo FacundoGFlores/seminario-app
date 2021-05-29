@@ -32,7 +32,8 @@
     "null-loader": "2.0.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
-    "react-hook-form": "^7.6.6"
+    "react-hook-form": "^7.6.6",
+    "react-to-pdf": "^0.0.14"
   },
   "license": "ISC",
   "devDependencies": {

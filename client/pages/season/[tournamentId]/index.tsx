@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import PictureAsPdf from '@material-ui/icons/PictureAsPdf';
 import Link from '@material-ui/core/Link';
 import { lightBlue } from '@material-ui/core/colors';
 import {
@@ -26,6 +27,7 @@ import {
 import { withApollo } from '../../../lib/apollo';
 import { Layout } from '../../../components';
 import { useSession } from '../../../hooks/Session';
+import ReactToPdf from 'react-to-pdf';
 
 const useStyles = makeStyles({
   head: {
@@ -42,6 +44,8 @@ type MatchResult = {
 };
 
 const Season = () => {
+  const ref = React.createRef();
+
   const [matchResults, setMatchResults] = useState<MatchResult | {}>({});
   const { user } = useSession();
   const classes = useStyles();
@@ -120,74 +124,101 @@ const Season = () => {
   const schedules = data.tournament.seasons[0].schedules;
 
   return (
-    <Layout>
-      <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: '1em' }}>
-        {user && (
-          <Link color="inherit" href="/tournaments">
-            Mis torneos
-          </Link>
-        )}
-        <Typography color="textPrimary">{data?.tournament.name}</Typography>
-      </Breadcrumbs>
-      <Grid container direction="row" justify="center" spacing={4}>
-        {schedules.map((schedule) => (
-          <Grid item>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead className={classes.head}>
-                  <TableRow>
-                    <TableCell colSpan={4} align="center">
-                      {`Fecha ${schedule.week + 1}`}
-                      <IconButton onClick={() => handleSave(schedule.id)}>
-                        <SaveIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {schedule.matches.map((match) => (
-                    <TableRow key={match.id}>
-                      <TableCell>
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${match.teamA.name
-                            .split(' ')
-                            .join('+')}&size=32&background=random`}
-                        />
-                      </TableCell>
-                      <TableCell style={{ width: '80px' }}>
-                        <Input
-                          type="number"
-                          value={matchResults[match.id]?.resultA || 0}
-                          onChange={(e) =>
-                            updateResultA(match.id, e.target.value)
-                          }
-                        />
-                      </TableCell>
-                      <TableCell style={{ width: '80px' }}>
-                        <Input
-                          type="number"
-                          value={matchResults[match.id]?.resultB || 0}
-                          onChange={(e) =>
-                            updateResultB(match.id, e.target.value)
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${match.teamB.name
-                            .split(' ')
-                            .join('+')}&size=32&background=random`}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Grid>
-        ))}
-      </Grid>
-    </Layout>
+    <ReactToPdf options={{ orientation: 'landscape' }} scale={0.6}>
+      {({ toPdf, targetRef }) => (
+        <>
+          <Layout>
+            <Grid container justify="space-between">
+              <Grid item style={{ marginTop: '10px' }}>
+                <Breadcrumbs
+                  aria-label="breadcrumb"
+                  style={{ marginBottom: '1em' }}
+                >
+                  {user && (
+                    <Link color="inherit" href="/tournaments">
+                      Mis torneos
+                    </Link>
+                  )}
+                  <Typography color="textPrimary">
+                    {data?.tournament.name}
+                  </Typography>
+                </Breadcrumbs>
+              </Grid>
+              <Grid item>
+                <IconButton onClick={toPdf}>
+                  <PictureAsPdf />
+                </IconButton>
+              </Grid>
+            </Grid>
+
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              spacing={4}
+              innerRef={targetRef}
+            >
+              {schedules.map((schedule) => (
+                <Grid item>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead className={classes.head}>
+                        <TableRow>
+                          <TableCell colSpan={4} align="center">
+                            {`Fecha ${schedule.week + 1}`}
+                            <IconButton onClick={() => handleSave(schedule.id)}>
+                              <SaveIcon />
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {schedule.matches.map((match) => (
+                          <TableRow key={match.id}>
+                            <TableCell>
+                              <img
+                                src={`https://ui-avatars.com/api/?name=${match.teamA.name
+                                  .split(' ')
+                                  .join('+')}&size=32&background=random`}
+                              />
+                            </TableCell>
+                            <TableCell style={{ width: '80px' }}>
+                              <Input
+                                type="number"
+                                value={matchResults[match.id]?.resultA || 0}
+                                onChange={(e) =>
+                                  updateResultA(match.id, e.target.value)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell style={{ width: '80px' }}>
+                              <Input
+                                type="number"
+                                value={matchResults[match.id]?.resultB || 0}
+                                onChange={(e) =>
+                                  updateResultB(match.id, e.target.value)
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <img
+                                src={`https://ui-avatars.com/api/?name=${match.teamB.name
+                                  .split(' ')
+                                  .join('+')}&size=32&background=random`}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              ))}
+            </Grid>
+          </Layout>
+        </>
+      )}
+    </ReactToPdf>
   );
 };
 

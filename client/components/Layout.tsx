@@ -1,7 +1,7 @@
-import { Typography, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { grey } from "@material-ui/core/colors";
-import { Navbar } from "./Navbar";
+import { Typography, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { grey } from '@material-ui/core/colors';
+import { Navbar } from './Navbar';
 
 interface Props {
   children: React.ReactNode;
@@ -10,39 +10,39 @@ interface Props {
 
 const useStyles = makeStyles({
   container: {
-    backgroundColor: "#eee",
-    height: "100vh",
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#eee',
+    height: '100vh',
   },
   header: {},
   content: {
-    padding: "2em",
-    flex: 1,
-    maxWidth: '1200px',
-    margin: 'auto',
+    flex: '1 0 auto',
+    padding: '3em',
+    overflowY: 'scroll',
   },
   footer: {
     background: grey[800],
-    color: "#fff",
+    color: '#fff',
     padding: 5,
-  }
+    flexShrink: 0,
+  },
 });
 
 function Layout({ children, title }: Props): JSX.Element {
   const classes = useStyles();
 
   return (
-    <Grid container className={classes.container} direction="column">
+    <div className={classes.container}>
       <Navbar />
-      <Grid container className={classes.header}>
+      <div className={classes.header}>
         {title && <Typography variant="h3">{title}</Typography>}
-      </Grid>
-      <Grid container className={classes.content} direction="column">
-        {children}
-      </Grid>
-      <Grid container direction="row-reverse" className={classes.footer}>
+      </div>
+      <div className={classes.content}>{children}</div>
+      <div className={classes.footer}>
         <Typography>By Dev&Coffee</Typography>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import {
   Grid,
   Paper,
@@ -12,24 +12,25 @@ import {
   makeStyles,
   Input,
   IconButton,
-  Typography
-} from "@material-ui/core";
-import SaveIcon from "@material-ui/icons/Save";
+  Typography,
+} from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import { lightBlue } from "@material-ui/core/colors";
+import { lightBlue } from '@material-ui/core/colors';
 import {
   useTournamentQuery,
   useUpdateMatchesMutation,
-  MatchResult as MatchResultPrisma
-} from "../../../generated/graphql";
-import { withApollo } from "../../../lib/apollo";
-import { Layout } from "../../../components";
+  MatchResult as MatchResultPrisma,
+} from '../../../generated/graphql';
+import { withApollo } from '../../../lib/apollo';
+import { Layout } from '../../../components';
+import { useSession } from '../../../hooks/Session';
 
 const useStyles = makeStyles({
   head: {
-    background: lightBlue[800]
-  }
+    background: lightBlue[800],
+  },
 });
 
 type MatchResult = {
@@ -42,15 +43,15 @@ type MatchResult = {
 
 const Season = () => {
   const [matchResults, setMatchResults] = useState<MatchResult | {}>({});
-
+  const { user } = useSession();
   const classes = useStyles();
   const {
-    query: { tournamentId }
+    query: { tournamentId },
   } = useRouter();
 
   const { data, loading, error } = useTournamentQuery({
     variables: { id: tournamentId as string },
-    onCompleted: data => {
+    onCompleted: (data) => {
       const matches = data.tournament.seasons[0].schedules.reduce(
         (prev, schedule) => {
           const matches = schedule.matches.reduce(
@@ -59,8 +60,8 @@ const Season = () => {
               [currMatch.id]: {
                 scheduleId: schedule.id,
                 resultA: currMatch.resultA,
-                resultB: currMatch.resultB
-              }
+                resultB: currMatch.resultB,
+              },
             }),
             {}
           );
@@ -69,7 +70,7 @@ const Season = () => {
         {}
       );
       setMatchResults(matches);
-    }
+    },
   });
 
   const [updateMatches] = useUpdateMatchesMutation();
@@ -79,8 +80,8 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultA: parseInt(resultA || "0")
-      }
+        resultA: parseInt(resultA || '0'),
+      },
     };
 
     setMatchResults(updatedMatchResults);
@@ -91,8 +92,8 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultB: parseInt(resultB || "0")
-      }
+        resultB: parseInt(resultB || '0'),
+      },
     };
     setMatchResults(updatedMatchResults);
   };
@@ -100,16 +101,16 @@ const Season = () => {
   function handleSave(scheduleId: string) {
     const results: (MatchResultPrisma & { scheduleId: string })[] = Object.keys(
       matchResults
-    ).map(k => ({
+    ).map((k) => ({
       ...matchResults[k],
-      matchId: k
+      matchId: k,
     }));
     updateMatches({
       variables: {
         data: results
-          .filter(result => result.scheduleId === scheduleId)
-          .map(({ scheduleId, ...rest }) => rest)
-      }
+          .filter((result) => result.scheduleId === scheduleId)
+          .map(({ scheduleId, ...rest }) => rest),
+      },
     });
   }
 
@@ -121,13 +122,15 @@ const Season = () => {
   return (
     <Layout>
       <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: '1em' }}>
-        <Link color="inherit" href="/tournaments">
-          Mis torneos
-        </Link>
+        {user && (
+          <Link color="inherit" href="/tournaments">
+            Mis torneos
+          </Link>
+        )}
         <Typography color="textPrimary">{data?.tournament.name}</Typography>
       </Breadcrumbs>
       <Grid container direction="row" justify="center" spacing={4}>
-        {schedules.map(schedule => (
+        {schedules.map((schedule) => (
           <Grid item>
             <TableContainer component={Paper}>
               <Table>
@@ -142,31 +145,39 @@ const Season = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {schedule.matches.map(match => (
+                  {schedule.matches.map((match) => (
                     <TableRow key={match.id}>
                       <TableCell>
-                        <img src={`https://ui-avatars.com/api/?name=${match.teamA.name.split(' ').join('+')}&size=32&background=random`} />
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${match.teamA.name
+                            .split(' ')
+                            .join('+')}&size=32&background=random`}
+                        />
                       </TableCell>
-                      <TableCell style={{ width: "80px" }}>
+                      <TableCell style={{ width: '80px' }}>
                         <Input
                           type="number"
                           value={matchResults[match.id]?.resultA || 0}
-                          onChange={e =>
+                          onChange={(e) =>
                             updateResultA(match.id, e.target.value)
                           }
                         />
                       </TableCell>
-                      <TableCell style={{ width: "80px" }}>
+                      <TableCell style={{ width: '80px' }}>
                         <Input
                           type="number"
                           value={matchResults[match.id]?.resultB || 0}
-                          onChange={e =>
+                          onChange={(e) =>
                             updateResultB(match.id, e.target.value)
                           }
                         />
                       </TableCell>
                       <TableCell>
-                        <img src={`https://ui-avatars.com/api/?name=${match.teamB.name.split(' ').join('+')}&size=32&background=random`} />
+                        <img
+                          src={`https://ui-avatars.com/api/?name=${match.teamB.name
+                            .split(' ')
+                            .join('+')}&size=32&background=random`}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

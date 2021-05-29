@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 import { withApollo } from "../../../lib/apollo"
 import { Layout } from "../../../components";
-import { usePositionsByTournamentQuery, Position } from "../../../generated/graphql";
-import { Table, Paper, TableContainer, TableCell, TableRow, TableHead, TableBody } from "@material-ui/core";
+import { usePositionsByTournamentQuery, Position, useTournamentQuery } from "../../../generated/graphql";
+import { Table, Paper, TableContainer, TableCell, TableRow, TableHead, TableBody, Typography } from "@material-ui/core";
 
 function Positions(): JSX.Element {
   const {
@@ -11,6 +13,7 @@ function Positions(): JSX.Element {
   } = useRouter();
 
   const { data: positions, loading } = usePositionsByTournamentQuery({ variables: { id: tournamentId as string }});
+  const { data: tournament} = useTournamentQuery({ variables: { id: tournamentId as string } });
 
   function renderTable(positions: Position[]): React.ReactElement {
     return (
@@ -61,6 +64,12 @@ function Positions(): JSX.Element {
 
   return (
     <Layout>
+      <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: '1em' }}>
+        <Link color="inherit" href="/tournaments">
+          Mis torneos
+        </Link>
+        <Typography color="textPrimary">{tournament?.tournament.name}</Typography>
+      </Breadcrumbs>
       {loading
         ? <CircularProgress />
         : positions?.positionsByTournament

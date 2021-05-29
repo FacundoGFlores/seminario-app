@@ -1,8 +1,7 @@
-import { Container, Typography, Grid } from "@material-ui/core";
+import { Typography, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { grey } from "@material-ui/core/colors";
 import { Navbar } from "./Navbar";
-import React from "react";
 
 interface Props {
   children: React.ReactNode;

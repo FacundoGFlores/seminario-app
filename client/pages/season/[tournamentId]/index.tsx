@@ -11,9 +11,12 @@ import {
   TableCell,
   makeStyles,
   Input,
-  IconButton
+  IconButton,
+  Typography
 } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 import { lightBlue } from "@material-ui/core/colors";
 import {
   useTournamentQuery,
@@ -116,7 +119,13 @@ const Season = () => {
   const schedules = data.tournament.seasons[0].schedules;
 
   return (
-    <Layout title={`Torneo ${data.tournament.name}`}>
+    <Layout>
+      <Breadcrumbs aria-label="breadcrumb" style={{ marginBottom: '1em' }}>
+        <Link color="inherit" href="/tournaments">
+          Mis torneos
+        </Link>
+        <Typography color="textPrimary">{data?.tournament.name}</Typography>
+      </Breadcrumbs>
       <Grid container direction="row" justify="center" spacing={4}>
         {schedules.map(schedule => (
           <Grid item>

@@ -12,7 +12,6 @@ const useStyles = makeStyles({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#eee',
     height: '100vh',
   },
   header: {},

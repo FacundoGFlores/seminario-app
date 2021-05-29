@@ -31,6 +31,7 @@ const useStyles = makeStyles({
 
 type MatchResult = {
   [matchId in string]: {
+    scheduleId: string;
     resultA: number;
     resultB: number;
   };
@@ -48,11 +49,12 @@ const Season = () => {
     variables: { id: tournamentId as string },
     onCompleted: data => {
       const matches = data.tournament.seasons[0].schedules.reduce(
-        (prev, curr) => {
-          const matches = curr.matches.reduce(
+        (prev, schedule) => {
+          const matches = schedule.matches.reduce(
             (prevMatch, currMatch) => ({
               ...prevMatch,
               [currMatch.id]: {
+                scheduleId: schedule.id,
                 resultA: currMatch.resultA,
                 resultB: currMatch.resultB
               }
@@ -74,7 +76,7 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultA: parseInt(resultA ? resultA : "0")
+        resultA: parseInt(resultA || "0")
       }
     };
 
@@ -86,18 +88,26 @@ const Season = () => {
       ...matchResults,
       [matchId]: {
         ...matchResults[matchId],
-        resultB: parseInt(resultB ? resultB : "0")
+        resultB: parseInt(resultB || "0")
       }
     };
     setMatchResults(updatedMatchResults);
   };
 
-  function handleSave() {
-    const results: MatchResultPrisma[] = Object.keys(matchResults).map(k => ({
+  function handleSave(scheduleId: string) {
+    const results: (MatchResultPrisma & { scheduleId: string })[] = Object.keys(
+      matchResults
+    ).map(k => ({
       ...matchResults[k],
       matchId: k
     }));
-    updateMatches({ variables: { data: results } });
+    updateMatches({
+      variables: {
+        data: results
+          .filter(result => result.scheduleId === scheduleId)
+          .map(({ scheduleId, ...rest }) => rest)
+      }
+    });
   }
 
   if (loading) return <div> Loading tournament </div>;
@@ -116,7 +126,7 @@ const Season = () => {
                   <TableRow>
                     <TableCell colSpan={4} align="center">
                       {`Fecha ${schedule.week + 1}`}
-                      <IconButton onClick={handleSave}>
+                      <IconButton onClick={() => handleSave(schedule.id)}>
                         <SaveIcon />
                       </IconButton>
                     </TableCell>

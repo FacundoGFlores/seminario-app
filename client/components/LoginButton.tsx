@@ -24,7 +24,7 @@ const LoginButton = () => {
 
   const [getUser] = useGetUserByEmailLazyQuery({
     onCompleted: data => {
-      if (!data.userByEmail) return;
+      if (!data?.userByEmail) return;
       setUser(data.userByEmail);
     },
     onError: err => {

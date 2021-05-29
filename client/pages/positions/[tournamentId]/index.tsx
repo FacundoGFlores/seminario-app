@@ -34,7 +34,7 @@ function Positions(): JSX.Element {
             {positions.map(position => (
               <TableRow key={position.team.id}>
                 <TableCell component="th" scope="row">
-                  {position.team.name}
+                  <img src={`https://ui-avatars.com/api/?name=${position.team.name.split(' ').join('+')}&size=32&background=random`} />
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {position.pg}

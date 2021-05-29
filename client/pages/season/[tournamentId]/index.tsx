@@ -144,7 +144,9 @@ const Season = () => {
                 <TableBody>
                   {schedule.matches.map(match => (
                     <TableRow key={match.id}>
-                      <TableCell>{match.teamA.name}</TableCell>
+                      <TableCell>
+                        <img src={`https://ui-avatars.com/api/?name=${match.teamA.name.split(' ').join('+')}&size=32&background=random`} />
+                      </TableCell>
                       <TableCell style={{ width: "80px" }}>
                         <Input
                           type="number"
@@ -163,7 +165,9 @@ const Season = () => {
                           }
                         />
                       </TableCell>
-                      <TableCell>{match.teamB.name}</TableCell>
+                      <TableCell>
+                        <img src={`https://ui-avatars.com/api/?name=${match.teamB.name.split(' ').join('+')}&size=32&background=random`} />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

@@ -7,6 +7,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import EditIcon from "@material-ui/icons/Edit";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import FlagIcon from '@material-ui/icons/Flag';
+import EventIcon from '@material-ui/icons/Event';
 
 import {
   useTournamentsByUserIdQuery,
@@ -216,7 +217,7 @@ const Tournaments = () => {
               <TableRow>
                 <TableCell>nombre</TableCell>
                 <TableCell>descripcion</TableCell>
-                <TableCell>Acciones</TableCell>
+                <TableCell align="center">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -243,7 +244,7 @@ const Tournaments = () => {
                     <IconButton
                       onClick={() => push(`/season/${tournament.id}`)}
                     >
-                      <PlayArrowIcon />
+                      <EventIcon />
                     </IconButton>
                     <IconButton
                       onClick={() => push(`/positions/${tournament.id}`)}

@@ -7,7 +7,6 @@ import Filter9Plus from '@material-ui/icons/Filter9Plus';
 import PeopleIcon from '@material-ui/icons/Group';
 
 import EditIcon from '@material-ui/icons/Edit';
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import FlagIcon from '@material-ui/icons/Flag';
 import EventIcon from '@material-ui/icons/Event';
 
@@ -43,6 +42,7 @@ import { Layout } from '../../components';
 import { useSession } from '../../hooks/Session';
 import { GroupAdd } from '@material-ui/icons';
 import { PlayerCreator } from '../../components/PlayerCreator';
+import Tooltip from '@material-ui/core/Tooltip';
 
 function getModalStyle() {
   const top = 40;
@@ -257,27 +257,35 @@ const Tournaments = () => {
                     {tournament.description}
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton
-                      onClick={() => setSelectedTournamentId(tournament.id)}
-                      size="small"
-                    >
-                      <Filter9Plus />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleTournamentSelection(tournament.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => push(`/season/${tournament.id}`)}
-                    >
-                      <EventIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => push(`/positions/${tournament.id}`)}
-                    >
-                      <FlagIcon />
-                    </IconButton>
+                    <Tooltip title="Ver equipos">
+                      <IconButton
+                        onClick={() => setSelectedTournamentId(tournament.id)}
+                        size="small"
+                      >
+                        <Filter9Plus />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Editar equipo">
+                      <IconButton
+                        onClick={() => handleTournamentSelection(tournament.id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Ver fechas">
+                      <IconButton
+                        onClick={() => push(`/season/${tournament.id}`)}
+                      >
+                        <EventIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Ver tabla de posiciones">
+                      <IconButton
+                        onClick={() => push(`/positions/${tournament.id}`)}
+                      >
+                        <FlagIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -317,12 +325,14 @@ const Tournaments = () => {
                         />
                       </TableCell>
                       <TableCell align="center">
-                        <IconButton
-                          onClick={() => setShowTeamIdPlayers(team.id)}
-                          size="small"
-                        >
-                          <PeopleIcon />
-                        </IconButton>
+                        <Tooltip title="Ver jugadores">
+                          <IconButton
+                            onClick={() => setShowTeamIdPlayers(team.id)}
+                            size="small"
+                          >
+                            <PeopleIcon />
+                          </IconButton>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   ))}

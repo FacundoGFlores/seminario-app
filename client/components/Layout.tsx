@@ -25,6 +25,8 @@ const useStyles = makeStyles({
     background: grey[800],
     color: '#fff',
     flexShrink: 0,
+    textAlign: 'right',
+    paddingRight: '2em',
   },
 });
 

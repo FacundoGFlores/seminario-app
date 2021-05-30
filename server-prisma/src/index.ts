@@ -64,8 +64,8 @@ const resolvers = {
     players(parent, args, context: Context) {
       return context.prisma.player.findMany();
     },
-    teams(parent, { id }, context: Context) {
-      return context.prisma.team.findMany({ where: { tournament: id } });
+    teams(parent, { tournamentId }, context: Context) {
+      return context.prisma.team.findMany({ where: { tournamentId } });
     },
     tournaments(parent, args, context: Context) {
       return context.prisma.tournament.findMany();
@@ -161,7 +161,9 @@ const resolvers = {
       const positions: Position[] = Object.keys(positionsObj).map((teamId) => ({
         ...positionsObj[teamId],
       }));
-      const sortedPositions = positions.sort((posA, posB) => posB.points - posA.points);
+      const sortedPositions = positions.sort(
+        (posA, posB) => posB.points - posA.points
+      );
       return sortedPositions;
     },
   },
@@ -218,6 +220,16 @@ const resolvers = {
     },
   },
   Mutation: {
+    async updateTeamPlayers(parent, { teamId, data }, context: Context) {
+      await context.prisma.player.deleteMany({ where: { teamId } });
+      const playerData: { name: string; teamId: string }[] = data.names.map(
+        (name) => ({ name, teamId })
+      );
+      await context.prisma.player.createMany({
+        data: playerData,
+      });
+      return context.prisma.team.findUnique({ where: { id: teamId } });
+    },
     async updateMatches(parent, { data }, context: Context) {
       const promises = data.map((match) => {
         return context.prisma.match.update({
@@ -341,7 +353,7 @@ const server = new GraphQLServer({
     players: [Player!]
     tournaments: [Tournament!]
     tournamentsByUserId(id: ID!): [Tournament!]
-    teams: [Team!]
+    teams(tournamentId: ID!): [Team!]
     schedules: [Schedule!]
     matches: [Match!]
     userByEmail(email: String!): User!
@@ -354,6 +366,11 @@ const server = new GraphQLServer({
     updateTournament(data: TournamentUpdateInput!): Tournament!
     deleteTournament(id: ID!): Tournament!
     updateMatches(data: [MatchResult!]!): Schedule!
+    updateTeamPlayers(teamId: ID!, data: PlayerInput!): Team!
+  }
+
+  input PlayerInput {
+    names: [String!]
   }
 
   input UpdateMatchWhereInput {

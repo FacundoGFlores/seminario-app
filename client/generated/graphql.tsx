@@ -4,211 +4,224 @@ import * as React from 'react';
 import * as ApolloReactComponents from '@apollo/react-components';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: string,
+  String: string,
+  Boolean: boolean,
+  Int: number,
+  Float: number,
 };
 
 export type CreateTeamInput = {
-  name?: Maybe<Array<Scalars['String']>>;
+  name?: Maybe<Array<Scalars['String']>>,
 };
 
 export type Match = {
-  __typename?: 'Match';
-  id: Scalars['ID'];
-  teamA: Team;
-  teamB: Team;
-  schedule: Schedule;
-  resultA: Scalars['Int'];
-  resultB: Scalars['Int'];
+   __typename?: 'Match',
+  id: Scalars['ID'],
+  teamA: Team,
+  teamB: Team,
+  schedule: Schedule,
+  resultA: Scalars['Int'],
+  resultB: Scalars['Int'],
 };
 
 export type MatchResult = {
-  matchId: Scalars['String'];
-  resultA: Scalars['Int'];
-  resultB: Scalars['Int'];
+  matchId: Scalars['String'],
+  resultA: Scalars['Int'],
+  resultB: Scalars['Int'],
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
-  createTournament: Tournament;
-  createUser: User;
-  updateTournament: Tournament;
-  deleteTournament: Tournament;
-  updateMatches: Schedule;
+   __typename?: 'Mutation',
+  createTournament: Tournament,
+  createUser: User,
+  updateTournament: Tournament,
+  deleteTournament: Tournament,
+  updateMatches: Schedule,
+  updateTeamPlayers: Team,
 };
 
 
 export type MutationCreateTournamentArgs = {
-  data: TournamentCreateInput;
+  data: TournamentCreateInput
 };
 
 
 export type MutationCreateUserArgs = {
-  data: UserCreatInput;
+  data: UserCreatInput
 };
 
 
 export type MutationUpdateTournamentArgs = {
-  data: TournamentUpdateInput;
+  data: TournamentUpdateInput
 };
 
 
 export type MutationDeleteTournamentArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']
 };
 
 
 export type MutationUpdateMatchesArgs = {
-  data: Array<MatchResult>;
+  data: Array<MatchResult>
+};
+
+
+export type MutationUpdateTeamPlayersArgs = {
+  teamId: Scalars['ID'],
+  data: PlayerInput
 };
 
 export type Player = {
-  __typename?: 'Player';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  team: Team;
+   __typename?: 'Player',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  team: Team,
+};
+
+export type PlayerInput = {
+  names?: Maybe<Array<Scalars['String']>>,
 };
 
 export type Position = {
-  __typename?: 'Position';
-  team: Team;
-  pg: Scalars['Int'];
-  pe: Scalars['Int'];
-  pp: Scalars['Int'];
-  gf: Scalars['Int'];
-  gc: Scalars['Int'];
-  points: Scalars['Int'];
+   __typename?: 'Position',
+  team: Team,
+  pg: Scalars['Int'],
+  pe: Scalars['Int'],
+  pp: Scalars['Int'],
+  gf: Scalars['Int'],
+  gc: Scalars['Int'],
+  points: Scalars['Int'],
 };
 
 export type Query = {
-  __typename?: 'Query';
-  tournament: Tournament;
-  player: Player;
-  team: Team;
-  users?: Maybe<Array<User>>;
-  players?: Maybe<Array<Player>>;
-  tournaments?: Maybe<Array<Tournament>>;
-  tournamentsByUserId?: Maybe<Array<Tournament>>;
-  teams?: Maybe<Array<Team>>;
-  schedules?: Maybe<Array<Schedule>>;
-  matches?: Maybe<Array<Match>>;
-  userByEmail: User;
-  positionsByTournament?: Maybe<Array<Position>>;
+   __typename?: 'Query',
+  tournament: Tournament,
+  player: Player,
+  team: Team,
+  users?: Maybe<Array<User>>,
+  players?: Maybe<Array<Player>>,
+  tournaments?: Maybe<Array<Tournament>>,
+  tournamentsByUserId?: Maybe<Array<Tournament>>,
+  teams?: Maybe<Array<Team>>,
+  schedules?: Maybe<Array<Schedule>>,
+  matches?: Maybe<Array<Match>>,
+  userByEmail: User,
+  positionsByTournament?: Maybe<Array<Position>>,
 };
 
 
 export type QueryTournamentArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']
 };
 
 
 export type QueryPlayerArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']
 };
 
 
 export type QueryTeamArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']
 };
 
 
 export type QueryTournamentsByUserIdArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']
+};
+
+
+export type QueryTeamsArgs = {
+  tournamentId: Scalars['ID']
 };
 
 
 export type QueryUserByEmailArgs = {
-  email: Scalars['String'];
+  email: Scalars['String']
 };
 
 
 export type QueryPositionsByTournamentArgs = {
-  tournamentId: Scalars['ID'];
+  tournamentId: Scalars['ID']
 };
 
 export type Schedule = {
-  __typename?: 'Schedule';
-  id: Scalars['ID'];
-  week?: Maybe<Scalars['Int']>;
-  matches?: Maybe<Array<Match>>;
-  season: Season;
+   __typename?: 'Schedule',
+  id: Scalars['ID'],
+  week?: Maybe<Scalars['Int']>,
+  matches?: Maybe<Array<Match>>,
+  season: Season,
 };
 
 export type Season = {
-  __typename?: 'Season';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  schedules?: Maybe<Array<Schedule>>;
-  tournament: Tournament;
+   __typename?: 'Season',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  schedules?: Maybe<Array<Schedule>>,
+  tournament: Tournament,
 };
 
 export type Team = {
-  __typename?: 'Team';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  players?: Maybe<Array<Player>>;
-  tournament: Tournament;
+   __typename?: 'Team',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  players?: Maybe<Array<Player>>,
+  tournament: Tournament,
 };
 
 export type Tournament = {
-  __typename?: 'Tournament';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  start?: Maybe<Scalars['String']>;
-  end?: Maybe<Scalars['String']>;
-  teams?: Maybe<Array<Team>>;
-  seasons?: Maybe<Array<Season>>;
-  positions?: Maybe<Array<Position>>;
+   __typename?: 'Tournament',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['String']>,
+  end?: Maybe<Scalars['String']>,
+  teams?: Maybe<Array<Team>>,
+  seasons?: Maybe<Array<Season>>,
+  positions?: Maybe<Array<Position>>,
 };
 
 export type TournamentCreateInput = {
-  id?: Maybe<Scalars['ID']>;
-  owner?: Maybe<Scalars['ID']>;
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  start?: Maybe<Scalars['String']>;
-  end?: Maybe<Scalars['String']>;
-  teams?: Maybe<Array<Scalars['String']>>;
+  id?: Maybe<Scalars['ID']>,
+  owner?: Maybe<Scalars['ID']>,
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['String']>,
+  end?: Maybe<Scalars['String']>,
+  teams?: Maybe<Array<Scalars['String']>>,
 };
 
 export type TournamentUpdateInput = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
-  start?: Maybe<Scalars['String']>;
-  end?: Maybe<Scalars['String']>;
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  description?: Maybe<Scalars['String']>,
+  start?: Maybe<Scalars['String']>,
+  end?: Maybe<Scalars['String']>,
 };
 
 export type UpdateMatchWhereInput = {
-  scheduleId: Scalars['ID'];
+  scheduleId: Scalars['ID'],
 };
 
 export type User = {
-  __typename?: 'User';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  email: Scalars['String'];
-  tournaments?: Maybe<Array<Tournament>>;
+   __typename?: 'User',
+  id: Scalars['ID'],
+  name: Scalars['String'],
+  email: Scalars['String'],
+  tournaments?: Maybe<Array<Tournament>>,
 };
 
 export type UserCreatInput = {
-  name: Scalars['String'];
-  email: Scalars['String'];
+  name: Scalars['String'],
+  email: Scalars['String'],
 };
 
-export type UpdateMatchesMutationVariables = Exact<{
-  data: Array<MatchResult> | MatchResult;
-}>;
+export type UpdateMatchesMutationVariables = {
+  data: Array<MatchResult>
+};
 
 
 export type UpdateMatchesMutation = (
@@ -219,9 +232,27 @@ export type UpdateMatchesMutation = (
   ) }
 );
 
-export type CreateTournamentMutationVariables = Exact<{
-  data: TournamentCreateInput;
-}>;
+export type UpdateTeamPlayersMutationVariables = {
+  teamId: Scalars['ID'],
+  data: PlayerInput
+};
+
+
+export type UpdateTeamPlayersMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTeamPlayers: (
+    { __typename?: 'Team' }
+    & Pick<Team, 'id' | 'name'>
+    & { players: Maybe<Array<(
+      { __typename?: 'Player' }
+      & Pick<Player, 'id' | 'name'>
+    )>> }
+  ) }
+);
+
+export type CreateTournamentMutationVariables = {
+  data: TournamentCreateInput
+};
 
 
 export type CreateTournamentMutation = (
@@ -232,9 +263,9 @@ export type CreateTournamentMutation = (
   ) }
 );
 
-export type UpdateTournamentMutationVariables = Exact<{
-  data: TournamentUpdateInput;
-}>;
+export type UpdateTournamentMutationVariables = {
+  data: TournamentUpdateInput
+};
 
 
 export type UpdateTournamentMutation = (
@@ -245,9 +276,9 @@ export type UpdateTournamentMutation = (
   ) }
 );
 
-export type DeleteTournamentMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type DeleteTournamentMutationVariables = {
+  id: Scalars['ID']
+};
 
 
 export type DeleteTournamentMutation = (
@@ -258,9 +289,9 @@ export type DeleteTournamentMutation = (
   ) }
 );
 
-export type CreateUserMutationVariables = Exact<{
-  data: UserCreatInput;
-}>;
+export type CreateUserMutationVariables = {
+  data: UserCreatInput
+};
 
 
 export type CreateUserMutation = (
@@ -271,9 +302,26 @@ export type CreateUserMutation = (
   ) }
 );
 
-export type TournamentQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type TeamsByTournamentQueryVariables = {
+  tournamentId: Scalars['ID']
+};
+
+
+export type TeamsByTournamentQuery = (
+  { __typename?: 'Query' }
+  & { teams: Maybe<Array<(
+    { __typename?: 'Team' }
+    & Pick<Team, 'id' | 'name'>
+    & { players: Maybe<Array<(
+      { __typename?: 'Player' }
+      & Pick<Player, 'id' | 'name'>
+    )>> }
+  )>> }
+);
+
+export type TournamentQueryVariables = {
+  id: Scalars['ID']
+};
 
 
 export type TournamentQuery = (
@@ -281,16 +329,16 @@ export type TournamentQuery = (
   & { tournament: (
     { __typename?: 'Tournament' }
     & Pick<Tournament, 'id' | 'name' | 'description' | 'start' | 'end'>
-    & { teams?: Maybe<Array<(
+    & { teams: Maybe<Array<(
       { __typename?: 'Team' }
       & Pick<Team, 'id' | 'name'>
-    )>>, seasons?: Maybe<Array<(
+    )>>, seasons: Maybe<Array<(
       { __typename?: 'Season' }
       & Pick<Season, 'id' | 'name'>
-      & { schedules?: Maybe<Array<(
+      & { schedules: Maybe<Array<(
         { __typename?: 'Schedule' }
         & Pick<Schedule, 'id' | 'week'>
-        & { matches?: Maybe<Array<(
+        & { matches: Maybe<Array<(
           { __typename?: 'Match' }
           & Pick<Match, 'id' | 'resultA' | 'resultB'>
           & { teamA: (
@@ -306,14 +354,14 @@ export type TournamentQuery = (
   ) }
 );
 
-export type PositionsByTournamentQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type PositionsByTournamentQueryVariables = {
+  id: Scalars['ID']
+};
 
 
 export type PositionsByTournamentQuery = (
   { __typename?: 'Query' }
-  & { positionsByTournament?: Maybe<Array<(
+  & { positionsByTournament: Maybe<Array<(
     { __typename?: 'Position' }
     & Pick<Position, 'pg' | 'pe' | 'pp' | 'gf' | 'gc' | 'points'>
     & { team: (
@@ -323,26 +371,26 @@ export type PositionsByTournamentQuery = (
   )>> }
 );
 
-export type TournamentsByUserIdQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type TournamentsByUserIdQueryVariables = {
+  id: Scalars['ID']
+};
 
 
 export type TournamentsByUserIdQuery = (
   { __typename?: 'Query' }
-  & { tournamentsByUserId?: Maybe<Array<(
+  & { tournamentsByUserId: Maybe<Array<(
     { __typename?: 'Tournament' }
     & Pick<Tournament, 'id' | 'name' | 'description'>
-    & { teams?: Maybe<Array<(
+    & { teams: Maybe<Array<(
       { __typename?: 'Team' }
       & Pick<Team, 'id' | 'name'>
     )>> }
   )>> }
 );
 
-export type GetUserByEmailQueryVariables = Exact<{
-  email: Scalars['String'];
-}>;
+export type GetUserByEmailQueryVariables = {
+  email: Scalars['String']
+};
 
 
 export type GetUserByEmailQuery = (
@@ -392,6 +440,50 @@ export function useUpdateMatchesMutation(baseOptions?: ApolloReactHooks.Mutation
 export type UpdateMatchesMutationHookResult = ReturnType<typeof useUpdateMatchesMutation>;
 export type UpdateMatchesMutationResult = ApolloReactCommon.MutationResult<UpdateMatchesMutation>;
 export type UpdateMatchesMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateMatchesMutation, UpdateMatchesMutationVariables>;
+export const UpdateTeamPlayersDocument = gql`
+    mutation UpdateTeamPlayers($teamId: ID!, $data: PlayerInput!) {
+  updateTeamPlayers(teamId: $teamId, data: $data) {
+    id
+    name
+    players {
+      id
+      name
+    }
+  }
+}
+    `;
+export type UpdateTeamPlayersMutationFn = ApolloReactCommon.MutationFunction<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>;
+export type UpdateTeamPlayersComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>, 'mutation'>;
+
+    export const UpdateTeamPlayersComponent = (props: UpdateTeamPlayersComponentProps) => (
+      <ApolloReactComponents.Mutation<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables> mutation={UpdateTeamPlayersDocument} {...props} />
+    );
+    
+
+/**
+ * __useUpdateTeamPlayersMutation__
+ *
+ * To run a mutation, you first call `useUpdateTeamPlayersMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTeamPlayersMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTeamPlayersMutation, { data, loading, error }] = useUpdateTeamPlayersMutation({
+ *   variables: {
+ *      teamId: // value for 'teamId'
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateTeamPlayersMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>(UpdateTeamPlayersDocument, baseOptions);
+      }
+export type UpdateTeamPlayersMutationHookResult = ReturnType<typeof useUpdateTeamPlayersMutation>;
+export type UpdateTeamPlayersMutationResult = ApolloReactCommon.MutationResult<UpdateTeamPlayersMutation>;
+export type UpdateTeamPlayersMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>;
 export const CreateTournamentDocument = gql`
     mutation CreateTournament($data: TournamentCreateInput!) {
   createTournament(data: $data) {
@@ -546,6 +638,50 @@ export function useCreateUserMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = ApolloReactCommon.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const TeamsByTournamentDocument = gql`
+    query TeamsByTournament($tournamentId: ID!) {
+  teams(tournamentId: $tournamentId) {
+    id
+    name
+    players {
+      id
+      name
+    }
+  }
+}
+    `;
+export type TeamsByTournamentComponentProps = Omit<ApolloReactComponents.QueryComponentOptions<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>, 'query'> & ({ variables: TeamsByTournamentQueryVariables; skip?: boolean; } | { skip: boolean; });
+
+    export const TeamsByTournamentComponent = (props: TeamsByTournamentComponentProps) => (
+      <ApolloReactComponents.Query<TeamsByTournamentQuery, TeamsByTournamentQueryVariables> query={TeamsByTournamentDocument} {...props} />
+    );
+    
+
+/**
+ * __useTeamsByTournamentQuery__
+ *
+ * To run a query within a React component, call `useTeamsByTournamentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTeamsByTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeamsByTournamentQuery({
+ *   variables: {
+ *      tournamentId: // value for 'tournamentId'
+ *   },
+ * });
+ */
+export function useTeamsByTournamentQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>) {
+        return ApolloReactHooks.useQuery<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>(TeamsByTournamentDocument, baseOptions);
+      }
+export function useTeamsByTournamentLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>(TeamsByTournamentDocument, baseOptions);
+        }
+export type TeamsByTournamentQueryHookResult = ReturnType<typeof useTeamsByTournamentQuery>;
+export type TeamsByTournamentLazyQueryHookResult = ReturnType<typeof useTeamsByTournamentLazyQuery>;
+export type TeamsByTournamentQueryResult = ApolloReactCommon.QueryResult<TeamsByTournamentQuery, TeamsByTournamentQueryVariables>;
 export const TournamentDocument = gql`
     query Tournament($id: ID!) {
   tournament(id: $id) {
@@ -593,7 +729,7 @@ export type TournamentComponentProps = Omit<ApolloReactComponents.QueryComponent
  * __useTournamentQuery__
  *
  * To run a query within a React component, call `useTournamentQuery` and pass it any options that fit your needs.
- * When your component renders, `useTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -641,7 +777,7 @@ export type PositionsByTournamentComponentProps = Omit<ApolloReactComponents.Que
  * __usePositionsByTournamentQuery__
  *
  * To run a query within a React component, call `usePositionsByTournamentQuery` and pass it any options that fit your needs.
- * When your component renders, `usePositionsByTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `usePositionsByTournamentQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -686,7 +822,7 @@ export type TournamentsByUserIdComponentProps = Omit<ApolloReactComponents.Query
  * __useTournamentsByUserIdQuery__
  *
  * To run a query within a React component, call `useTournamentsByUserIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useTournamentsByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useTournamentsByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
@@ -727,7 +863,7 @@ export type GetUserByEmailComponentProps = Omit<ApolloReactComponents.QueryCompo
  * __useGetUserByEmailQuery__
  *
  * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties 
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;

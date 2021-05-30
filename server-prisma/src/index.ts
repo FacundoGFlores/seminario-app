@@ -56,7 +56,9 @@ type Position = {
 const resolvers = {
   Query: {
     tournamentsByUserId(parent, { id }, context: Context) {
-      return context.prisma.tournament.findMany({ where: { ownerId: id } });
+      return context.prisma.tournament.findMany({
+        where: { AND: { ownerId: id, archived: false } },
+      });
     },
     users(parent, args, context: Context) {
       return context.prisma.user.findMany();
@@ -68,7 +70,9 @@ const resolvers = {
       return context.prisma.team.findMany({ where: { tournamentId } });
     },
     tournaments(parent, args, context: Context) {
-      return context.prisma.tournament.findMany();
+      return context.prisma.tournament.findMany({
+        where: { archived: false },
+      });
     },
     tournament(parent, { id }, context: Context) {
       return context.prisma.tournament.findUnique({ where: { id } });
@@ -251,6 +255,12 @@ const resolvers = {
     createUser(parent, { data }, context: Context) {
       return context.prisma.user.create({ data });
     },
+    deleteTournament(parent, { tournamentId }, context: Context) {
+      return context.prisma.tournament.update({
+        where: { id: tournamentId },
+        data: { archived: true },
+      });
+    },
     updateTournament(parent, { data }, context: Context) {
       return context.prisma.tournament.update({
         data: {
@@ -263,9 +273,6 @@ const resolvers = {
           id: data.id,
         },
       });
-    },
-    deleteTournament(parent, { id }, context: Context) {
-      return context.prisma.tournament.delete({ where: { id } });
     },
     async createTournament(parent, { data }, context: Context) {
       if (!data.teams || data.teams.length === 0)
@@ -364,9 +371,9 @@ const server = new GraphQLServer({
     createTournament(data: TournamentCreateInput!): Tournament!
     createUser(data: UserCreatInput!): User!
     updateTournament(data: TournamentUpdateInput!): Tournament!
-    deleteTournament(id: ID!): Tournament!
     updateMatches(data: [MatchResult!]!): Schedule!
     updateTeamPlayers(teamId: ID!, data: PlayerInput!): Team!
+    deleteTournament(tournamentId: ID!): Tournament!
   }
 
   input PlayerInput {

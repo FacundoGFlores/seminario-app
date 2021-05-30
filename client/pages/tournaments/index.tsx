@@ -9,6 +9,7 @@ import PeopleIcon from '@material-ui/icons/Group';
 import EditIcon from '@material-ui/icons/Edit';
 import FlagIcon from '@material-ui/icons/Flag';
 import EventIcon from '@material-ui/icons/Event';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import {
   useTournamentsByUserIdQuery,
@@ -16,6 +17,7 @@ import {
   useUpdateTournamentMutation,
   UpdateTournamentMutationVariables,
   useTeamsByTournamentLazyQuery,
+  useDeleteTournamentMutation,
 } from '../../generated/graphql';
 import {
   TableContainer,
@@ -91,6 +93,22 @@ const Tournaments = () => {
     },
   });
 
+  const {
+    data: allTournaments,
+    loading: allTournamentsLoading,
+    error: allTournamentsError,
+    refetch: refetchAllTournaments,
+  } = useTournamentsByUserIdQuery({
+    variables: { id: user?.id },
+    skip: !user?.id,
+  });
+
+  const [deleteTournament] = useDeleteTournamentMutation({
+    onCompleted: () => {
+      refetchAllTournaments();
+    },
+  });
+
   const [
     getTeamsByTournament,
     { data: teamsData, loading: loadingTeams, error: errorTeams, refetch },
@@ -109,15 +127,6 @@ const Tournaments = () => {
         variables: { id: user?.id || '' },
       },
     ],
-  });
-
-  const {
-    data: allTournaments,
-    loading: allTournamentsLoading,
-    error: allTournamentsError,
-  } = useTournamentsByUserIdQuery({
-    variables: { id: user?.id },
-    skip: !user?.id,
   });
 
   React.useEffect(() => {
@@ -284,6 +293,18 @@ const Tournaments = () => {
                         onClick={() => push(`/positions/${tournament.id}`)}
                       >
                         <FlagIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Borrar torneo">
+                      <IconButton
+                        onClick={() => {
+                          deleteTournament({
+                            variables: { tournamentId: tournament.id },
+                          });
+                        }}
+                        size="small"
+                      >
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

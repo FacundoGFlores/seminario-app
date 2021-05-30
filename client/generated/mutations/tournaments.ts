@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const CREATE_TOURNAMENT = gql`
   mutation CreateTournament($data: TournamentCreateInput!) {
@@ -17,8 +17,8 @@ export const UPDATE_TOURNAMENT = gql`
 `;
 
 export const DELETE_TOURNAMENT = gql`
-  mutation DeleteTournament($id: ID!) {
-    deleteTournament(id: $id) {
+  mutation DeleteTournament($tournamentId: ID!) {
+    deleteTournament(tournamentId: $tournamentId) {
       id
     }
   }

@@ -39,9 +39,9 @@ export type Mutation = {
   createTournament: Tournament,
   createUser: User,
   updateTournament: Tournament,
-  deleteTournament: Tournament,
   updateMatches: Schedule,
   updateTeamPlayers: Team,
+  deleteTournament: Tournament,
 };
 
 
@@ -60,11 +60,6 @@ export type MutationUpdateTournamentArgs = {
 };
 
 
-export type MutationDeleteTournamentArgs = {
-  id: Scalars['ID']
-};
-
-
 export type MutationUpdateMatchesArgs = {
   data: Array<MatchResult>
 };
@@ -73,6 +68,11 @@ export type MutationUpdateMatchesArgs = {
 export type MutationUpdateTeamPlayersArgs = {
   teamId: Scalars['ID'],
   data: PlayerInput
+};
+
+
+export type MutationDeleteTournamentArgs = {
+  tournamentId: Scalars['ID']
 };
 
 export type Player = {
@@ -277,7 +277,7 @@ export type UpdateTournamentMutation = (
 );
 
 export type DeleteTournamentMutationVariables = {
-  id: Scalars['ID']
+  tournamentId: Scalars['ID']
 };
 
 
@@ -561,8 +561,8 @@ export type UpdateTournamentMutationHookResult = ReturnType<typeof useUpdateTour
 export type UpdateTournamentMutationResult = ApolloReactCommon.MutationResult<UpdateTournamentMutation>;
 export type UpdateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTournamentMutation, UpdateTournamentMutationVariables>;
 export const DeleteTournamentDocument = gql`
-    mutation DeleteTournament($id: ID!) {
-  deleteTournament(id: $id) {
+    mutation DeleteTournament($tournamentId: ID!) {
+  deleteTournament(tournamentId: $tournamentId) {
     id
   }
 }
@@ -588,7 +588,7 @@ export type DeleteTournamentComponentProps = Omit<ApolloReactComponents.Mutation
  * @example
  * const [deleteTournamentMutation, { data, loading, error }] = useDeleteTournamentMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      tournamentId: // value for 'tournamentId'
  *   },
  * });
  */

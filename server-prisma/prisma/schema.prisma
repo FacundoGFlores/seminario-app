@@ -30,6 +30,7 @@ model Tournament {
   end         DateTime
   teams       Team[]
   seasons     Season[]
+  archived    Boolean  @default(false)
 
   positions Position[]
   @@map(name: "tournaments")

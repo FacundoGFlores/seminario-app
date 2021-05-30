@@ -18,6 +18,7 @@ import {
   UpdateTournamentMutationVariables,
   useTeamsByTournamentLazyQuery,
   useDeleteTournamentMutation,
+  Tournament,
 } from '../../generated/graphql';
 import {
   TableContainer,
@@ -39,12 +40,12 @@ import {
 } from '@material-ui/core';
 import { TOURNAMENTS_BY_USER_ID_QUERY } from '../../generated/queries/tournaments';
 import { useRouter } from 'next/router';
-import { teams } from '../../routes';
 import { Layout } from '../../components';
 import { useSession } from '../../hooks/Session';
 import { GroupAdd } from '@material-ui/icons';
 import { PlayerCreator } from '../../components/PlayerCreator';
 import Tooltip from '@material-ui/core/Tooltip';
+import { TournamentUpdater } from '../../components/TournamentUpdater';
 
 function getModalStyle() {
   const top = 40;
@@ -81,17 +82,7 @@ const Tournaments = () => {
 
   // Modal states
   const [modalStyle] = React.useState(getModalStyle);
-  const [modalOpen, setModalOpen] = React.useState(false);
-
-  const [getTournament] = useTournamentLazyQuery({
-    onCompleted: (data) => {
-      setSelectedStartDate(customDateFormat(data.tournament.start));
-      setSelectedEndDate(customDateFormat(data.tournament.end));
-      setName(data.tournament.name);
-      setDescription(data.tournament.description);
-      setTournamentId(data.tournament.id);
-    },
-  });
+  const [showTournamentId, setShowTournamentId] = React.useState<string>('');
 
   const {
     data: allTournaments,
@@ -119,7 +110,7 @@ const Tournaments = () => {
   const [updateTournament] = useUpdateTournamentMutation({
     onCompleted: (data) => {
       alert('Torneo actualizado');
-      setModalOpen(false);
+      setShowTournamentId('');
     },
     refetchQueries: [
       {
@@ -134,12 +125,10 @@ const Tournaments = () => {
   }, [selectedTournamentId]);
 
   const handleClose = () => {
-    setModalOpen(false);
+    setShowTournamentId('');
   };
 
   const handleTournamentSelection = (id: string) => {
-    getTournament({ variables: { id } });
-    setModalOpen(true);
     setTournamentId(id);
   };
 
@@ -147,89 +136,7 @@ const Tournaments = () => {
     push('/');
   };
 
-  const handleTournamentUpdate = () => {
-    const variables: UpdateTournamentMutationVariables = {
-      data: {
-        name,
-        description,
-        start: selectedStartDate,
-        end: selectedEndDate,
-        id: tournamentId,
-      },
-    };
-
-    updateTournament({ variables });
-  };
-
-  const handleAddTeam = (tournamentId: string) => {
-    push(teams(tournamentId));
-  };
-
-  const modalBody = (
-    <Paper style={modalStyle}>
-      <form noValidate autoComplete="off">
-        <Grid container justify="center" spacing={4}>
-          <Grid item>
-            <FormControl style={{ marginRight: '10px' }}>
-              <InputLabel htmlFor="name">Nombre</InputLabel>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item>
-            <FormControl style={{ marginRight: '10px' }}>
-              <InputLabel htmlFor="description">Descripcion</InputLabel>
-              <Input
-                id="description"
-                type="textarea"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <FormControl style={{ marginRight: '10px' }}>
-              <TextField
-                id="startdate"
-                type="date"
-                label="Fecha Inicio"
-                value={selectedStartDate}
-                onChange={(e) => setSelectedStartDate(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <FormControl style={{ marginRight: '10px' }}>
-              <TextField
-                id="enddate"
-                type="date"
-                label="Fecha Fin"
-                value={selectedEndDate}
-                onChange={(e) => setSelectedEndDate(e.target.value)}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item>
-            {tournamentId && (
-              <Button variant="contained" onClick={handleTournamentUpdate}>
-                Actualizar Torneo
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-      </form>
-    </Paper>
-  );
+  console.log({ showTournamentId });
 
   return (
     <Layout>
@@ -274,9 +181,9 @@ const Tournaments = () => {
                         <Filter9Plus />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Editar equipo">
+                    <Tooltip title="Editar torneo">
                       <IconButton
-                        onClick={() => handleTournamentSelection(tournament.id)}
+                        onClick={() => setShowTournamentId(tournament.id)}
                       >
                         <EditIcon />
                       </IconButton>
@@ -410,12 +317,24 @@ const Tournaments = () => {
         )}
       </Grid>
       <Modal
-        open={modalOpen}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        open={!!showTournamentId}
+        onClose={() => setSelectedTournamentId('')}
+        aria-labelledby="tournament-edition"
+        aria-describedby="tournament-edition"
       >
-        {modalBody}
+        <Paper style={modalStyle}>
+          <TournamentUpdater
+            tournament={
+              allTournaments?.tournamentsByUserId.find(
+                (tournament) => tournament.id === showTournamentId
+              ) as Tournament
+            }
+            onUpdate={() => {
+              setShowTournamentId('');
+              refetchAllTournaments();
+            }}
+          />
+        </Paper>
       </Modal>
       <Modal
         open={!!selectedTeamId}

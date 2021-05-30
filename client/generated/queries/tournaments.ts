@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const TOURNAMENTS_BY_USER_ID_QUERY = gql`
   query TournamentsByUserId($id: ID!) {
@@ -6,6 +6,8 @@ export const TOURNAMENTS_BY_USER_ID_QUERY = gql`
       id
       name
       description
+      start
+      end
       teams {
         id
         name

@@ -56,6 +56,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationUpdateTournamentArgs = {
+  tournamentId: Scalars['ID'],
   data: TournamentUpdateInput
 };
 
@@ -195,7 +196,6 @@ export type TournamentCreateInput = {
 };
 
 export type TournamentUpdateInput = {
-  id: Scalars['ID'],
   name: Scalars['String'],
   description?: Maybe<Scalars['String']>,
   start?: Maybe<Scalars['String']>,
@@ -264,6 +264,7 @@ export type CreateTournamentMutation = (
 );
 
 export type UpdateTournamentMutationVariables = {
+  tournamentId: Scalars['ID'],
   data: TournamentUpdateInput
 };
 
@@ -380,7 +381,7 @@ export type TournamentsByUserIdQuery = (
   { __typename?: 'Query' }
   & { tournamentsByUserId: Maybe<Array<(
     { __typename?: 'Tournament' }
-    & Pick<Tournament, 'id' | 'name' | 'description'>
+    & Pick<Tournament, 'id' | 'name' | 'description' | 'start' | 'end'>
     & { teams: Maybe<Array<(
       { __typename?: 'Team' }
       & Pick<Team, 'id' | 'name'>
@@ -523,8 +524,8 @@ export type CreateTournamentMutationHookResult = ReturnType<typeof useCreateTour
 export type CreateTournamentMutationResult = ApolloReactCommon.MutationResult<CreateTournamentMutation>;
 export type CreateTournamentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentMutation, CreateTournamentMutationVariables>;
 export const UpdateTournamentDocument = gql`
-    mutation UpdateTournament($data: TournamentUpdateInput!) {
-  updateTournament(data: $data) {
+    mutation UpdateTournament($tournamentId: ID!, $data: TournamentUpdateInput!) {
+  updateTournament(tournamentId: $tournamentId, data: $data) {
     id
   }
 }
@@ -550,6 +551,7 @@ export type UpdateTournamentComponentProps = Omit<ApolloReactComponents.Mutation
  * @example
  * const [updateTournamentMutation, { data, loading, error }] = useUpdateTournamentMutation({
  *   variables: {
+ *      tournamentId: // value for 'tournamentId'
  *      data: // value for 'data'
  *   },
  * });
@@ -804,6 +806,8 @@ export const TournamentsByUserIdDocument = gql`
     id
     name
     description
+    start
+    end
     teams {
       id
       name

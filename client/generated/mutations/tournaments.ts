@@ -9,8 +9,8 @@ export const CREATE_TOURNAMENT = gql`
 `;
 
 export const UPDATE_TOURNAMENT = gql`
-  mutation UpdateTournament($data: TournamentUpdateInput!) {
-    updateTournament(data: $data) {
+  mutation UpdateTournament($tournamentId: ID!, $data: TournamentUpdateInput!) {
+    updateTournament(tournamentId: $tournamentId, data: $data) {
       id
     }
   }

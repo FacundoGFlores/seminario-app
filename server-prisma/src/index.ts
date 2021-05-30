@@ -261,7 +261,7 @@ const resolvers = {
         data: { archived: true },
       });
     },
-    updateTournament(parent, { data }, context: Context) {
+    updateTournament(parent, { tournamentId, data }, context: Context) {
       return context.prisma.tournament.update({
         data: {
           name: data.name,
@@ -270,7 +270,7 @@ const resolvers = {
           description: data.description,
         },
         where: {
-          id: data.id,
+          id: tournamentId,
         },
       });
     },
@@ -370,7 +370,7 @@ const server = new GraphQLServer({
   type Mutation {
     createTournament(data: TournamentCreateInput!): Tournament!
     createUser(data: UserCreatInput!): User!
-    updateTournament(data: TournamentUpdateInput!): Tournament!
+    updateTournament(tournamentId: ID!, data: TournamentUpdateInput!): Tournament!
     updateMatches(data: [MatchResult!]!): Schedule!
     updateTeamPlayers(teamId: ID!, data: PlayerInput!): Team!
     deleteTournament(tournamentId: ID!): Tournament!
@@ -400,13 +400,13 @@ const server = new GraphQLServer({
   }
 
   input TournamentUpdateInput {
-    id: ID!
     name: String!
     description: String
     start: String
     end: String
   }
   
+
   input CreateTeamInput {
     name: [String!]
   }

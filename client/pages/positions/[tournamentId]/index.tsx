@@ -10,6 +10,7 @@ import {
   useTournamentQuery,
 } from '../../../generated/graphql';
 import {
+  Grid,
   Table,
   Paper,
   TableContainer,
@@ -52,8 +53,10 @@ function Positions(): JSX.Element {
             {positions.map((position) => (
               <TableRow key={position.team.id}>
                 <TableCell component="th" scope="row">
-                  <img src={getFlag()} />
-                  <span>{position.team.name}</span>
+                  <Grid container alignItems="center">
+                    <img src={getFlag()} />
+                    <strong>{position.team.name}</strong>
+                  </Grid>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {position.pg}

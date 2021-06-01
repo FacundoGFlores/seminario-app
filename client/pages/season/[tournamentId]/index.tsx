@@ -28,6 +28,7 @@ import { withApollo } from '../../../lib/apollo';
 import { Layout } from '../../../components';
 import { useSession } from '../../../hooks/Session';
 import ReactToPdf from 'react-to-pdf';
+import { getFlag } from '../../../lib/flags';
 
 const useStyles = makeStyles({
   head: {
@@ -176,11 +177,10 @@ const Season = () => {
                         {schedule.matches.map((match) => (
                           <TableRow key={match.id}>
                             <TableCell>
-                              <img
-                                src={`https://ui-avatars.com/api/?name=${match.teamA.name
-                                  .split(' ')
-                                  .join('+')}&size=32&background=random`}
-                              />
+                              <Grid container alignItems="center">
+                                <img src={getFlag()} />
+                                <strong>{match.teamA.name}</strong>
+                              </Grid>
                             </TableCell>
                             <TableCell style={{ width: '80px' }}>
                               <Input
@@ -201,11 +201,10 @@ const Season = () => {
                               />
                             </TableCell>
                             <TableCell>
-                              <img
-                                src={`https://ui-avatars.com/api/?name=${match.teamB.name
-                                  .split(' ')
-                                  .join('+')}&size=32&background=random`}
-                              />
+                              <Grid container alignItems="center">
+                                <img src={getFlag()} />
+                                <strong>{match.teamB.name}</strong>
+                              </Grid>
                             </TableCell>
                           </TableRow>
                         ))}

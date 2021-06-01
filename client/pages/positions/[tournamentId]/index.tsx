@@ -1,19 +1,37 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
-import { withApollo } from "../../../lib/apollo"
-import { Layout } from "../../../components";
-import { usePositionsByTournamentQuery, Position, useTournamentQuery } from "../../../generated/graphql";
-import { Table, Paper, TableContainer, TableCell, TableRow, TableHead, TableBody, Typography } from "@material-ui/core";
+import { withApollo } from '../../../lib/apollo';
+import { Layout } from '../../../components';
+import {
+  usePositionsByTournamentQuery,
+  Position,
+  useTournamentQuery,
+} from '../../../generated/graphql';
+import {
+  Table,
+  Paper,
+  TableContainer,
+  TableCell,
+  TableRow,
+  TableHead,
+  TableBody,
+  Typography,
+} from '@material-ui/core';
+import { getFlag } from '../../../lib/flags';
 
 function Positions(): JSX.Element {
   const {
-    query: { tournamentId }
+    query: { tournamentId },
   } = useRouter();
 
-  const { data: positions, loading } = usePositionsByTournamentQuery({ variables: { id: tournamentId as string }});
-  const { data: tournament} = useTournamentQuery({ variables: { id: tournamentId as string } });
+  const { data: positions, loading } = usePositionsByTournamentQuery({
+    variables: { id: tournamentId as string },
+  });
+  const { data: tournament } = useTournamentQuery({
+    variables: { id: tournamentId as string },
+  });
 
   function renderTable(positions: Position[]): React.ReactElement {
     return (
@@ -31,10 +49,11 @@ function Positions(): JSX.Element {
             </TableRow>
           </TableHead>
           <TableBody>
-            {positions.map(position => (
+            {positions.map((position) => (
               <TableRow key={position.team.id}>
                 <TableCell component="th" scope="row">
-                  <img src={`https://ui-avatars.com/api/?name=${position.team.name.split(' ').join('+')}&size=32&background=random`} />
+                  <img src={getFlag()} />
+                  <span>{position.team.name}</span>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {position.pg}
@@ -68,13 +87,17 @@ function Positions(): JSX.Element {
         <Link color="inherit" href="/tournaments">
           Mis torneos
         </Link>
-        <Typography color="textPrimary">{tournament?.tournament.name}</Typography>
+        <Typography color="textPrimary">
+          {tournament?.tournament.name}
+        </Typography>
       </Breadcrumbs>
-      {loading
-        ? <CircularProgress />
-        : positions?.positionsByTournament
-          ? renderTable(positions.positionsByTournament as Position[])
-          : <h1>No data</h1>}
+      {loading ? (
+        <CircularProgress />
+      ) : positions?.positionsByTournament ? (
+        renderTable(positions.positionsByTournament as Position[])
+      ) : (
+        <h1>No data</h1>
+      )}
     </Layout>
   );
 }

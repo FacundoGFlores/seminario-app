@@ -1,6 +1,5 @@
 import { GraphQLServer } from "graphql-yoga";
 import { Match, Prisma, PrismaClient, Team } from "@prisma/client";
-import faker from "faker";
 
 interface Context {
   prisma: PrismaClient;
@@ -281,7 +280,7 @@ const resolvers = {
         let user = null;
         if (!data.owner) {
           user = await context.prisma.user.create({
-            data: { name: "anonymous", email: faker.internet.email() },
+            data: { name: "anonymous", email: "anon@mail.com" },
           });
         } else {
           user = await context.prisma.user.findUnique({

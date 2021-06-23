@@ -6,6 +6,9 @@ jobs:
 
     steps:
       - checkout # check out the code in the project directory
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:EtkoZheDSZa/RaLDBXP2jipJIMgoX5mcaEFo8ZwDgU0"
       - run:
           name: "Publish site"
           command: |

@@ -10,6 +10,7 @@ jobs:
           fingerprints:
             - "e9:eb:83:f0:46:17:04:d9:d8:f8:0a:8d:8b:14:8f:de"
       - run: ls -la ~/.ssh/
+      - run: cat ~/.ssh/id_rsa.pub
       - run:
           name: "Publish site"
           command: |

@@ -1,10 +1,14 @@
-FROM node:12.16.1-alpine
+FROM node:12.19.0
+
 WORKDIR /usr/src/api
-COPY package*.json yarn.lock ./
-COPY . .
-RUN chmod +x /usr/src/api/wait-for-it.sh
-RUN sh wait-for-it.sh
+COPY package*.json ./
 RUN yarn install
-RUN yarn migrate
-RUN yarn build
-CMD ["yarn", "start"]
+COPY . .
+
+RUN apt-get update -y && apt-get upgrade -y && apt-get install git -y \
+    && chmod +x /usr/app/wait-for-it.sh \
+    && chmod +x /usr/app/run-it.sh
+
+EXPOSE 3000
+
+CMD [ "./run-it.sh" ]

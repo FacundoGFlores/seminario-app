@@ -250,6 +250,19 @@ export type UpdateTeamPlayersMutation = (
   ) }
 );
 
+export type CreateTournamentWithScheduleMutationVariables = {
+  data: TournamentCreateInput
+};
+
+
+export type CreateTournamentWithScheduleMutation = (
+  { __typename?: 'Mutation' }
+  & { createTournament: (
+    { __typename?: 'Tournament' }
+    & Pick<Tournament, 'id'>
+  ) }
+);
+
 export type CreateTournamentMutationVariables = {
   data: TournamentCreateInput
 };
@@ -485,6 +498,44 @@ export function useUpdateTeamPlayersMutation(baseOptions?: ApolloReactHooks.Muta
 export type UpdateTeamPlayersMutationHookResult = ReturnType<typeof useUpdateTeamPlayersMutation>;
 export type UpdateTeamPlayersMutationResult = ApolloReactCommon.MutationResult<UpdateTeamPlayersMutation>;
 export type UpdateTeamPlayersMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateTeamPlayersMutation, UpdateTeamPlayersMutationVariables>;
+export const CreateTournamentWithScheduleDocument = gql`
+    mutation createTournamentWithSchedule($data: TournamentCreateInput!) {
+  createTournament(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateTournamentWithScheduleMutationFn = ApolloReactCommon.MutationFunction<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>;
+export type CreateTournamentWithScheduleComponentProps = Omit<ApolloReactComponents.MutationComponentOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>, 'mutation'>;
+
+    export const CreateTournamentWithScheduleComponent = (props: CreateTournamentWithScheduleComponentProps) => (
+      <ApolloReactComponents.Mutation<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables> mutation={CreateTournamentWithScheduleDocument} {...props} />
+    );
+    
+
+/**
+ * __useCreateTournamentWithScheduleMutation__
+ *
+ * To run a mutation, you first call `useCreateTournamentWithScheduleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTournamentWithScheduleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTournamentWithScheduleMutation, { data, loading, error }] = useCreateTournamentWithScheduleMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateTournamentWithScheduleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>(CreateTournamentWithScheduleDocument, baseOptions);
+      }
+export type CreateTournamentWithScheduleMutationHookResult = ReturnType<typeof useCreateTournamentWithScheduleMutation>;
+export type CreateTournamentWithScheduleMutationResult = ApolloReactCommon.MutationResult<CreateTournamentWithScheduleMutation>;
+export type CreateTournamentWithScheduleMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateTournamentWithScheduleMutation, CreateTournamentWithScheduleMutationVariables>;
 export const CreateTournamentDocument = gql`
     mutation CreateTournament($data: TournamentCreateInput!) {
   createTournament(data: $data) {

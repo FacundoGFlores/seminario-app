@@ -10,4 +10,25 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     ports:
-     - "5432:5432"
+      - "5432:5432"
+  api:
+    build: ./server-prisma/
+    environment:
+      - DATABASE_URL=postgres://admin:admin@db:5432/seminariodb?sslmode=disable
+    volumes:
+      - ./server-prisma:/usr/src/api
+      - /usr/src/api/node_modules
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+
+  app:
+    build: ./client/
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api

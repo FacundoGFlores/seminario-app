@@ -6,8 +6,8 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          name: "Publish site"
-          command: |
-            ssh -oStrictHostKeyChecking=no connan@138.197.207.195 "touch hello.txt" 
+      - run: ls -la  
+      # - run:
+      #     name: "Publish site"
+      #     command: |
+      #       ssh -oStrictHostKeyChecking=no connan@138.197.207.195 "touch hello.txt" 

@@ -7,3 +7,4 @@ RUN sh wait-for-it.sh
 RUN yarn install
 RUN yarn migrate
 RUN yarn build
+CMD ["yarn", "start"]

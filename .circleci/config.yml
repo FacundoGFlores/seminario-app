@@ -6,4 +6,7 @@ jobs:
 
     steps:
       - checkout # check out the code in the project directory
-      - run: sh deploy.sh
+      - run:
+          name: "Publish site"
+          command: |
+            ssh connan@138.197.207.195 "cd seminario-app && git checkout master && git pull --rebase && docker-compose up -d" 

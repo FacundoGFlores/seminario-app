@@ -6,6 +6,9 @@ jobs:
 
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "0d:56:05:53:7c:48:fa:4f:a6:46:dd:6c:6d:8a:a4:32"
       - run:
           name: "Publish site"
           command: |

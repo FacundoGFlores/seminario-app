@@ -2,14 +2,11 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:14.10.1 # the primary container, where your job's commands are run
+      - image: arvindr226/alpine-ssh
 
     steps:
-      - checkout # check out the code in the project directory
-      - add_ssh_keys:
-          fingerprints:
-            - "SHA256:EtkoZheDSZa/RaLDBXP2jipJIMgoX5mcaEFo8ZwDgU0"
+      - checkout
       - run:
           name: "Publish site"
           command: |
-            ssh connan@138.197.207.195 "cd seminario-app && git checkout master && git pull --rebase && docker-compose up -d" 
+            ssh -oStrictHostKeyChecking=no connan@138.197.207.195 "cd seminario-app && git checkout master && git pull --rebase && docker-compose up -d" 

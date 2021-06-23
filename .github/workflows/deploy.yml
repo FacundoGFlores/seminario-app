@@ -1,21 +1,25 @@
-name: Licensed
+name: Deploy
 
-on:
-  push: {branches: main}
-  pull_request: {branches: main}
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     name: Check licenses
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: ls -a via ssh
+#         uses: fifsky/ssh-action@master
+#         with:
+#           command: |
+#             cd /home/connan
+#             ls -a
+#           host: ${{ secrets.HOST }}
+#           user: root
+#           key: ${{ secrets.PRIVATE_KEY}}
 
 jobs:
-  deploy:
+  printInputs:
     runs-on: ubuntu-latest
-    name: Check licenses
     steps:
-      - uses: actions/checkout@v2
-      - name: ls -a via ssh
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            cd /home/connan
-            ls -a
-          host: ${{ secrets.HOST }}
-          user: root
-          key: ${{ secrets.PRIVATE_KEY}}
+      - run: |
+          echo "Log level: ${{ github.event.inputs.logLevel }}"
+          echo "Tags: ${{ github.event.inputs.tags }}"

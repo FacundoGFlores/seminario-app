@@ -5,4 +5,3 @@ COPY . .
 RUN yarn install
 RUN yarn migrate
 RUN yarn build
-CMD [ "yarn", "start" ]

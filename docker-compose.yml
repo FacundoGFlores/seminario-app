@@ -11,6 +11,7 @@ services:
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
+
   api:
     build: ./server-prisma/
     environment:
@@ -22,6 +23,7 @@ services:
       - "4000:4000"
     depends_on:
       - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "yarn", "start"]
 
   app:
     build: ./client/

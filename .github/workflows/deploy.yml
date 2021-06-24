@@ -16,5 +16,5 @@ jobs:
             cd /home/connan
             ls -a
           host: ${{ secrets.HOST }}
-          user: root
+          user: connan
           key: ${{ secrets.PRIVATE_KEY}}

@@ -54,7 +54,11 @@ function Positions(): JSX.Element {
               <TableRow key={position.team.id}>
                 <TableCell component="th" scope="row">
                   <Grid container alignItems="center">
-                    <img src={getFlag()} />
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${position.team.name
+                        .split(' ')
+                        .join('+')}&size=32&background=random`}
+                    />
                     <strong>{position.team.name}</strong>
                   </Grid>
                 </TableCell>

@@ -246,11 +246,14 @@ const Tournaments = () => {
                   {teamsData?.teams.map((team) => (
                     <TableRow key={team.id}>
                       <TableCell component="th" scope="row">
-                        <img
-                          src={`https://ui-avatars.com/api/?name=${team.name
-                            .split(' ')
-                            .join('+')}&size=32&background=random`}
-                        />
+                        <Grid container alignItems="center">
+                          <img
+                            src={`https://ui-avatars.com/api/?name=${team.name
+                              .split(' ')
+                              .join('+')}&size=32&background=random`}
+                          />
+                          <strong>{team.name}</strong>
+                        </Grid>
                       </TableCell>
                       <TableCell align="center">
                         <Tooltip title="Ver jugadores">

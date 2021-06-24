@@ -67,13 +67,21 @@ const TournamentCreator = () => {
   const onSubmit = () => {
     const { tournament, teams, startDate, endDate, description } = getValues();
 
+    const teamsFiltered = teams
+      .map((team) => team.name)
+      .filter((name) => name !== '');
+
+    if (teams.length < 2) {
+      alert('Necesita ingresar 2 equipos');
+      return;
+    }
     createTournament({
       variables: {
         data: {
           name: tournament,
           start: startDate.toISOString(),
           end: endDate.toISOString(),
-          teams: teams.map((team) => team.name),
+          teams: teamsFiltered,
           description,
           owner: user ? user.id : '',
         },

@@ -129,7 +129,7 @@ const Season = () => {
       {({ toPdf, targetRef }) => (
         <>
           <Layout>
-            <Grid container justify="space-between">
+            <Grid container justify="space-around" style={{ width: '100%' }}>
               <Grid item style={{ marginTop: '10px' }}>
                 <Breadcrumbs
                   aria-label="breadcrumb"
@@ -152,68 +152,86 @@ const Season = () => {
               </Grid>
             </Grid>
 
-            <Grid
-              container
-              direction="row"
-              justify="center"
-              spacing={4}
-              innerRef={targetRef}
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+              }}
+              ref={targetRef}
             >
               {schedules.map((schedule) => (
-                <Grid item>
-                  <TableContainer component={Paper}>
-                    <Table>
-                      <TableHead className={classes.head}>
-                        <TableRow>
-                          <TableCell colSpan={4} align="center">
-                            {`Fecha ${schedule.week + 1}`}
-                            <IconButton onClick={() => handleSave(schedule.id)}>
-                              <SaveIcon />
-                            </IconButton>
+                <TableContainer
+                  component={Paper}
+                  style={{ maxWidth: '400px', margin: '16px' }}
+                >
+                  <Table>
+                    <TableHead className={classes.head}>
+                      <TableRow>
+                        <TableCell colSpan={4} align="center">
+                          {`Fecha ${schedule.week + 1}`}
+                          <IconButton onClick={() => handleSave(schedule.id)}>
+                            <SaveIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {schedule.matches.map((match) => (
+                        <TableRow key={match.id}>
+                          <TableCell>
+                            <Grid
+                              container
+                              direction="column"
+                              alignItems="center"
+                            >
+                              <img
+                                src={`https://ui-avatars.com/api/?name=${match.teamA.name
+                                  .split(' ')
+                                  .join('+')}&size=32&background=random`}
+                              />
+                              <strong>{match.teamA.name}</strong>
+                            </Grid>
+                          </TableCell>
+                          <TableCell style={{ width: '80px' }}>
+                            <Input
+                              type="number"
+                              value={matchResults[match.id]?.resultA || 0}
+                              onChange={(e) =>
+                                updateResultA(match.id, e.target.value)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell style={{ width: '80px' }}>
+                            <Input
+                              type="number"
+                              value={matchResults[match.id]?.resultB || 0}
+                              onChange={(e) =>
+                                updateResultB(match.id, e.target.value)
+                              }
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Grid
+                              container
+                              direction="column"
+                              alignItems="center"
+                            >
+                              <img
+                                src={`https://ui-avatars.com/api/?name=${match.teamB.name
+                                  .split(' ')
+                                  .join('+')}&size=32&background=random`}
+                              />
+                              <strong>{match.teamB.name}</strong>
+                            </Grid>
                           </TableCell>
                         </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {schedule.matches.map((match) => (
-                          <TableRow key={match.id}>
-                            <TableCell>
-                              <Grid container alignItems="center">
-                                <img src={getFlag()} />
-                                <strong>{match.teamA.name}</strong>
-                              </Grid>
-                            </TableCell>
-                            <TableCell style={{ width: '80px' }}>
-                              <Input
-                                type="number"
-                                value={matchResults[match.id]?.resultA || 0}
-                                onChange={(e) =>
-                                  updateResultA(match.id, e.target.value)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell style={{ width: '80px' }}>
-                              <Input
-                                type="number"
-                                value={matchResults[match.id]?.resultB || 0}
-                                onChange={(e) =>
-                                  updateResultB(match.id, e.target.value)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Grid container alignItems="center">
-                                <img src={getFlag()} />
-                                <strong>{match.teamB.name}</strong>
-                              </Grid>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Grid>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               ))}
-            </Grid>
+            </div>
           </Layout>
         </>
       )}

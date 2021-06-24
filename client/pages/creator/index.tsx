@@ -43,7 +43,7 @@ const CreateTournament = () => {
           name: tournament,
           start: startDate,
           end: endDate,
-          teams: teams.map((team) => team.name),
+          teams: teams.map((team) => team.name).filter((name) => name !== ''),
           description,
         },
       },
